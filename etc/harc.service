@@ -1,0 +1,13 @@
+[Unit]
+Description=harc service
+After=network.target
+
+[Service]
+Type=simple
+User=user
+WorkingDirectory=/opt/harc
+ExecStart=/bin/bash -c /opt/harc/harc.sh
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

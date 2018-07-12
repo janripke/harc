@@ -1,0 +1,45 @@
+{
+  "projects": [
+    {
+      "name": "paprika",
+      "repository": "https://{0}:'{1}'@gitlab.oxyma.nl/Jan.Ripke/paprika.git",
+      "technology": "python",
+      "username": "Jan.Ripke",
+      "password": "*Drapje01*"
+    }
+  ],
+  "dev": [
+    {
+      "name": "paprika",
+      "virtualenv": "/home/user/dev/paprika/env",
+      "server": "http://localhost:5000",
+      "services": [
+        {
+          "name": "paprika_message.service"
+        },
+        {
+          "name": "paprika_hook.service"
+        }
+      ]
+    }
+  ],
+  "test": [
+    {
+      "name": "paprika",
+      "virtualenv": "/home/oxymafuse/workspace/test/paprika/env",
+      "server": "http://lnx3193vm.asp4all.nl",
+      "username": "harc@oxyma.nl",
+      "password": "*Thd4Dh!#"
+    }
+  ],
+  "uat": [
+    {
+      "name": "paprika",
+      "virtualenv": "/home/oxymafuse/workspace/uat/paprika/env",
+      "server": "http://lnx3193vm.asp4all.nl",
+      "username": "harc@oxyma.nl",
+      "password": "*Thd4Dh!#"
+    }
+  ]
+}
+

@@ -1,0 +1,14 @@
+create or replace package {project_alias}_imp_{package_name} is
+
+  function start_import
+    (p_job_name  in varchar2
+    ,p_filename  in varchar2
+    ,p_test_mode in varchar2 default 'Y') return varchar2;
+
+  procedure import
+    (p_job_name   in varchar2 default null
+    ,p_bestand    in varchar2
+    ,po_resultaat out varchar2);
+
+end {project_alias}_imp_{package_name};
+/

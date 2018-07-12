@@ -1,0 +1,14 @@
+create or replace package {project_alias}_utl_{table_alias} as
+
+  function count_by_job_name
+    (p_job_name in varchar2) return number;
+
+  function get_
+    (p_{table_alias}_id in {project_alias}_{table_name}.id%type) return {project_alias}_{table_name}%rowtype;
+
+  function insert_
+    (p_job_name in varchar2
+    ,p_{table_alias}      in {project_alias}_{table_name}_stage%rowtype) return number;
+
+end {project_alias}_utl_{table_alias};
+/

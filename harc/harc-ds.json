@@ -1,0 +1,7 @@
+{
+    "type" : "mysql",
+    "host" : "localhost",
+    "db" : "harc",
+    "username" : "apps",
+    "password" : "******"
+}

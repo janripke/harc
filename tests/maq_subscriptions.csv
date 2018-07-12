@@ -1,0 +1,12 @@
+subscriber_id|varchar2(50)|not null||
+subscriber_initials|varchar2(20)|not null||
+subscriber_middlename|varchar2(50)|||
+subscriber_surname|varchar2(150)|not null||
+subscriber_gender|varchar2(1|not null|default 'M'|in ('M','V')
+subscriber_email|varchar2(150)|not null||
+subscriber_street|varchar2(100)|not null||
+subscriber_housenumber|number(12)|not null||
+subscriber_housenumber_add|varchar2(50)|||
+subscriber_zipcode|varchar2(4000)|not null||
+subscriber_city|varchar2(4000)|not null||
+subscriber_country|varchar2(4000)|not null||

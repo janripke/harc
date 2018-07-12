@@ -1,0 +1,1 @@
+CREATE INDEX sen_hashcode_idx ON users (hashcode);

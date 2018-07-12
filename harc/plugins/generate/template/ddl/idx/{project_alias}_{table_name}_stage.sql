@@ -1,0 +1,3 @@
+create index {project_alias}_{stage_table_alias}file_id_idx on {project_alias}_{table_name}stage(file_id) nologging tablespace ts_index;
+create index {project_alias}_{stage_table_alias}job_name_idx on {project_alias}_{table_name}stage(job_name) nologging tablespace ts_index;
+create index {project_alias}_{stage_table_alias}line_id_idx on {project_alias}_{table_name}stage(job_name, line_id) nologging tablespace ts_index;

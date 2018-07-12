@@ -1,0 +1,2 @@
+alter table {project_alias}_{table_name} add constraint {project_alias}_{table_alias}file_fk foreign key(file_id) references files(id) novalidate;
+alter table {project_alias}_{table_name} add constraint {project_alias}_{table_alias}stage_fk foreign key(stage_id) references {project_alias}_{table_name}_stage(id) novalidate;

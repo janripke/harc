@@ -1,0 +1,29 @@
+{
+  "projects": [
+    {
+      "name": "mdp_api",
+      "repository": "ssh://git-codecommit.eu-west-1.amazonaws.com/v1/repos/mdp-api",
+      "daemon": "elsevierd",
+      "technology": "python"
+    }
+  ],
+  "dev": [
+    {
+      "name": "mdp_api",
+      "server": "http://localhost:5001"
+    }
+  ],
+  "test": [
+    {
+      "name": "mdp_api",
+      "server": "http://lnx3193vm.internal.asp4all.nl:5001"
+    }
+  ],
+  "uat": [
+    {
+      "name": "mdp_api",
+      "server": "http://lnx3193vm.internal.asp4all.nl:5001"
+    }
+  ]
+}
+

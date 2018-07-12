@@ -1,0 +1,46 @@
+{
+  "projects": [
+    {
+      "name": "mdp_lambda",
+      "technology": "python",
+      "repository": "ssh://git-codecommit.eu-west-1.amazonaws.com/v1/repos/mdp-lambda",
+      "find_lambdas": ["lambdas"],
+      "lambdas": [
+        {
+          "Double.py": {
+            "dependencies": [
+              "requests"
+            ]
+          }
+        },
+        {
+          "Register.py": {
+            "dependencies": [
+              "requests"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "dev": {
+    "aws_profile_name": "elsevier-mdp-dev",
+    "aws_bucket_name" : "elsevier-mdp-dev-source",
+    "aws_region_name" : "eu-west-1"
+  },
+  "test": {
+    "aws_profile_name": "elsevier-mdp-test",
+    "aws_bucket_name" : "elsevier-mdp-test-source",
+    "aws_region_name" : "eu-west-1"
+  },
+  "uat": {
+    "aws_profile_name": "elsevier-mdp-uat",
+    "aws_bucket_name" : "elsevier-mdp-uat-source",
+    "aws_region_name" : "eu-west-1"
+  },
+  "prod": {
+    "aws_profile_name": "elsevier-mdp-prod",
+    "aws_bucket_name" : "elsevier-mdp-source",
+    "aws_region_name" : "eu-west-1"
+  }
+}
