@@ -1,23 +1,15 @@
 harc
 ========
 
-Harc is a toolkit for releasing code in the cloud. One part (the server) is installed on the host in the cloud. The other part (the client) is used to release your code to this server. Harc is build in Python.
+Harc is a commandline tool for releasing code into the cloud.
 
 # Installation
-Harc currently supports Python 2.7
+Harc currently supports Python 3.6
 
-## Install from source using virtualenv
 
-First, clone the repo on your machine and then install with `pip`:
-
+## Install from a release
 ```
-$ git clone https://gitlab.oxyma.nl/oxyma/harc.git harc-master
-$ mkdir harc
-$ cd harc
-$ virtualenv env
-$ source env/bin/activate
-$ cd ../harc-master
-$ pip install -e .
+$ pip3.6 install git+https://github.com/janripke/harc.git@1.0.8#egg=harc --upgrade
 ```
 
 ## Check that the installation worked
