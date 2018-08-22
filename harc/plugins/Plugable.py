@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from PluginException import PluginException
+from harc.plugins.PluginException import PluginException
 
 
 class Plugable(object):

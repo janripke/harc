@@ -4,7 +4,8 @@ from harc.system.Git import Git
 from harc.system.System import System
 from harc.system.release.ReleaseNumber import ReleaseNumber
 from harc.system.release.ReleaseFile import ReleaseFile
-from urlparse import urlparse
+
+from urllib.parse import urlparse, quote
 import urllib
 import uuid
 
@@ -27,7 +28,7 @@ class GitRelease(Plugable):
         # if no branche is given, master is assumed.
         if not branch:
             branch = "master"
-            print "using branch : " + branch
+            print("using branch : " + branch)
 
         for project in projects:
 
@@ -42,7 +43,7 @@ class GitRelease(Plugable):
                 if not password:
                     raise PluginException("no password")
 
-                repository = project['repository'].format(urllib.quote(username), urllib.quote(password))
+                repository = project['repository'].format(quote(username), quote(password))
 
             # set identifier, reflecting the checkout folder to build this release.
             name = uuid.uuid4().hex
@@ -52,7 +53,7 @@ class GitRelease(Plugable):
 
             # clone the repository to the tmp_folder
             result = Git.clone(repository, tmp_folder)
-            print "clone: " + str(result)
+            print("clone: " + str(result))
 
             # list the branches
             branches = Git.branches(tmp_folder)
@@ -62,7 +63,7 @@ class GitRelease(Plugable):
             # checkout the branche and switch to it.
             if branch != 'master':
                 result = Git.checkout_branch(branch, tmp_folder)
-                print result
+                print(result)
 
             # update the version file(s) to the release version.
             # if a version is given, this version is used.
@@ -78,15 +79,15 @@ class GitRelease(Plugable):
 
             # commit the changes
             result = Git.commit(release, tmp_folder)
-            print result
+            print(result)
 
             # create the tag
             result = Git.tag(release, tmp_folder)
-            print result
+            print(result)
 
             # push the changes.
             result = Git.push(repository, branch, tmp_folder)
-            print result
+            print(result)
 
             # update the version file(s) to the new snapshot release
             release = ReleaseNumber.increment_build(release)
@@ -95,11 +96,11 @@ class GitRelease(Plugable):
 
             # commit the changes
             result = Git.commit(release, tmp_folder)
-            print result
+            print(result)
 
             # push the changes.
             result = Git.push(repository, branch, tmp_folder)
-            print result
+            print(result)
 
 
 # todo; create a branch

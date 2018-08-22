@@ -11,7 +11,7 @@ from harc.system.Pip import Pip
 from harc.system.Zip import Zip
 from harc.amazon.AwsBucket import AwsBucket
 from harc.amazon.AwsLambda import AwsLambda
-from urlparse import urlparse
+from urllib.parse import urlparse, quote
 import urllib
 import uuid
 import os
@@ -37,7 +37,7 @@ class AwsLambdaDeploy(Plugable):
             environment = 'dev'
 
         projects = settings['projects']
-        print projects
+        print(projects)
         for project in projects:
 
             project_name = project['name']
@@ -53,7 +53,7 @@ class AwsLambdaDeploy(Plugable):
                 if not password:
                     raise PluginException("no password")
 
-                repository = project['repository'].format(urllib.quote(username), urllib.quote(password))
+                repository = project['repository'].format(quote(username), quote(password))
 
             # set identifier, reflecting the checkout folder to build this release.
             name = uuid.uuid4().hex
@@ -63,12 +63,12 @@ class AwsLambdaDeploy(Plugable):
 
             # clone the repository to the tmp_folder
             result = Git.clone(repository, tmp_folder)
-            print "clone: " + str(result)
+            print("clone: " + str(result))
 
             # switch to given release, if present
             if version:
                 result = Git.checkout_tag(tmp_folder, version)
-                print "tag: " + str(result)
+                print("tag: " + str(result))
 
             # find the files to deploy, they are expected in the module folder in the packages
             # defined by find_lambdas.
@@ -83,7 +83,7 @@ class AwsLambdaDeploy(Plugable):
 
                     build_name = uuid.uuid4().hex
                     build_folder = System.create_tmp(build_name)
-                    print "building ", os.path.join(build_folder, basename + ".zip")
+                    print("building ", os.path.join(build_folder, basename + ".zip"))
 
                     # copy the project packages to the build folder.
                     modules = Files.list(os.path.join(tmp_folder, project_name), find_lambdas)
@@ -102,6 +102,7 @@ class AwsLambdaDeploy(Plugable):
                     shutil.copyfile(file, os.path.join(build_folder, filename))
 
                     # find the dependencies of the module to build
+                    print("find the dependencies", settings, project_name, filename)
                     dependencies = Settings.list_dependencies(settings, project_name, filename)
 
                     for dependency in dependencies:
@@ -125,7 +126,7 @@ class AwsLambdaDeploy(Plugable):
 
                     # upload the zipped file to the aws bucket.
                     bucket_name = Settings.find_aws_bucket_name(settings, environment)
-                    print 'deploying', os.path.join(build_folder, basename + ".zip"), "using profile", profile_name, "into bucket ",bucket_name
+                    print('deploying', os.path.join(build_folder, basename + ".zip"), "using profile", profile_name, "into bucket ",bucket_name)
                     f = open(zip_file, "rb")
                     aws_bucket = AwsBucket(session)
                     aws_bucket.upload(f, bucket_name, zip_filename)
@@ -138,9 +139,7 @@ class AwsLambdaDeploy(Plugable):
 
                     aws_lambda = AwsLambda(session)
                     lambda_function = aws_lambda.find_function(basename)
-                    print lambda_function
 
                     if lambda_function:
                         aws_lambda.update_function_code(basename, code)
-
 

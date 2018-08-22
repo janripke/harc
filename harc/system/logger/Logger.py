@@ -120,7 +120,6 @@ class Logger(object):
         settings = self.get_settings()
 
         # todo, what about a default value
-        print "settings", settings
         log_level = settings[Logger.LOG_LEVEL]
         levels = self.get_levels()
         if levels[log_level] <= levels['fatal']:

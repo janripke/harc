@@ -70,7 +70,7 @@ setup(
     ],
     keywords='sample setuptools development',
     packages=find_packages(exclude=['harc-db', 'env', 'etc', 'run']),
-    install_requires=['Flask', 'flask_restful', 'requests', 'mysql-python', 'boto3', 'nose', 'psutil'],
+    install_requires=['Flask', 'flask_restful', 'requests', 'mysqlclient', 'boto3', 'nose', 'psutil'],
     entry_points={
         'console_scripts': [
             'harc=harc.harc_cli:main',

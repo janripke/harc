@@ -25,7 +25,6 @@ class Ps:
         statement = "source " + virtualenv + "/bin/activate;" + \
                     daemon_name + "&"
 
-        print statement
         p = Popen([statement], stdout=PIPE)
         # pid = Popen([statement]).pid
         # return pid

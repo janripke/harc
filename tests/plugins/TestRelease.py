@@ -3,10 +3,7 @@ import unittest
 import os
 from harc.plugins.GitRelease import GitRelease
 from harc.system.HarcCliArguments import HarcCliArguments
-from harc.system.Git import Git
-from harc.system.System import System
-from urlparse import urlparse
-import urllib
+
 
 
 class TestRelease(unittest.TestCase):
@@ -16,14 +13,14 @@ class TestRelease(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_ssh_release(self):
+    def test_https_release(self):
         properties = dict()
         properties['harc_dir'] = os.path.abspath('.')
 
         project = dict()
         project['name'] = 'mdp_lambda'
         project['technology'] = 'python'
-        project['repository'] = 'ssh://git-codecommit.eu-west-1.amazonaws.com/v1/repos/mdp-lambda'
+        project['repository'] = "https://'{0}':'{1}'@gitlab.et-scm.com/MDP/mdp-lambda.git"
 
         projects = list()
         projects.append(project)
@@ -33,7 +30,7 @@ class TestRelease(unittest.TestCase):
 
         # Instantiate the parser
         parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-        args = parser.parse_args(None)
+        args = parser.parse_args(['git:release', '-u', 'ripkej', '-p', 'Oxyma123'])
 
         plugin = GitRelease()
         plugin.execute(args, settings, properties)

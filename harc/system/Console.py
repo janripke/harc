@@ -9,7 +9,7 @@ class Console:
     def write(*args):
         count = len(args)
         result = ''
-        for i in xrange(count):
+        for i in range(count):
             result = result + args[i] + ' '
         result.rstrip(' ')
         sys.stdout.write(result + '\n')

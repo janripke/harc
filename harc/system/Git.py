@@ -8,9 +8,9 @@ class Git(object):
 
     @staticmethod
     def clone(repository, folder):
-        print repository, folder
         statement = "git clone " + repository + " " + folder
         p = Popen([statement], stdout=PIPE, shell=True)
+        print(statement)
         output, error = p.communicate()
         if p.returncode != 0:
             raise PluginException(error)
@@ -24,6 +24,7 @@ class Git(object):
         if p.returncode != 0:
             raise PluginException(error)
 
+        output = output.decode('utf-8')
         lines = output.split("\n")
         results = []
         for line in lines:

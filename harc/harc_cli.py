@@ -12,11 +12,10 @@ def main(args=None):
 
     # Instantiate the parser
     parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-    print args
     args = parser.parse_args(args)
 
     if not os.path.isfile("harc.json"):
-        raise "harc.json not found."
+        raise RuntimeError("harc.json not found.")
 
     # Read the project settings
     data = open("harc.json")

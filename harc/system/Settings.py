@@ -25,6 +25,7 @@ class Settings(object):
     @staticmethod
     def list_dependencies(settings, project_name, lambda_name):
         la = Settings.find_lambda(settings, project_name, lambda_name)
+        print("lambda", la)
         dependencies = la['dependencies']
         return dependencies
 

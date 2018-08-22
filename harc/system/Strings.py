@@ -6,7 +6,7 @@ class Strings:
     def concat(*args):
         count = len(args)
         result = ""
-        for i in xrange(count):
+        for i in range(count):
             result = result + args[i] + ' '
         result.rstrip(' ')
         return result
@@ -21,7 +21,7 @@ class Strings:
     def split_index(s, key):
         count = len(s)
         result = []
-        for i in xrange(0, count):
+        for i in range(0, count):
             if s[i] == key:
                 result.append(i)
         return result
@@ -30,7 +30,7 @@ class Strings:
     def word(s, index):
         count = len(s)
         result = ''
-        for i in xrange(index+1, count):
+        for i in range(index+1, count):
             if s[i] not in ('abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQWSTUVWXYZ_'):
                 return result
             result += s[i]

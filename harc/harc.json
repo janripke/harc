@@ -2,7 +2,7 @@
   "projects": [
     {
       "name": "mdp_api",
-      "repository": "ssh://git-codecommit.eu-west-1.amazonaws.com/v1/repos/mdp-api",
+      "repository": "https://github.com/janripke/harc.git",
       "daemon": "elsevierd",
       "technology": "python"
     }

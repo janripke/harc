@@ -1,5 +1,6 @@
 import os
 
+
 class Files:
     @staticmethod
     def list(folder, excludes=[]):

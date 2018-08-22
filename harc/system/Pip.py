@@ -16,7 +16,7 @@ class Pip:
             statement = "source " + virtualenv + "/bin/activate ;" + \
                         "pip install git+" + repository + "@" + version + "#egg=" + project_name + \
                         " --process-dependency-links"
-        print statement
+
         p = Popen([statement], stdout=PIPE, shell=True)
         output, error = p.communicate()
         if p.returncode != 0:
