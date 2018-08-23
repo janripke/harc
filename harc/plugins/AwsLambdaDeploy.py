@@ -127,11 +127,11 @@ class AwsLambdaDeploy(Plugable):
                                 if not password:
                                     raise PluginException("no password")
 
-                                module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path
+                                module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path + " --upgrade --no-dependencies"
                                 module = module.format(quote(username), quote(password))
 
                                 if module_version:
-                                    module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path + '@' + module_version + " --upgrade"
+                                    module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path + '@' + module_version + " --upgrade --no-dependencies"
                                     module = module.format(quote(username), quote(password))
 
                         # install the configured module dependency into the build folder
