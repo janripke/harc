@@ -53,7 +53,8 @@ class AwsLambdaDeploy(Plugable):
                 if not password:
                     raise PluginException("no password")
 
-                repository = project['repository'].format(quote(username), quote(password))
+                repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
+                repository = repository.format(quote(username), quote(password))
 
             # set identifier, reflecting the checkout folder to build this release.
             name = uuid.uuid4().hex
@@ -102,13 +103,39 @@ class AwsLambdaDeploy(Plugable):
                     shutil.copyfile(file, os.path.join(build_folder, filename))
 
                     # find the dependencies of the module to build
-                    print("find the dependencies", settings, project_name, filename)
                     dependencies = Settings.list_dependencies(settings, project_name, filename)
-
                     for dependency in dependencies:
 
+                        # retrieve the dependency details
+                        module_name = dependency['name']
+                        module_version = dependency.get('version')
+                        module_repo = dependency.get('repository')
+
+                        module = module_name
+
+                        if module_version:
+                            module = module_name + "==" + module_version
+
+                        if module_repo:
+                            module = module_repo
+                            module_url = urlparse(module_repo)
+
+                            if module_url.scheme in ['http', 'https']:
+                                if not username:
+                                    raise PluginException("no username")
+
+                                if not password:
+                                    raise PluginException("no password")
+
+                                module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path
+                                module = module.format(quote(username), quote(password))
+
+                                if module_version:
+                                    module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path + '@' + module_version + " --upgrade"
+                                    module = module.format(quote(username), quote(password))
+
                         # install the configured module dependency into the build folder
-                        Pip.install(dependency, build_folder)
+                        Pip.install(module, build_folder)
 
                     # set the filename and path of the zipped file to build
                     zip_filename = basename + ".zip"

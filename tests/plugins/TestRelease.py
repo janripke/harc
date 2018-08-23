@@ -20,7 +20,7 @@ class TestRelease(unittest.TestCase):
         project = dict()
         project['name'] = 'mdp_lambda'
         project['technology'] = 'python'
-        project['repository'] = "https://'{0}':'{1}'@gitlab.et-scm.com/MDP/mdp-lambda.git"
+        project['repository'] = "https://gitlab.et-scm.com/MDP/mdp-lambda.git"
 
         projects = list()
         projects.append(project)

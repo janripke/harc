@@ -9,21 +9,26 @@ class Settings(object):
             if project['name'] == project_name:
                 return project
 
-    @staticmethod
-    def list_lambdas(settings, project_name):
-        project = Settings.find_project(settings, project_name)
-        lambdas = project['lambdas']
-        return lambdas
-
-    @staticmethod
-    def find_lambda(settings, project_name, lambda_name):
-        lambdas = Settings.list_lambdas(settings, project_name)
-        for la in lambdas:
-            if lambda_name in la.keys():
-                return la[lambda_name]
+    # @staticmethod
+    # def list_lambdas(settings, project_name):
+    #     project = Settings.find_project(settings, project_name)
+    #     lambdas = project['lambdas']
+    #     return lambdas
+    #
+    # @staticmethod
+    # def find_lambda(settings, project_name, lambda_name):
+    #     lambdas = Settings.list_lambdas(settings, project_name)
+    #     for la in lambdas:
+    #         if lambda_name in la.keys():
+    #             return la[lambda_name]
 
     @staticmethod
     def list_dependencies(settings, project_name, lambda_name):
+        project = Settings.find_project(settings, project_name)
+        dependencies = project['dependencies']
+        return dependencies.get(lambda_name, [])
+
+
         la = Settings.find_lambda(settings, project_name, lambda_name)
         print("lambda", la)
         dependencies = la['dependencies']

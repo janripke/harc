@@ -43,7 +43,8 @@ class GitRelease(Plugable):
                 if not password:
                     raise PluginException("no password")
 
-                repository = project['repository'].format(quote(username), quote(password))
+                repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
+                repository = repository.format(quote(username), quote(password))
 
             # set identifier, reflecting the checkout folder to build this release.
             name = uuid.uuid4().hex

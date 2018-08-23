@@ -4,6 +4,7 @@ from harc.plugins.AwsLambdaDeploy import AwsLambdaDeploy
 from harc.system.HarcCliArguments import HarcCliArguments
 import json
 
+
 class TestAwsLambdaDeploy(unittest.TestCase):
     def setUp(self):
         pass
@@ -15,34 +16,40 @@ class TestAwsLambdaDeploy(unittest.TestCase):
         properties = dict()
         properties['harc_dir'] = os.path.abspath('.')
 
+        # create the project main part
         project = dict()
         project['name'] = 'mdp_lambda'
         project['technology'] = 'python'
-        project['repository'] = "https://'{0}':'{1}'@gitlab.et-scm.com/MDP/mdp-lambda.git"
+        project['repository'] = "https://gitlab.et-scm.com/MDP/mdp-lambda.git"
 
-        double = dict()
-        double['dependencies'] = ['requests']
-        la = dict()
-        la['double.py'] = double
-
-        lambdas = list()
-        lambdas.append(la)
-
-        register = dict()
-        register['dependencies'] = ['requests']
-        la = dict()
-        la['register.py'] = register
-        lambdas.append(la)
-
-        project['lambdas'] = lambdas
-
+        # create lambdas part
         find_lambdas = list()
         find_lambdas.append("lambdas")
         project['find_lambdas'] = find_lambdas
 
+        # create dependency part
+        module_list = list()
+
+        module = dict()
+        module['name'] = "requests"
+        module_list.append(module)
+
+        module = dict()
+        module['name'] = "mdp_toolbox"
+        module['version'] = "1.0.1"
+        module['repository'] = "https://gitlab.et-scm.com/MDP/mdp-toolbox.git"
+        module_list.append(module)
+
+        dependencies = dict()
+        dependencies['double.py'] = module_list
+        dependencies['register.py'] = module_list
+
+        project['dependencies'] = dependencies
+
         projects = list()
         projects.append(project)
 
+        # create the environment part
         settings = dict()
         settings['projects'] = projects
 
@@ -60,8 +67,6 @@ class TestAwsLambdaDeploy(unittest.TestCase):
 
         plugin = AwsLambdaDeploy()
         plugin.execute(args, settings, properties)
-
-        # the
 
 
 if __name__ == '__main__':
