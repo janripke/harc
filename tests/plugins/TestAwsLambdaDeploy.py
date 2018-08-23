@@ -36,7 +36,7 @@ class TestAwsLambdaDeploy(unittest.TestCase):
 
         module = dict()
         module['name'] = "mdp_toolbox"
-        module['version'] = "1.0.1"
+        # module['version'] = "1.0.1"
         module['repository'] = "https://gitlab.et-scm.com/MDP/mdp-toolbox.git"
         module_list.append(module)
 
