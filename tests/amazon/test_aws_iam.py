@@ -23,13 +23,13 @@ class TestAwsIam(unittest.TestCase):
         environment = 'dev'
         profile_name = Settings.find_aws_profile_name(settings, environment)
         region_name = Settings.find_aws_region_name(settings, environment)
-        print 'using profile :', profile_name
-        print 'using region :', region_name
+        print('using profile :', profile_name)
+        print('using region :', region_name)
         session = boto3.Session(profile_name=profile_name, region_name=region_name)
 
         aws_iam = AwsIam(session)
         role = aws_iam.find_role('LambdaExecution')
-        print role
+        print(role)
 
 
 if __name__ == '__main__':
