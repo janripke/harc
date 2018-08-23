@@ -1,7 +1,7 @@
 harc
 ========
 
-Harc is a commandline tool for releasing code into the cloud.
+Harc is a commandline tool for releasing code into the aws cloud.
 
 # Installation
 Harc currently supports Python 3.6
