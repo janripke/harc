@@ -2,7 +2,7 @@
   "projects": [
     {
       "name": "harc",
-      "repository": "https://'{0}':'{1}'@github.com/janripke/harc.git",
+      "repository": "https://github.com/janripke/harc.git",
       "technology": "python"
     }
   ],
