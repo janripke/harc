@@ -23,7 +23,7 @@ class Deploy(Resource):
 
             # retrieve the project to deploy.
             project = Settings.find_project(settings, message['project'])
-            print "project", project
+            print("project", project)
             if not project:
                 message = "project urg not found."
                 response = dict()
@@ -42,16 +42,16 @@ class Deploy(Resource):
             # create an empty folder in tmp
             tmp_folder = System.create_tmp(name)
 
-            print tmp_folder
+            print(tmp_folder)
             virtualenv = os.path.join(tmp_folder, 'env')
             response = VirtualEnv.create(virtualenv)
-            print response
+            print(response)
 
             response = Pip.install_virtualenv(virtualenv, project['repository'], version, project['name'])
-            print response
+            print(response)
 
             response = Ps.start(virtualenv, daemon_name)
-            print response
+            print(response)
 
             # change to the working directory of the project.
             # stop the system service

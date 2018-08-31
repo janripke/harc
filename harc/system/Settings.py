@@ -21,6 +21,10 @@ class Settings(object):
     #     for la in lambdas:
     #         if lambda_name in la.keys():
     #             return la[lambda_name]
+    @staticmethod
+    def list_bootstrap(settings, project_name):
+        project = Settings.find_project(settings, project_name)
+        return project.get('bootstrap', [])
 
     @staticmethod
     def list_dependencies(settings, project_name, lambda_name):

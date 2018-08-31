@@ -66,7 +66,7 @@ class AwsLambdaDeploy(Plugable):
             result = Git.clone(repository, tmp_folder)
             print("clone: " + str(result))
 
-            # switch to given release, if present
+            # switch to given release, if present, otherwise the master is assumed
             if version:
                 result = Git.checkout_tag(tmp_folder, version)
                 print("tag: " + str(result))

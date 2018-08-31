@@ -69,7 +69,7 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     keywords='sample setuptools development',
-    packages=find_packages(exclude=['env', 'etc', 'harc-db', 'run', 'snippets', 'tests', 'run']),
+    packages=find_packages(exclude=['env', 'etc', 'harc-db', 'run', 'snippets', 'tests', 'venv']),
     install_requires=['Flask', 'flask_restful', 'requests', 'mysqlclient', 'boto3', 'nose', 'psutil'],
     entry_points={
         'console_scripts': [
