@@ -22,7 +22,7 @@ There is one main command line interface which you can use with the `harc` comma
 
 `harc --help` or `harc <subcommand> --help`
 
-and a list of available options with descriptions will show up.
+and a list of available options with descriptions will be shown.
 
 # License
 Released under the [GNU General Public License](LICENSE).
