@@ -3,6 +3,7 @@ from harc.plugins.PluginException import PluginException
 from harc.system.Git import Git
 from harc.system.System import System
 from harc.system.io.Files import Files
+from harc.system.Toolbox import Toolbox
 from harc.system.Package import Package
 from harc.system.logger.Logger import Logger
 from harc.system.Traceback import Traceback
@@ -12,6 +13,7 @@ from harc.system.Zip import Zip
 from harc.amazon.AwsBucket import AwsBucket
 from harc.amazon.AwsLambda import AwsLambda
 from urllib.parse import urlparse, quote
+from harc.system.PipUrl import PipUrl
 import urllib
 import uuid
 import os
@@ -56,6 +58,13 @@ class AwsLambdaDeploy(Plugable):
                 repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
                 repository = repository.format(quote(username), quote(password))
 
+            # retrieve to aws profile_name to use, depending on the environment
+            profile_name = Settings.find_aws_profile_name(settings, environment)
+            region_name = Settings.find_aws_region_name(settings, environment)
+
+            # retrieve upload bucket name.
+            bucket_name = Settings.find_aws_bucket_name(settings, environment)
+
             # set identifier, reflecting the checkout folder to build this release.
             name = uuid.uuid4().hex
 
@@ -70,6 +79,8 @@ class AwsLambdaDeploy(Plugable):
             if version:
                 result = Git.checkout_tag(tmp_folder, version)
                 print("tag: " + str(result))
+
+            Toolbox.archive(profile_name, region_name, bucket_name, 'lambda')
 
             # find the files to deploy, they are expected in the module folder in the packages
             # defined by find_lambdas.
@@ -111,28 +122,8 @@ class AwsLambdaDeploy(Plugable):
                         module_version = dependency.get('version')
                         module_repo = dependency.get('repository')
 
-                        module = module_name
-
-                        if module_version:
-                            module = module_name + "==" + module_version
-
-                        if module_repo:
-                            module = module_repo
-                            module_url = urlparse(module_repo)
-
-                            if module_url.scheme in ['http', 'https']:
-                                if not username:
-                                    raise PluginException("no username")
-
-                                if not password:
-                                    raise PluginException("no password")
-
-                                module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path + " --upgrade --no-dependencies"
-                                module = module.format(quote(username), quote(password))
-
-                                if module_version:
-                                    module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path + '@' + module_version + " --upgrade --no-dependencies"
-                                    module = module.format(quote(username), quote(password))
+                        # build the pip url
+                        module = PipUrl.build(module_name, module_version, module_repo, username, password)
 
                         # install the configured module dependency into the build folder
                         Pip.install(module, build_folder)
@@ -146,25 +137,16 @@ class AwsLambdaDeploy(Plugable):
                     Zip.create(zip_file, build_folder)
 
                     # deploy the zipped file to aws
-                    # retrieve to aws profile_name to use, depending on the environment
-                    profile_name = Settings.find_aws_profile_name(settings, environment)
-                    region_name = Settings.find_aws_region_name(settings, environment)
-                    session = boto3.Session(profile_name=profile_name, region_name=region_name)
-
-                    # upload the zipped file to the aws bucket.
-                    bucket_name = Settings.find_aws_bucket_name(settings, environment)
                     print('deploying', os.path.join(build_folder, basename + ".zip"), "using profile", profile_name, "into bucket ",bucket_name)
-                    f = open(zip_file, "rb")
-                    aws_bucket = AwsBucket(session)
-                    aws_bucket.upload(f, bucket_name, zip_filename)
-                    f.close()
+                    aws_bucket = AwsBucket(profile_name, region_name)
+                    aws_bucket.upload(zip_file, bucket_name, 'lambda/' + zip_filename)
 
                     #
                     code = dict()
                     code['S3Bucket'] = bucket_name
-                    code['S3Key'] = zip_filename
+                    code['S3Key'] = 'lambda/' + zip_filename
 
-                    aws_lambda = AwsLambda(session)
+                    aws_lambda = AwsLambda(profile_name, region_name)
                     lambda_function = aws_lambda.find_function(basename)
 
                     if lambda_function:

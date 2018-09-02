@@ -2,7 +2,8 @@ import boto3
 
 
 class AwsLambda:
-    def __init__(self, session=boto3):
+    def __init__(self, profile_name='default', region_name='eu-west-1'):
+        session = boto3.Session(profile_name=profile_name, region_name=region_name)
         self.__client = session.client('lambda')
 
     def get_client(self):

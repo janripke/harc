@@ -4,6 +4,7 @@ from harc.system.Git import Git
 from harc.system.System import System
 from harc.system.PipUrl import PipUrl
 from harc.system.io.Files import Files
+from harc.system.Toolbox import Toolbox
 from harc.system.Package import Package
 from harc.system.logger.Logger import Logger
 from harc.system.Traceback import Traceback
@@ -88,24 +89,7 @@ class AwsEmrDeploy(Plugable):
             profile_name = Settings.find_aws_profile_name(settings, environment)
             region_name = Settings.find_aws_region_name(settings, environment)
 
-            # create the deploy bucket if not present.
-            bucket = AwsBucket(profile_name, region_name)
-            if not bucket.find(bucket_name):
-                bucket.create(bucket_name)
-
-            # archive the current emr deployment, if present.
-            now = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-            response = bucket.list_objects(bucket_name, 'emr')
-            files = response['files']
-            for file in files:
-                if not file['ContentType'] == 'application/x-directory':
-                    path = file['Key']
-                    dirname = os.path.dirname(path)
-                    filename = os.path.basename(path)
-
-                    # move the file to the archive location.
-                    bucket.copy_object(bucket_name, path, bucket_name, os.path.join('archive', 'emr', now, path))
-                    bucket.delete_object(bucket_name, path)
+            Toolbox.archive(profile_name, region_name, bucket_name, 'emr')
 
             # create the bootstrap.sh script.
             f = open(os.path.join(tmp_folder, 'bootstrap.sh'), 'wb')
@@ -129,6 +113,11 @@ class AwsEmrDeploy(Plugable):
             f.write(statement.encode('utf-8'))
             f.close()
 
+            # create the deploy bucket if not present.
+            bucket = AwsBucket(profile_name, region_name)
+            if not bucket.find(bucket_name):
+                bucket.create(bucket_name)
+
             # upload the bootstrap file to aws
             bucket.upload(os.path.join(tmp_folder, 'bootstrap.sh'), bucket_name, 'emr/bootstrap/bootstrap.sh')
 
@@ -140,105 +129,3 @@ class AwsEmrDeploy(Plugable):
                 for file in files:
                     path, filename = os.path.split(file)
                     bucket.upload(file, bucket_name, 'emr/steps/' + filename)
-
-
-
-            # # find the files to deploy, they are expected in the module folder in the packages
-            # # defined by find_lambdas.
-            # find_lambdas = project['find_lambdas']
-            # for find_lambda in find_lambdas:
-            #
-            #     excludes = ['__init__.py']
-            #     files = Files.list(os.path.join(tmp_folder, project_name, find_lambda), excludes)
-            #     for file in files:
-            #         path, filename = os.path.split(file)
-            #         basename, extension = os.path.splitext(filename)
-            #
-            #         build_name = uuid.uuid4().hex
-            #         build_folder = System.create_tmp(build_name)
-            #         print("building ", os.path.join(build_folder, basename + ".zip"))
-            #
-            #         # copy the project packages to the build folder.
-            #         modules = Files.list(os.path.join(tmp_folder, project_name), find_lambdas)
-            #         for module in modules:
-            #             module_path, module_filename = os.path.split(module)
-            #             module_path = module_path.replace(tmp_folder + os.sep, '')
-            #
-            #             # create the module folders in the build folder, if not present
-            #             if not os.path.exists(os.path.join(build_folder, module_path)):
-            #                 os.makedirs(os.path.join(build_folder, module_path))
-            #
-            #             # copy the module files to the module folders in the build folder.
-            #             shutil.copy(module, os.path.join(build_folder, module_path, module_filename))
-            #
-            #         # copy the lambda module to build to the build folder.
-            #         shutil.copyfile(file, os.path.join(build_folder, filename))
-            #
-            #         # find the dependencies of the module to build
-            #         dependencies = Settings.list_dependencies(settings, project_name, filename)
-            #         for dependency in dependencies:
-            #
-            #             # retrieve the dependency details
-            #             module_name = dependency['name']
-            #             module_version = dependency.get('version')
-            #             module_repo = dependency.get('repository')
-            #
-            #             module = module_name
-            #
-            #             if module_version:
-            #                 module = module_name + "==" + module_version
-            #
-            #             if module_repo:
-            #                 module = module_repo
-            #                 module_url = urlparse(module_repo)
-            #
-            #                 if module_url.scheme in ['http', 'https']:
-            #                     if not username:
-            #                         raise PluginException("no username")
-            #
-            #                     if not password:
-            #                         raise PluginException("no password")
-            #
-            #                     module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path + " --upgrade --no-dependencies"
-            #                     module = module.format(quote(username), quote(password))
-            #
-            #                     if module_version:
-            #                         module = "git+" + module_url.scheme + "://'{0}':'{1}'@" + module_url.netloc + module_url.path + '@' + module_version + " --upgrade --no-dependencies"
-            #                         module = module.format(quote(username), quote(password))
-            #
-            #             # install the configured module dependency into the build folder
-            #             Pip.install(module, build_folder)
-            #
-            #         # set the filename and path of the zipped file to build
-            #         zip_filename = basename + ".zip"
-            #         zip_file = os.path.join(build_folder, zip_filename)
-            #
-            #         # add all the files in the temp folder to the zip file.
-            #         # reflecting the module and its dependencies
-            #         Zip.create(zip_file, build_folder)
-            #
-            #         # deploy the zipped file to aws
-            #         # retrieve to aws profile_name to use, depending on the environment
-            #         profile_name = Settings.find_aws_profile_name(settings, environment)
-            #         region_name = Settings.find_aws_region_name(settings, environment)
-            #         session = boto3.Session(profile_name=profile_name, region_name=region_name)
-            #
-            #         # upload the zipped file to the aws bucket.
-            #         bucket_name = Settings.find_aws_bucket_name(settings, environment)
-            #         print('deploying', os.path.join(build_folder, basename + ".zip"), "using profile", profile_name, "into bucket ",bucket_name)
-            #         f = open(zip_file, "rb")
-            #         aws_bucket = AwsBucket(session)
-            #         aws_bucket.upload(f, bucket_name, zip_filename)
-            #         f.close()
-            #
-            #         #
-            #         code = dict()
-            #         code['S3Bucket'] = bucket_name
-            #         code['S3Key'] = zip_filename
-            #
-            #         aws_lambda = AwsLambda(session)
-            #         lambda_function = aws_lambda.find_function(basename)
-            #
-            #         if lambda_function:
-            #             aws_lambda.update_function_code(basename, code)
-            #
