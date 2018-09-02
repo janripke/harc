@@ -25,5 +25,4 @@ There is one main command line interface which you can use with the `harc` comma
 and a list of available options with descriptions will show up.
 
 # License
-Copyright © 2017, [Oxyma](https://www.oxyma.nl).
-Released under the [Proprietary](LICENSE).
+Released under the [GNU General Public License](LICENSE).
