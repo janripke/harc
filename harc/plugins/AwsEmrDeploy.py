@@ -102,14 +102,18 @@ class AwsEmrDeploy(Plugable):
                 module_name = bootstrap['name']
                 module_version = bootstrap.get('version')
                 module_repo = bootstrap.get('repository')
+                module_type = bootstrap.get('type')
 
-                statement = PipUrl.build(module_name, module_version, module_repo, username, password)
-                statement = "pip install " + statement + '\n'
+                if module_type == 'pip':
+                    statement = PipUrl.build(module_name, module_version, module_repo, username, password, False)
+                    statement = "sudo python3.4 -m pip install " + statement + '\n'
+                if module_type == 'yum':
+                    statement = "which git || sudo yum install " + module_name + ' -y' + '\n'
                 f.write(statement.encode('utf-8'))
 
             # add the current project to bootstrap.sh
-            statement = PipUrl.build(project_name, version, project['repository'], username, password)
-            statement = "pip install " + statement + '\n'
+            statement = PipUrl.build(project_name, version, project['repository'], username, password, False)
+            statement = "sudo python3.4 -m pip install " + statement + '\n'
             f.write(statement.encode('utf-8'))
             f.close()
 

@@ -25,14 +25,22 @@ class TestAwsLambdaDeploy(unittest.TestCase):
         # create bootstrap part
         bootstraps = list()
 
+        # add bootstrap item git
+        bootstrap = dict()
+        bootstrap['name'] = "git"
+        bootstrap['type'] = "yum"
+        bootstraps.append(bootstrap)
+
         # add bootstrap item awscli
         bootstrap = dict()
         bootstrap['name'] = "awscli"
+        bootstrap['type'] = "pip"
         bootstraps.append(bootstrap)
 
         # add bootstrap item mdp_toolbox
         bootstrap = dict()
         bootstrap['name'] = "mdp_toolbox"
+        bootstrap['type'] = "pip"
         bootstrap['version'] = "1.0.3"
         bootstrap['repository'] = "https://gitlab.et-scm.com/MDP/mdp-toolbox.git"
         bootstraps.append(bootstrap)
