@@ -21,9 +21,9 @@ now = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 # archive the current emr deployment, if present.
 response = bucket.list_objects(bucket_name, 'emr')
 files = response['files']
-for file in files:
-    if not file['ContentType'] == 'application/x-directory':
-        path = file['Key']
+for fle in files:
+    if not fle['ContentType'] == 'application/x-directory':
+        path = fle['Key']
         dirname = os.path.dirname(path)
         filename = os.path.basename(path)
 

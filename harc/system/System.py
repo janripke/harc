@@ -1,6 +1,8 @@
 import shutil
 import tempfile
 import os
+import shutil
+import errno
 
 
 class System(object):
@@ -15,3 +17,13 @@ class System(object):
         os.mkdir(folder)
         return folder
 
+    @staticmethod
+    def copy(src, dest):
+        try:
+            shutil.copytree(src, dest)
+        except OSError as e:
+            # If the error was caused because the source wasn't a directory
+            if e.errno == errno.ENOTDIR:
+                shutil.copy(src, dest)
+            else:
+                print('Directory not copied. Error: %s' % e)
