@@ -41,7 +41,7 @@ class TestAwsLambdaDeploy(unittest.TestCase):
         bootstrap = dict()
         bootstrap['name'] = "mdp_toolbox"
         bootstrap['type'] = "pip"
-        bootstrap['version'] = "1.0.4"
+        bootstrap['version'] = "1.0.8"
         bootstrap['repository'] = "https://gitlab.et-scm.com/MDP/mdp-toolbox.git"
         bootstraps.append(bootstrap)
 
