@@ -11,12 +11,13 @@ class Toolbox:
     def archive(profile_name, region_name, bucket_name, sub_folder=''):
 
         # create the deploy bucket if not present.
+        #TODO: Is it really ok to create buckets here?
         bucket = AwsBucket(profile_name, region_name)
         if not bucket.find(bucket_name):
             bucket.create(bucket_name)
 
         # archive the current emr deployment, if present.
-        now = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+        now = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         response = bucket.list_objects(bucket_name, sub_folder)
         files = response['files']
         for file in files:

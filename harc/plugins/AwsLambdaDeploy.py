@@ -34,9 +34,9 @@ class AwsLambdaDeploy(Plugable):
         version = arguments.v
         environment = arguments.e
 
-        # if no environment is given dev is assumed.
+        # if no environment is given sandbox is assumed.
         if not environment:
-            environment = 'dev'
+            environment = 'sandbox'
 
         projects = settings['projects']
         print(projects)
@@ -58,7 +58,7 @@ class AwsLambdaDeploy(Plugable):
                 repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
                 repository = repository.format(quote(username), quote(password))
 
-            # retrieve to aws profile_name to use, depending on the environment
+            # retrieve aws profile_name to use, depending on the environment
             profile_name = Settings.find_aws_profile_name(settings, environment)
             region_name = Settings.find_aws_region_name(settings, environment)
 
@@ -80,7 +80,7 @@ class AwsLambdaDeploy(Plugable):
                 result = Git.checkout_tag(tmp_folder, version)
                 print("tag: " + str(result))
 
-            Toolbox.archive(profile_name, region_name, bucket_name, 'lambda')
+            Toolbox.archive(profile_name, region_name, bucket_name, 'eb')
 
             # find the files to deploy, they are expected in the module folder in the packages
             # defined by find_lambdas.

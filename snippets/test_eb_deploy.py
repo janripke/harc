@@ -46,7 +46,7 @@ name = uuid.uuid4().hex
 # create an empty folder in tmp
 tmp_folder = System.create_tmp(name)
 
-# Copy the required projects into the temparory folder
+# Copy the required projects into the temporary folder
 for path in source_paths:
     System.copy(path, os.path.join(tmp_folder, path.split("/")[-1]))
 
@@ -63,7 +63,7 @@ key = key_prefix + zip_filename
 Zip.create(zip_file, tmp_folder)
 
 # upload the zipped file to aws
-print 'uploading', zip_file, "using profile", profile_name, "into bucket ", bucket_name
+print('uploading', zip_file, "using profile", profile_name, "into bucket ", bucket_name)
 aws_bucket = AwsBucket(profile_name, region_name)
 aws_bucket.upload(zip_file, bucket_name, key)
 
