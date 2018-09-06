@@ -94,6 +94,15 @@ class AwsEmrDeploy(Plugable):
             # create the bootstrap.sh script.
             f = open(os.path.join(tmp_folder, 'bootstrap.sh'), 'wb')
 
+            # retrieve the credentials method
+            git_username = None
+            git_password = None
+            credentials_method = project['credentials']
+            if credentials_method == 'ldap':
+                # use parameters add bootstrap, to avoid they are part of the release.
+                git_username = '$1'
+                git_password = '$2'
+
             # find the bootstrap commands (dependencies) to included into bootstrap.sh
             bootstraps = Settings.list_bootstrap(settings, project_name)
             for bootstrap in bootstraps:
@@ -105,14 +114,14 @@ class AwsEmrDeploy(Plugable):
                 module_type = bootstrap.get('type')
 
                 if module_type == 'pip':
-                    statement = PipUrl.build(module_name, module_version, module_repo, username, password, False)
+                    statement = PipUrl.build(module_name, module_version, module_repo, git_username, git_password, False, True)
                     statement = "sudo python3.4 -m pip install " + statement + '\n'
                 if module_type == 'yum':
                     statement = "which git || sudo yum install " + module_name + ' -y' + '\n'
                 f.write(statement.encode('utf-8'))
 
             # add the current project to bootstrap.sh
-            statement = PipUrl.build(project_name, version, project['repository'], username, password, False)
+            statement = PipUrl.build(project_name, version, project['repository'], git_username, git_password, False, True)
             statement = "sudo python3.4 -m pip install " + statement + '\n'
             f.write(statement.encode('utf-8'))
             f.close()

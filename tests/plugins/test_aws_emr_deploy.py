@@ -21,7 +21,7 @@ class TestAwsLambdaDeploy(unittest.TestCase):
         project['name'] = "mdp_emr"
         project['technology'] = "python"
         project['repository'] = "https://gitlab.et-scm.com/MDP/mdp-emr.git"
-
+        project['credentials'] = "ldap"
         # create bootstrap part
         bootstraps = list()
 
