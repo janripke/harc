@@ -55,9 +55,14 @@ class Settings(object):
         return env['aws_profile_name']
 
     @staticmethod
-    def find_aws_bucket_name(settings, environment):
+    def find_deploy_bucket_name(settings, environment):
         env = Settings.find_environment(settings, environment)
-        return env['aws_bucket_name']
+        return env["deploy_bucket_name"]
+
+    @staticmethod
+    def find_deploy_key_prefix(settings, environment):
+        env = Settings.find_environment(settings, environment)
+        return env["deploy_key_prefix"]
 
     @staticmethod
     def find_aws_region_name(settings, environment):

@@ -63,7 +63,7 @@ class AwsLambdaDeploy(Plugable):
             region_name = Settings.find_aws_region_name(settings, environment)
 
             # retrieve upload bucket name.
-            bucket_name = Settings.find_aws_bucket_name(settings, environment)
+            bucket_name = Settings.find_deploy_bucket_name(settings, environment)
 
             # set identifier, reflecting the checkout folder to build this release.
             name = uuid.uuid4().hex

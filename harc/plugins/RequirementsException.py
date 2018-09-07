@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-class PluginException(Exception):
+class RequirementsException(Exception):
     def __init__(self, message):
         Exception.__init__(self)
         self.__message = message

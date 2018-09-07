@@ -83,7 +83,7 @@ class AwsEmrDeploy(Plugable):
                 result = Git.checkout_tag(tmp_folder, version)
                 print("tag: " + str(result))
 
-            bucket_name = Settings.find_aws_bucket_name(settings, environment)
+            bucket_name = Settings.find_deploy_bucket_name(settings, environment)
             print(bucket_name)
 
             profile_name = Settings.find_aws_profile_name(settings, environment)

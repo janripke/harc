@@ -10,8 +10,11 @@ class System(object):
         object.__init__(self)
 
     @staticmethod
-    def create_tmp(project_name):
-        folder = tempfile.gettempdir() + os.sep + project_name
+    def create_tmp(folder_name, sub_folder_name=None):
+        folder = os.path.join(tempfile.gettempdir(), folder_name)
+        if sub_folder_name:
+            folder = os.path.join(folder, sub_folder_name)
+
         if os.path.isdir(folder):
             shutil.rmtree(folder)
         os.mkdir(folder)
