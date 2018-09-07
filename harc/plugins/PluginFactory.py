@@ -19,6 +19,9 @@ class PluginFactory:
         if command == 'aws:emr:deploy':
             from harc.plugins.AwsEmrDeploy import AwsEmrDeploy
             return AwsEmrDeploy
+        if command == 'aws:eb:deploy':
+            from harc.plugins.AwsEmrDeploy import AwsEbDeploy
+            return AwsEbDeploy
         if command == 'http:git:deploy:all':
             from harc.plugins.HttpGitDeployAll import HttpGitDeployAll
             return HttpGitDeployAll

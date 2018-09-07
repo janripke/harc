@@ -63,7 +63,14 @@ class AwsEbDeploy(Plugable):
 
         print('Cloning {} from the git repo...'.format(project_name))
         Git.clone(repository, os.path.join(tmp_folder, project_name))
-        System.copy(os.path.join(os.path.join(tmp_folder, project_name), project_name), os.path.join(build_folder, project_name))
+
+        # switch to given release, if present, otherwise the master is assumed
+        if version:
+            result = Git.checkout_tag(tmp_folder, version)
+            print('Git tag "{}" is used for version {}...'.format(result, version))
+
+        # Copy the
+        System.copy(os.path.join(tmp_folder, project_name, project_name), os.path.join(build_folder, project_name))
 
         try: #TODO: Test??
             System.copy(os.path.join(os.path.join(tmp_folder, project_name), "requirements.txt"), build_folder)
@@ -90,6 +97,12 @@ class AwsEbDeploy(Plugable):
 
                 print('Cloning {} from the git repo...'.format(dependency_name))
                 Git.clone(repository, os.path.join(tmp_folder, dependency_name))
+
+                # switch to given release, if present, otherwise the master is assumed
+                if version:
+                    result = Git.checkout_tag(tmp_folder, version)
+                    print('Git tag "{}" is used for version {}...'.format(result, version))
+
                 System.copy(os.path.join(tmp_folder, dependency_name, dependency_name), os.path.join(build_folder, dependency_name))
 
         # set the filename and path of the zipped file to build
@@ -107,8 +120,8 @@ class AwsEbDeploy(Plugable):
 
         # upload the zipped file to aws
         print('Uploading the zip file using profile "{}" into bucket "{}" and key "{}"'.format(profile_name, bucket_name, key))
-        aws_bucket = AwsBucket(profile_name, region_name)
-        aws_bucket.upload(zip_file, bucket_name, key)
+        bucket = AwsBucket(profile_name, region_name)
+        bucket.upload(zip_file, bucket_name, key)
 
         # create new application version on eb with the uploaded source bundle
         client = boto3.client('elasticbeanstalk')
@@ -126,7 +139,7 @@ class AwsEbDeploy(Plugable):
             VersionLabel=version_label,
             Description='{} deployed on {}'.format(basename, application_update_ts),
             SourceBundle={
-                'S3Bucket': 'elsevier-mdp-dev-deploy',
+                'S3Bucket': bucket_name,
                 'S3Key': key_prefix + zip_filename
             },
             AutoCreateApplication=False,
