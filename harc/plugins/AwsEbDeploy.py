@@ -167,5 +167,19 @@ class AwsEbDeploy(Plugable):
         )
         print("Environment update is done!")
 
+        print('Clean up: Checking number of application versions. If more than 450, deletes oldest 50...')
+        application_versions = client.describe_application_versions(ApplicationName=eb_application_name)['ApplicationVersions']
+        N = 450
+        if len(application_versions) > N:
+            application_versions_to_be_deleted = application_versions[N:]
+            for item in application_versions_to_be_deleted:
+                response = client.delete_application_version(
+                    ApplicationName=eb_application_name,
+                    VersionLabel=item['ApplicationVersionArn'].split('/')[-1],
+                    DeleteSourceBundle=True
+                )
+                print('Deleted {} withe response: {}'.format(item['ApplicationVersionArn'].split('/')[-1], response))
+
+
 
 
