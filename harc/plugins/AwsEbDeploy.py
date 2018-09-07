@@ -3,23 +3,13 @@ from harc.plugins.PluginException import PluginException
 from harc.plugins.RequirementsException import RequirementsException
 from harc.system.Git import Git
 from harc.system.System import System
-from harc.system.io.Files import Files
-from harc.system.Toolbox import Toolbox
-from harc.system.Package import Package
-from harc.system.logger.Logger import Logger
-from harc.system.Traceback import Traceback
 from harc.system.Settings import Settings
-from harc.system.Pip import Pip
 from harc.system.Zip import Zip
 from harc.amazon.AwsBucket import AwsBucket
-from harc.amazon.AwsLambda import AwsLambda
 from urllib.parse import urlparse, quote
-from harc.system.PipUrl import PipUrl
 from datetime import datetime
-import urllib
 import uuid
 import os
-import shutil
 import boto3
 
 
@@ -56,7 +46,7 @@ class AwsEbDeploy(Plugable):
         # required files are copied into build_folder that is zipped and uploaded to s3
         build_folder = System.create_tmp(name, "build_folder")
 
-        #Clone the repo into the temp folder
+        # Clone the repo into the temp folder
         # parse the url, when the scheme is http or https a username, password combination is expected.
         url = urlparse(project['repository'])
         repository = project['repository']
@@ -71,6 +61,7 @@ class AwsEbDeploy(Plugable):
             repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
             repository = repository.format(quote(username), quote(password))
 
+        print('Cloning {} from the git repo...'.format(project_name))
         Git.clone(repository, os.path.join(tmp_folder, project_name))
         System.copy(os.path.join(os.path.join(tmp_folder, project_name), project_name), os.path.join(build_folder, project_name))
 
@@ -97,6 +88,7 @@ class AwsEbDeploy(Plugable):
                     repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
                     repository = repository.format(quote(username), quote(password))
 
+                print('Cloning {} from the git repo...'.format(dependency_name))
                 Git.clone(repository, os.path.join(tmp_folder, dependency_name))
                 System.copy(os.path.join(tmp_folder, dependency_name, dependency_name), os.path.join(build_folder, dependency_name))
 
@@ -114,18 +106,18 @@ class AwsEbDeploy(Plugable):
 
 
         # upload the zipped file to aws
-        print('uploading the zip file using profile', profile_name, "into bucket ", bucket_name, "and key", key)
+        print('Uploading the zip file using profile "{}" into bucket "{}" and key "{}"'.format(profile_name, bucket_name, key))
         aws_bucket = AwsBucket(profile_name, region_name)
         aws_bucket.upload(zip_file, bucket_name, key)
 
         # create new application version on eb with the uploaded source bundle
         client = boto3.client('elasticbeanstalk')
 
-        eb_application_name = project_name + '-' + environment
+        eb_application_name = project_name.replace('_', '-') + '-' + environment
         eb_environment_name = eb_application_name + '-env'
         application_update_ts = now
         if version:
-            version_label = version
+            version_label = 'harc_deployment_{}_{}'.format(version, application_update_ts)
         else:
             version_label = 'harc_deployment_{}'.format(application_update_ts)
 
@@ -141,21 +133,26 @@ class AwsEbDeploy(Plugable):
             Process=True
         )
         response = response.get('ApplicationVersion')
-        print(response)
+        print('Creating new application version with version name "{}"'.format(version_label))
+
+        count = 0
         while response.get('Status') == 'PROCESSING':
             response = client.describe_application_versions(
                 ApplicationName=eb_application_name,
                 VersionLabels=[version_label],
             )
             response = response.get('ApplicationVersions')[0]
-            print(response)
+            count += 1
+            if count%10 == 0:
+                print("Still creating the application version...")
 
+        print("Updating the environment...")
         response = client.update_environment(
             ApplicationName=response.get('ApplicationName'),
             VersionLabel=response.get('VersionLabel'),
             EnvironmentName=eb_environment_name
         )
-        print(response)
+        print("Environment update is done!")
 
 
 
