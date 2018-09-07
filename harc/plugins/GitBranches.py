@@ -30,11 +30,11 @@ class GitBranches(Plugable):
 
         # clone the repository to the tmp_folder
         result = Git.clone(repository, tmp_folder)
-        print "clone: " + str(result)
+        print("clone: " + str(result))
 
         # retieve the branches
         branches = Git.branches(tmp_folder)
         for branch in branches:
-            print 'branch: ' + branch
+            print('branch: ' + branch)
 
 
