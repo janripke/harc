@@ -143,7 +143,7 @@ class AwsEbDeploy(Plugable):
             )
             response = response.get('ApplicationVersions')[0]
             count += 1
-            if count%10 == 0:
+            if count % 10 == 0:
                 print("Still creating the application version...")
 
         print("Updating the environment...")
