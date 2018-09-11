@@ -13,6 +13,9 @@ class PluginFactory:
         if command == 'git:deploy':
             from harc.plugins.GitDeploy import GitDeploy
             return GitDeploy
+        if command == 'aws:eb:deploy':
+            from harc.plugins.AwsEbDeploy import AwsEbDeploy
+            return AwsEbDeploy
         if command == 'aws:lambda:deploy':
             from harc.plugins.AwsLambdaDeploy import AwsLambdaDeploy
             return AwsLambdaDeploy

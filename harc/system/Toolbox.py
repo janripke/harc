@@ -10,11 +10,8 @@ class Toolbox:
     @staticmethod
     def archive(profile_name, region_name, bucket_name, sub_folder=''):
 
-        # create the deploy bucket if not present.
-        #TODO: Is it really ok to create buckets here?
+        # retrieve the amazon bucket client.
         bucket = AwsBucket(profile_name, region_name)
-        if not bucket.find(bucket_name):
-            bucket.create(bucket_name)
 
         # archive the current emr deployment, if present.
         now = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')

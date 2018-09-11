@@ -31,12 +31,3 @@ class Pip:
         if p.returncode != 0:
             raise PluginException(error)
         return output
-
-    @staticmethod
-    def install_python3(module, target_folder):
-        statement = "pip install " + module + " -t " + target_folder
-        p = Popen([statement], stdout=PIPE, shell=True)
-        output, error = p.communicate()
-        if p.returncode != 0:
-            raise PluginException(error)
-        return output

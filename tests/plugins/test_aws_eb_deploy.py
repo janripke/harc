@@ -25,7 +25,8 @@ class TestEbDeploy(unittest.TestCase):
                     {
                         "name": "mdp_toolbox",
                         "technology": "python",
-                        "repository": "https://gitlab.et-scm.com/MDP/mdp-toolbox.git"
+                        "repository": "https://gitlab.et-scm.com/MDP/mdp-toolbox.git",
+                        "version": "1.0.8" #TODO: implement
                     }
                 ]
             },
@@ -63,7 +64,7 @@ class TestEbDeploy(unittest.TestCase):
 
         # Instantiate the parser
         parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-        args = parser.parse_args(['aws:eb:deploy', '-u', 'ripkej', '-p', 'Oxyma123', '-e', 'sandbox'])
+        args = parser.parse_args(['aws:eb:deploy', '-u', 'ripkej', '-p', 'Oxyma123', '-e', 'sandbox', '-v', 'jans_test'])
 
         plugin = AwsEbDeploy()
         print(args)
