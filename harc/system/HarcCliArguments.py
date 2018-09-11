@@ -8,6 +8,7 @@ class HarcCliArguments(Arguments):
     PASSWORD = {"argument": "-p", "type": "str", "help": "password"}
     VERSION = {"argument": "-v", "type": "str", "help": "version"}
     ENVIRONMENT = {"argument": "-e", "type": "str", "help": "environment"}
+    TECHNOLOGY = {"argument": "-t", "type": "str", "help": "technology"}
     FILENAME = {"argument": "-f", "type": "str", "help": "filename"}
     SERVICE = {"argument": "-s", "type": "str", "help": "service"}
     PROJECT = {"argument": "-n", "type": "str", "help": "project"}
@@ -21,6 +22,7 @@ class HarcCliArguments(Arguments):
         self.add_argument(HarcCliArguments.PASSWORD)
         self.add_argument(HarcCliArguments.VERSION)
         self.add_argument(HarcCliArguments.ENVIRONMENT)
+        self.add_argument(HarcCliArguments.TECHNOLOGY)
         self.add_argument(HarcCliArguments.SERVICE)
         self.add_argument(HarcCliArguments.PROJECT)
         self.add_argument(HarcCliArguments.JOB_NAME)

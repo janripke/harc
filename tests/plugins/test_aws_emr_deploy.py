@@ -1,6 +1,6 @@
 import unittest
 import os
-from harc.plugins.AwsEmrDeploy import AwsEmrDeploy
+from harc.plugins.aws.AwsEmrDeploy import AwsEmrDeploy
 from harc.system.HarcCliArguments import HarcCliArguments
 import json
 
@@ -69,7 +69,7 @@ class TestAwsLambdaDeploy(unittest.TestCase):
 
         # Instantiate the parser
         parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-        args = parser.parse_args(['aws:emr:deploy', '-u', 'ripkej', '-p', 'Oxyma123'])
+        args = parser.parse_args(['aws:emr:deploy', '-u', 'ripkej', '-p', '*******'])
 
         plugin = AwsEmrDeploy()
         plugin.execute(args, settings, properties)

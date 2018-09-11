@@ -1,19 +1,22 @@
 import unittest
 import os
-from harc.plugins.aws.AwsEbDeploy import AwsEbDeploy
+import harc
 from harc.system.HarcCliArguments import HarcCliArguments
+from harc.plugins.aws.generate.GeneratePlugin import Generate
 
 
-class TestEbDeploy(unittest.TestCase):
+class TestGenerate(unittest.TestCase):
     def setUp(self):
         pass
 
     def tearDown(self):
         pass
 
-    def test_deploy(self):
+    def test_generate(self):
         properties = dict()
-        properties['harc_dir'] = os.path.abspath('.')
+        properties['current.dir'] = os.path.abspath('.')
+        properties['harc.dir'] = os.path.dirname(harc.__file__)
+        properties['plugin.dir'] = os.path.join(properties.get('harc.dir'), 'plugins')
 
         # project name must reflect the project folder name in the git repo
         settings = {
@@ -64,9 +67,9 @@ class TestEbDeploy(unittest.TestCase):
 
         # Instantiate the parser
         parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-        args = parser.parse_args(['aws:eb:deploy', '-u', 'ripkej', '-p', '*******', '-e', 'sandbox', '-v', 'jans_test'])
+        args = parser.parse_args(['aws:generate', '-t', 'lambda'])
 
-        plugin = AwsEbDeploy()
+        plugin = Generate()
         print(args)
         print(settings)
         print(properties)
