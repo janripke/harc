@@ -69,13 +69,11 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     keywords='sample setuptools development',
-    packages=find_packages(exclude=['env', 'etc', 'harc-db', 'run', 'snippets', 'tests', 'venv']),
-    install_requires=['Flask', 'flask_restful', 'requests', 'mysqlclient', 'boto3', 'nose', 'psutil'],
+    packages=find_packages(exclude=['env', 'snippets', 'tests', 'venv']),
+    install_requires=['requests', 'boto3', 'nose', 'psutil'],
     entry_points={
         'console_scripts': [
-            'harc=harc.harc_cli:main',
-            'harc-message=harc.harc_message:main',
-            'harc-rest-server=harc.harc_rest_server:main'
+            'harc=harc.harc_cli:main'
         ],
     },
 )

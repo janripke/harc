@@ -61,8 +61,8 @@ class TestAwsLambdaDeploy(unittest.TestCase):
 
         environment = dict()
         environment['aws_profile_name'] = 'default'
-        environment['aws_bucket_name'] = 'elsevier-mdp-dev-deploy'
         environment['aws_region_name'] = 'eu-west-1'
+        environment['deploy_bucket_name'] = 'elsevier-mdp-dev-deploy'
         settings['dev'] = environment
 
         print(json.dumps(settings, indent=4, sort_keys=True))

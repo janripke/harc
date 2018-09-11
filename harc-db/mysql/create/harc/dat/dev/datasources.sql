@@ -1,1 +1,0 @@
-insert into datasources(name, type, host, db, username, password) values ('harc-ds', 'mysql', 'localhost', 'harc', 'apps', '******');

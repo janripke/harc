@@ -1,1 +1,0 @@
-{ "application.log.level": "trace", "application.log.handlers": "console;database", "application.log.datasource" : "harc-ds"}

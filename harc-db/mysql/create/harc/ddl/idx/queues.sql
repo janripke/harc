@@ -1,1 +1,0 @@
-CREATE INDEX que_name_idx ON queues(name);
