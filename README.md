@@ -9,7 +9,7 @@ Harc currently supports Python 3.6
 
 ## Install from a release
 ```
-$ pip3.6 install git+https://github.com/janripke/harc.git@1.0.8#egg=harc --upgrade
+$ pip3.6 install git+https://github.com/janripke/harc.git@1.0.12#egg=harc --upgrade
 ```
 
 ## Check that the installation worked
