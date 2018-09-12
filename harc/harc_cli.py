@@ -4,7 +4,7 @@ import json
 import os
 from harc.plugins.PluginFactory import PluginFactory
 from harc.system.HarcCliArguments import HarcCliArguments
-import inspect
+import harc
 
 
 def main(args=None):
@@ -18,15 +18,15 @@ def main(args=None):
         raise RuntimeError("harc.json not found.")
 
     # Read the project settings
-    data = open("harc.json")
-    settings = json.load(data)
+    f = open("harc.json")
+    settings = json.load(f)
 
-    properties = {}
-    properties['harc_dir'] = os.path.abspath('.')
+    properties = dict()
+    properties['current.dir'] = os.path.abspath('.')
+    properties['harc.dir'] = os.path.dirname(harc.__file__)
 
     plugin = PluginFactory.create_plugin(args.command)
-    path, filename = os.path.split(inspect.getfile(plugin))
-    properties['plugin_dir'] = path
+    properties['plugin.dir'] = os.path.join(properties.get('harc.dir'), 'plugins')
     plugin.execute(args, settings, properties)
 
 
