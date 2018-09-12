@@ -1,5 +1,6 @@
 from harc.plugins.Plugable import Plugable
 from harc.system.Ora import Ora
+from harc.system.io.Files import Files
 import os
 import os
 import json
@@ -18,10 +19,9 @@ class Generate(Plugable):
             raise RuntimeError(message)
 
     @staticmethod
-    def create_file(template_dir, template_filename, path, filename, attributes):
+    def parse_file(src, dst, attributes):
         # create setup.py
-        template_setup = os.path.join(template_dir, template_filename)
-        f = open(template_setup)
+        f = open(src)
         stream = f.read()
         f.close()
 
@@ -29,15 +29,13 @@ class Generate(Plugable):
         for key in keys:
             stream = stream.replace(key, attributes[key])
 
-        setup = os.path.join(path, filename)
-        f = open(setup, 'w')
+        f = open(dst, 'w')
         f.write(stream)
         f.close()
 
     @staticmethod
     def execute(arguments, settings, properties):
         template_dir = os.path.join(properties.get('plugin.dir'), 'aws', 'generate', 'templates')
-        print(template_dir)
 
         technology = arguments.t
         print(technology)
@@ -59,7 +57,6 @@ class Generate(Plugable):
 
         # create the project folder
         os.mkdir(project_dir)
-        print(os.path.exists(project_dir))
 
         # create the module, reflecting the base of the project.
         # todo: if the project contains a - in the replace it with a _
@@ -77,45 +74,10 @@ class Generate(Plugable):
         attributes['{{region}}'] = region
         attributes['{{bucket}}'] = bucket
 
-        # create setup.py
-        Generate.create_file(template_dir, 'setup.py', project_dir, 'setup.py', attributes)
-
-        # create harc.json
-        Generate.create_file(template_dir, 'harc.json', project_dir, 'harc.json', attributes)
-
-        # create __init__.py
-        Generate.create_file(template_dir, '__init__.py', module_dir, '__init__.py', attributes)
-
-        # create LICENSE
-        Generate.create_file(template_dir, 'LICENSE', project_dir, 'LICENSE', attributes)
-
-        # create MANIFEST.in
-        Generate.create_file(template_dir, 'MANIFEST.in', project_dir, 'MANIFEST.in', attributes)
-
-        # create setup.cfg
-        Generate.create_file(template_dir, 'setup.cfg', project_dir, 'setup.cfg', attributes)
-
-        # create README.md
-        Generate.create_file(template_dir, 'README.md', project_dir, 'README.md', attributes)
-
-        # create acme.py
-        lambdas_dir = os.path.join(module_dir, 'lambdas')
-        os.mkdir(lambdas_dir)
-
-        Generate.create_file(template_dir, 'lambda.py', lambdas_dir, 'acme.py', attributes)
-
-        init = os.path.join(lambdas_dir, '__init__.py')
-        f = open(init, 'w')
-        f.write('')
-        f.close()
-
-        # create Event.py
-        system_dir = os.path.join(module_dir, 'system')
-        os.mkdir(system_dir)
-
-        Generate.create_file(template_dir, 'Event.py', system_dir, 'Event.py', attributes)
-
-        init = os.path.join(system_dir, '__init__.py')
-        f = open(init, 'w')
-        f.write('')
-        f.close()
+        # create and parse the files
+        lambda_dir = os.path.join(template_dir, 'lambda')
+        files = Files.list(lambda_dir)
+        for file in files:
+            target = os.path.join(module_dir, file.replace(lambda_dir, '').lstrip(os.sep))
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            Generate.parse_file(file, target, attributes)
