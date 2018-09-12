@@ -72,7 +72,7 @@ class AwsEbDeploy(Plugable):
         # Copy the
         System.copy(os.path.join(tmp_folder, project_name, project_name), os.path.join(build_folder, project_name))
 
-        try: #TODO: Test??
+        try:
             System.copy(os.path.join(os.path.join(tmp_folder, project_name), "requirements.txt"), build_folder)
         except RequirementsException:
             RequirementsException("no requirements.txt. Run 'pip freeze >requirements.txt' in the project folder and "
@@ -95,6 +95,8 @@ class AwsEbDeploy(Plugable):
                     repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
                     repository = repository.format(quote(username), quote(password))
 
+                print('WARNING: HARC expects requirements.txt in your repo. Use "pip freeze >requirements.txt" command '
+                      'to create it in a virtual environment that can run the project')
                 print('Cloning {} from the git repo...'.format(dependency_name))
                 Git.clone(repository, os.path.join(tmp_folder, dependency_name))
 
@@ -167,7 +169,7 @@ class AwsEbDeploy(Plugable):
         )
         print("Environment update is done!")
 
-        print('Clean up: Checking number of application versions. If more than 450, deletes oldest 50...')
+        print('Clean up: Checking number of application versions in elastic beanstalk application. If more than 450, deletes oldest 50...')
         application_versions = client.describe_application_versions(ApplicationName=eb_application_name)['ApplicationVersions']
         N = 450
         if len(application_versions) > N:
