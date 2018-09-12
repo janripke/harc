@@ -169,7 +169,7 @@ class AwsEbDeploy(Plugable):
         )
         print("Environment update is done!")
 
-        print('Clean up: Checking number of application versions. If more than 450, deletes oldest 50...')
+        print('Clean up: Checking number of application versions in elastic beanstalk application. If more than 450, deletes oldest 50...')
         application_versions = client.describe_application_versions(ApplicationName=eb_application_name)['ApplicationVersions']
         N = 450
         if len(application_versions) > N:
