@@ -9,7 +9,7 @@ class Ora:
     def nvl(*args):
         count = len(args)
         if count != 2:
-            raise "invalid number of arguments"
+            raise RuntimeError("invalid number of arguments")
 
         if args[0]:
             return args[0]
@@ -19,7 +19,7 @@ class Ora:
     def nvl2(*args):
         count = len(args)
         if count != 3:
-            raise "invalid number of arguments"
+            raise RuntimeError("invalid number of arguments")
 
         if args[0]:
             return args[1]
@@ -29,7 +29,7 @@ class Ora:
     def nnvl(*args):
         count = len(args)
         if count != 2:
-            raise "invalid number of arguments"
+            raise RuntimeError("invalid number of arguments")
 
         if not args[0]:
             return args[0]
@@ -39,7 +39,7 @@ class Ora:
     def nnvl2(*args):
         count = len(args)
         if count != 3:
-            raise "invalid number of arguments"
+            raise RuntimeError("invalid number of arguments")
 
         if not args[0]:
             return args[1]
@@ -49,9 +49,9 @@ class Ora:
     def decode(*args):
         count = len(args)
         if count < 3:
-            raise "not enough arguments for method"
+            raise RuntimeError("not enough arguments for method")
         key = args[0]
-        for i in xrange(1, count, 2):
+        for i in range(1, count, 2):
             if key == args[i]:
                 return args[i+1]
         if count % 2 == 0:
@@ -61,8 +61,8 @@ class Ora:
     def nnvl_decode(*args):
         count = len(args)
         if count < 3:
-            raise "not enough arguments for method"
-        for i in xrange(0, count - 1, 2):
+            raise RuntimeError("not enough arguments for method")
+        for i in range(0, count - 1, 2):
             if args[i]:
                 return args[i+1]
         if not count % 2 == 0:
@@ -84,7 +84,7 @@ class Ora:
     def iif(*args):
         count = len(args)
         if count < 3:
-            raise "not enough arguments for method"
+            raise RuntimeError("not enough arguments for method")
         if args[0].has_key(args[1]):
             return args[0][args[1]]
         return args[2]

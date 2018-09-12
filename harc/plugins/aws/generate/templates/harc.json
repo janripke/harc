@@ -1,0 +1,44 @@
+{
+  "projects": [
+    {
+      "name": "{{module}}",
+      "technology": "python",
+      "repository": "{{repository}}",
+      "find_lambdas": [
+        "lambdas"
+      ],
+      "dependencies": {
+        "acme.py": [
+          {
+            "name": "requests"
+          }
+        ]
+      }
+    }
+  ],
+  "sandbox": {
+    "aws_profile_name": "{{profile}}",
+    "aws_bucket_name": "{{bucket}}",
+    "aws_region_name": "{{region}}"
+  },
+  "build": {
+    "aws_profile_name": "",
+    "aws_bucket_name": "",
+    "aws_region_name": ""
+  },
+  "test": {
+    "aws_profile_name": "",
+    "aws_bucket_name": "",
+    "aws_region_name": ""
+  },
+  "uat": {
+    "aws_profile_name": "",
+    "aws_bucket_name": "",
+    "aws_region_name": ""
+  },
+  "prod": {
+    "aws_profile_name": "",
+    "aws_bucket_name": "",
+    "aws_region_name": ""
+  }
+}

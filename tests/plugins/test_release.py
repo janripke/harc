@@ -1,7 +1,6 @@
-import uuid
 import unittest
 import os
-from harc.plugins.GitRelease import GitRelease
+from harc.plugins.git.GitRelease import GitRelease
 from harc.system.HarcCliArguments import HarcCliArguments
 
 
@@ -30,7 +29,7 @@ class TestRelease(unittest.TestCase):
 
         # Instantiate the parser
         parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-        args = parser.parse_args(['git:release', '-u', 'ripkej', '-p', 'Oxyma123'])
+        args = parser.parse_args(['git:release', '-u', 'ripkej', '-p', '*******'])
 
         plugin = GitRelease()
         plugin.execute(args, settings, properties)
