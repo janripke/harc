@@ -24,9 +24,9 @@ def main(args=None):
     properties = dict()
     properties['current.dir'] = os.path.abspath('.')
     properties['harc.dir'] = os.path.dirname(harc.__file__)
+    properties['plugin.dir'] = os.path.join(properties.get('harc.dir'), 'plugins')
 
     plugin = PluginFactory.create_plugin(args.command)
-    properties['plugin.dir'] = os.path.join(properties.get('harc.dir'), 'plugins')
     plugin.execute(args, settings, properties)
 
 
