@@ -16,5 +16,6 @@ class TestPropertyRepository(unittest.TestCase):
     def test_http_git_deploy(self):
         main(['http:git:deploy', '-u', 'jan.ripke', '-p', '*Drapje01*', '-e', 'dev', '-v', '1.0.0'])
 
+
 if __name__ == '__main__':
     unittest.main()
