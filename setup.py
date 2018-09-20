@@ -70,6 +70,7 @@ setup(
     ],
     keywords='sample setuptools development',
     packages=find_packages(exclude=['env', 'snippets', 'tests', 'venv']),
+    include_package_data=True,
     install_requires=['requests', 'boto3', 'nose', 'psutil'],
     entry_points={
         'console_scripts': [

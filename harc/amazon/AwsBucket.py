@@ -107,7 +107,6 @@ class AwsBucket:
 
         return result
 
-
     @staticmethod
     def url(bucket_name, key_name):
         url = 's3://{}/{}'.format(bucket_name, key_name)
