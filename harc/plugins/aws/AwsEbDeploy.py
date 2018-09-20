@@ -181,7 +181,7 @@ class AwsEbDeploy(Plugable):
                     VersionLabel=item['ApplicationVersionArn'].split('/')[-1],
                     DeleteSourceBundle=True
                 )
-                print('Deleted {} withe response: {}'.format(item['ApplicationVersionArn'].split('/')[-1], response))
+                print('Deleted {} with response: {}'.format(item['ApplicationVersionArn'].split('/')[-1], response))
 
 
 
