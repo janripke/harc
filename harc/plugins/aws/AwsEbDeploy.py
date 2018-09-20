@@ -75,7 +75,7 @@ class AwsEbDeploy(Plugable):
         try:
             System.copy(os.path.join(os.path.join(tmp_folder, project_name), "requirements.txt"), build_folder)
         except RequirementsException:
-            RequirementsException("no requirements.txt. Run 'pip freeze >requirements.txt' in the project folder and "
+            RequirementsException("No requirements.txt is found. Run 'pip freeze >requirements.txt' in the project folder and "
                                   "push the generated requirements.txt file into the git repo.")
 
         if project['dependencies']:
@@ -126,7 +126,8 @@ class AwsEbDeploy(Plugable):
         bucket.upload(zip_file, bucket_name, key)
 
         # create new application version on eb with the uploaded source bundle
-        client = boto3.client('elasticbeanstalk')
+        session = boto3.Session(profile_name=profile_name)
+        client = session.client('elasticbeanstalk', region_name=region_name)
 
         eb_application_name = project_name.replace('_', '-') + '-' + environment
         eb_environment_name = eb_application_name + '-env'
@@ -145,7 +146,7 @@ class AwsEbDeploy(Plugable):
                 'S3Key': key_prefix + zip_filename
             },
             AutoCreateApplication=False,
-            Process=True
+            Process=False
         )
         response = response.get('ApplicationVersion')
         print('Creating new application version with version name "{}"'.format(version_label))
