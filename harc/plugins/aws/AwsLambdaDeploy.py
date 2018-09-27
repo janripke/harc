@@ -4,6 +4,8 @@ from harc.system.Git import Git
 from harc.system.System import System
 from harc.system.io.Files import Files
 from harc.system.Toolbox import Toolbox
+from harc.system.VariableFilter import VariableFilter
+from harc.system.ExpressionParser import ExpressionParser
 from harc.system.Package import Package
 from harc.system.logger.Logger import Logger
 from harc.system.Traceback import Traceback
@@ -146,9 +148,21 @@ class AwsLambdaDeploy(Plugable):
                     code['S3Bucket'] = bucket_name
                     code['S3Key'] = 'lambda/' + zip_filename
 
+                    # retrieve name_pattern to use, depending on the environment
+                    # the name_pattern can be empty, indicating that it is not used.
+                    name_pattern = Settings.find_name_pattern(settings, environment)
+
+                    if name_pattern:
+                        # retrieve a map containing the values of the given variables
+                        maps = VariableFilter.filter(locals(), ['basename', 'environment'])
+
+                        # retrieve the basename, based on the given name_pattern
+                        basename = ExpressionParser.parse(name_pattern, maps)
+
                     aws_lambda = AwsLambda(profile_name, region_name)
                     lambda_function = aws_lambda.find_function(basename)
 
                     if lambda_function:
+                        print('updating lambda function ' + basename)
                         aws_lambda.update_function_code(basename, code)
 

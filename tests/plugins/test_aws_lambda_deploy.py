@@ -54,6 +54,7 @@ class TestAwsLambdaDeploy(unittest.TestCase):
         settings['projects'] = projects
 
         environment = dict()
+        environment['name_pattern'] = '{{basename}}-{{environment}}'
         environment['aws_profile_name'] = 'default'
         environment['deploy_bucket_name'] = 'elsevier-mdp-dev-deploy'
         environment['aws_region_name'] = 'eu-west-1'
@@ -63,7 +64,7 @@ class TestAwsLambdaDeploy(unittest.TestCase):
 
         # Instantiate the parser
         parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-        args = parser.parse_args(['aws:lambda:deploy', '-u', 'ripkej', '-p', 'Oxyma123'])
+        args = parser.parse_args(['aws:lambda:deploy', '-u', 'ripkej', '-p', 'Oxyma1234'])
 
         plugin = AwsLambdaDeploy()
         plugin.execute(args, settings, properties)
