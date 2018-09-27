@@ -3,6 +3,7 @@
     {
       "name": "harc",
       "repository": "https://github.com/janripke/harc.git",
+
       "technology": "python"
     }
   ],
