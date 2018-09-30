@@ -29,7 +29,6 @@ class AwsEmrDeploy(Plugable):
 
     @staticmethod
     def execute(arguments, settings, properties):
-        # todo: what bucket and subfolder are we going to use. I  will assume com-elsevier-mdp-deploy
 
         # checkout the given version in a tmp_folder
         # create the bootstrap script containing the python dependencies.
@@ -126,10 +125,10 @@ class AwsEmrDeploy(Plugable):
             f.write(statement.encode('utf-8'))
             f.close()
 
-            # create the deploy bucket if not present.
+            # raise exception if the deploy bucket is not present.
             bucket = AwsBucket(profile_name, region_name)
             if not bucket.find(bucket_name):
-                bucket.create(bucket_name)
+                raise PluginException("deployment bucket {} not found".format(bucket_name))
 
             # upload the bootstrap file to aws
             bucket.upload(os.path.join(tmp_folder, 'bootstrap.sh'), bucket_name, 'emr/bootstrap/bootstrap.sh')
