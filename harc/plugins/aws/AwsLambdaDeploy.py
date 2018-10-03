@@ -152,15 +152,19 @@ class AwsLambdaDeploy(Plugable):
                     # the name_pattern can be empty, indicating that it is not used.
                     name_pattern = Settings.find_name_pattern(settings, environment)
 
+                    print("name_pattern:", name_pattern)
+
                     if name_pattern:
                         # retrieve a map containing the values of the given variables
                         maps = VariableFilter.filter(locals(), ['basename', 'environment'])
 
                         # retrieve the basename, based on the given name_pattern
                         basename = ExpressionParser.parse(name_pattern, maps)
+                        print("basename:", basename)
 
                     aws_lambda = AwsLambda(profile_name, region_name)
                     lambda_function = aws_lambda.find_function(basename)
+                    print("lambda_function:",lambda_function)
 
                     if lambda_function:
                         print('updating lambda function ' + basename)
