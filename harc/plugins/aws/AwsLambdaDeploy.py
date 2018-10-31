@@ -164,7 +164,7 @@ class AwsLambdaDeploy(Plugable):
 
                     aws_lambda = AwsLambda(profile_name, region_name)
                     lambda_function = aws_lambda.find_function(basename)
-                    print("lambda_function:",lambda_function)
+                    print("lambda_function:", lambda_function)
 
                     if lambda_function:
                         print('updating lambda function ' + basename)
