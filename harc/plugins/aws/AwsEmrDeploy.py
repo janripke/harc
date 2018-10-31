@@ -148,7 +148,7 @@ class AwsEmrDeploy(Plugable):
             if drivers_folder:
                 list_files = os.listdir(drivers_folder)
                 for fle in list_files:
-                    bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/drivers/'+fle)
+                    bucket.upload(os.path.join(drivers_folder, fle), bucket_name, 'emr/drivers/'+fle)
 
 
             steps = project['steps']
