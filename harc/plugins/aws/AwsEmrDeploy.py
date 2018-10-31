@@ -136,7 +136,7 @@ class AwsEmrDeploy(Plugable):
                 list_files = os.listdir(bootstrap_folder)
                 for fle in list_files:
                     if fle.split(".")[-1] == "sh":
-                        bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/bootstrap/bootstrap.sh')
+                        bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/bootstrap/'+'fle')
 
 
             # upload the bootstrap file to aws
