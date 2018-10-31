@@ -130,17 +130,26 @@ class AwsEmrDeploy(Plugable):
             if not bucket.find(bucket_name):
                 raise PluginException("deployment bucket {} not found".format(bucket_name))
 
-            # upload the bootstrap files in configuration
+            # upload the bootstrap files in source code
             bootstrap_folder = project["bootstrap_folder"]
             if bootstrap_folder:
                 list_files = os.listdir(bootstrap_folder)
                 for fle in list_files:
                     if fle.split(".")[-1] == "sh":
-                        bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/bootstrap/'+'fle')
+                        bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/bootstrap/'+fle)
 
 
-            # upload the bootstrap file to aws
+            # upload the created bootstrap file to aws
             bucket.upload(os.path.join(tmp_folder, 'bootstrap.sh'), bucket_name, 'emr/bootstrap/bootstrap.sh')
+
+            # upload the driver files to aws
+            drivers_folder = project["drivers_folder"]
+
+            if drivers_folder:
+                list_files = os.listdir(drivers_folder)
+                for fle in list_files:
+                    bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/drivers/'+fle)
+
 
             steps = project['steps']
             for step in steps:
