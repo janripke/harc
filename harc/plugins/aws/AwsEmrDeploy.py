@@ -114,7 +114,7 @@ class AwsEmrDeploy(Plugable):
 
                 if module_type == 'pip':
                     statement = PipUrl.build(module_name, module_version, module_repo, git_username, git_password, False, True)
-                    statement = "sudo python3.6 -m pip install " + statement + '\n'
+                    statement = "sudo python3.6 -m pip install " + statement + '\n' #TODO: Python version 3.6 (this should be configurable)
                 if module_type == 'yum':
                     statement = "which git || sudo yum install " + module_name + ' -y' + '\n'
                 f.write(statement.encode('utf-8'))
