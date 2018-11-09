@@ -36,9 +36,9 @@ class AwsLambdaDeploy(Plugable):
         version = arguments.v
         environment = arguments.e
 
-        # if no environment is given sandbox is assumed.
+        # if no environment is given build is assumed.
         if not environment:
-            environment = 'sandbox'
+            environment = 'build'
 
         projects = settings['projects']
         print(projects)
@@ -82,7 +82,7 @@ class AwsLambdaDeploy(Plugable):
                 result = Git.checkout_tag(tmp_folder, version)
                 print("tag: " + str(result))
 
-            Toolbox.archive(profile_name, region_name, bucket_name, 'eb')
+            Toolbox.archive(profile_name, region_name, bucket_name, 'lambda')
 
             # find the files to deploy, they are expected in the module folder in the packages
             # defined by find_lambdas.

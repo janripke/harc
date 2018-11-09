@@ -27,7 +27,7 @@ class AwsEbDeploy(Plugable):
 
         # if no environment is given sandbox is assumed.
         if not environment:
-            environment = 'sandbox'
+            environment = 'build'
 
         project = settings['project']
         project_name = project['name']
