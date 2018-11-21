@@ -70,6 +70,16 @@ class Settings(object):
         return env["deploy_key_prefix"]
 
     @staticmethod
+    def find_deploy_key_prefix_live(settings, environment):
+        env = Settings.find_environment(settings, environment)
+        return env["deploy_key_prefix_live"]
+
+    @staticmethod
+    def find_deploy_key_prefix_archive(settings, environment):
+        env = Settings.find_environment(settings, environment)
+        return env["deploy_key_prefix_archive"]
+
+    @staticmethod
     def find_aws_region_name(settings, environment):
         env = Settings.find_environment(settings, environment)
         return env['aws_region_name']
