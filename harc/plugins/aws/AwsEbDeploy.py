@@ -68,11 +68,11 @@ class AwsEbDeploy(Plugable):
         # switch to given release, if present, otherwise the master is assumed
         if not branch:
             branch = 'master'
-        result = Git.checkout_branch(branch, tmp_folder)
+        result = Git.checkout_branch(branch, os.path.join(tmp_folder, project_name))
         print("branch: " + str(result))
 
         if version:
-            result = Git.checkout_tag(tmp_folder, version)
+            result = Git.checkout_tag(os.path.join(tmp_folder, project_name), version)
             print('Git tag "{}" is used for version {}...'.format(result, version))
 
         # Copy the

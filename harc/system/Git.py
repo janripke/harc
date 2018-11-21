@@ -33,7 +33,7 @@ class Git(object):
 
     @staticmethod
     def checkout_branch(branch, folder):
-        statement = "cd " + folder + ";" + "git checkout" + branch + ";"
+        statement = "cd " + folder + ";" + "git checkout " + branch + ";"
         p = Popen([statement], stdout=PIPE, shell=True)
         output, error = p.communicate()
         if p.returncode != 0:
