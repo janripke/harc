@@ -41,3 +41,7 @@ branch = 'stable'
 r = Git.checkout_branch(branch, os.path.join(folder, name))
 
 print(r)
+
+r = Git.checkout_tag(os.path.join(folder, name), '0.0.1')
+
+print(r)
