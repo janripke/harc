@@ -42,11 +42,13 @@ class AwsEmrDeploy(Plugable):
         username = arguments.u
         password = arguments.p
         version = arguments.v
+        branch = arguments.b
         environment = arguments.e
 
         # if no environment is given dev is assumed.
         if not environment:
             environment = 'dev'
+
 
         projects = settings['projects']
         for project in projects:
@@ -78,9 +80,15 @@ class AwsEmrDeploy(Plugable):
             print("clone: " + str(result))
 
             # switch to given release, if present, otherwise the master is assumed
+            if not branch:
+                branch = 'master'
+            result = Git.checkout_branch(branch, tmp_folder)
+            print("branch: " + str(result))
+
             if version:
                 result = Git.checkout_tag(tmp_folder, version)
                 print("tag: " + str(result))
+
 
             bucket_name = Settings.find_deploy_bucket_name(settings, environment)
             print(bucket_name)

@@ -23,6 +23,7 @@ class AwsEbDeploy(Plugable):
         username = arguments.u
         password = arguments.p
         version = arguments.v
+        branch = arguments.b
         environment = arguments.e
 
         # if no environment is given sandbox is assumed.
@@ -65,6 +66,11 @@ class AwsEbDeploy(Plugable):
         Git.clone(repository, os.path.join(tmp_folder, project_name))
 
         # switch to given release, if present, otherwise the master is assumed
+        if not branch:
+            branch = 'master'
+        result = Git.checkout_branch(branch, tmp_folder)
+        print("branch: " + str(result))
+
         if version:
             result = Git.checkout_tag(tmp_folder, version)
             print('Git tag "{}" is used for version {}...'.format(result, version))
