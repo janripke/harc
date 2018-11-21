@@ -12,7 +12,7 @@ repository_url = 'https://gitlab.et-scm.com/MDP/mdp-api.git'
 name = uuid.uuid4().hex
 # required files are copied into build_folder that is zipped and uploaded to s3
 
-
+print("adfafasdasdsad")
 
 
 url = urlparse(repository_url)
@@ -40,8 +40,9 @@ Git.clone(repository, os.path.join(folder, name))
 branch = 'stable'
 r = Git.checkout_branch(branch, os.path.join(folder, name))
 
-print(r)
+
+print("tesponse: ", r)
 
 r = Git.checkout_tag(os.path.join(folder, name), '0.0.1')
 
-print(r)
+print("ressd:", r)

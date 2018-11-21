@@ -107,8 +107,13 @@ class AwsEbDeploy(Plugable):
                 Git.clone(repository, os.path.join(tmp_folder, dependency_name))
 
                 # switch to given release, if present, otherwise the master is assumed
+                if not branch:
+                    branch = 'master'
+                result = Git.checkout_branch(branch, os.path.join(tmp_folder, project_name))
+                print("branch: " + str(result))
+
                 if version:
-                    result = Git.checkout_tag(tmp_folder, version)
+                    result = Git.checkout_tag(os.path.join(tmp_folder, project_name), version)
                     print('Git tag "{}" is used for version {}...'.format(result, version))
 
                 System.copy(os.path.join(tmp_folder, dependency_name, dependency_name), os.path.join(build_folder, dependency_name))
