@@ -135,7 +135,7 @@ class AwsEc2Deploy(Plugable):
         Zip.create(zip_file_archive, build_folder)
 
         # upload the zipped file to aws
-        print('Uploading the zip file using profile "{}" into bucket "{}" and key "{}"'.format(profile_name, bucket_name, key))
+        print('Uploading the zip file using profile "{}" into bucket "{}" and key "{}"'.format(profile_name, bucket_name, key_archive))
         bucket = AwsBucket(profile_name, region_name)
         bucket.upload(zip_file_archive, bucket_name, key_archive)
 
