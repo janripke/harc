@@ -13,7 +13,7 @@ import os
 import boto3
 
 
-class AwsEbDeploy(Plugable):
+class AwsEc2Deploy(Plugable):
     def __init__(self):
         Plugable.__init__(self)
         pass

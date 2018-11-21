@@ -23,6 +23,6 @@ class PluginFactory:
             from harc.plugins.aws.AwsEbDeploy import AwsEbDeploy
             return AwsEbDeploy
         if command == 'aws:ec2:deploy':
-            from harc.plugins.aws.AwsEbDeploy import AwsEbDeploy
+            from harc.plugins.aws.AwsEc2Deploy import AwsEc2Deploy
             return AwsEbDeploy
 
