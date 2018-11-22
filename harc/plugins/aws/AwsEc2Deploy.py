@@ -119,15 +119,22 @@ class AwsEc2Deploy(Plugable):
 
                 System.copy(os.path.join(tmp_folder, dependency_name, dependency_name), os.path.join(build_folder, dependency_name))
 
-        # set the filename and path of the zipped file to build
+        # set the filename and path of the zipped file to build for archive
         now = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         basename = project_name + "_source_bundle"
         basename_ts = basename + "_" + now.strip()
-        zip_filename_live = basename + ".zip"
-        zip_filename_archive = basename_ts + ".zip"
 
+        zip_filename_archive = basename_ts + ".zip"
         zip_file_archive = os.path.join(build_folder, zip_filename_archive)
+
+        # set the filename and path of the zipped file to build for live
+        zip_filename_live = basename + ".zip"
+        zip_file_live = os.path.join(build_folder, zip_filename_live)
+
+        # set key names for archive and live
+        key_live = key_prefix_live + zip_filename_live
         key_archive = key_prefix_archive + zip_filename_archive
+
 
         print('Creating {} under {} folder'.format(zip_filename_archive, build_folder))
         # add all the files in the temp folder to the zip file.
@@ -139,10 +146,10 @@ class AwsEc2Deploy(Plugable):
         bucket = AwsBucket(profile_name, region_name)
         bucket.upload(zip_file_archive, bucket_name, key_archive)
 
-        zip_file_live = os.path.join(build_folder, zip_filename_live)
-        key_live = key_prefix_live + zip_filename_live
-        Zip.create(zip_file_archive, build_folder)
-
+        print(
+            'Uploading the zip file using profile "{}" into bucket "{}" and key "{}"'.format(profile_name, bucket_name,
+                                                                                             key_live))
+        Zip.create(zip_file_live, build_folder)
         bucket.upload(zip_file_live, bucket_name, key_live)
 
 
