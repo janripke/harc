@@ -146,10 +146,7 @@ class AwsEc2Deploy(Plugable):
         bucket = AwsBucket(profile_name, region_name)
         bucket.upload(zip_file_archive, bucket_name, key_archive)
 
-        print(
-            'Uploading the zip file using profile "{}" into bucket "{}" and key "{}"'.format(profile_name, bucket_name,
-                                                                                             key_live))
-        Zip.create(zip_file_live, build_folder)
+        os.rename(zip_file_archive, zip_file_live)
         bucket.upload(zip_file_live, bucket_name, key_live)
 
 
