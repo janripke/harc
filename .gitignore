@@ -74,4 +74,6 @@ harc/__pycache__/
 harc/plugins/__pycache__/
 harc/system/__pycache__/
 venv/
+.DS_Store
+
 
