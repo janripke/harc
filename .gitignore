@@ -68,3 +68,10 @@ fabric.properties
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+harc/.DS_Store
+harc/__pycache__/
+harc/plugins/__pycache__/
+harc/system/__pycache__/
+venv/
+
