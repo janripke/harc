@@ -34,7 +34,6 @@ class AwsLambdaDeploy(Plugable):
         username = arguments.u
         password = arguments.p
         version = arguments.v
-        branch = arguments.b
         environment = arguments.e
 
         # if no environment is given build is assumed.
@@ -79,13 +78,13 @@ class AwsLambdaDeploy(Plugable):
             print("clone: " + str(result))
 
             # switch to given release, if present, otherwise the master is assumed
-            if not branch:
-                branch = 'master'
-            result = Git.checkout_branch(branch, tmp_folder)
-            print("branch: " + str(result))
+            # if not branch:
+            #     branch = 'master'
+            # result = Git.checkout(branch, tmp_folder)
+            # print("branch: " + str(result))
 
             if version:
-                result = Git.checkout_tag(tmp_folder, version)
+                result = Git.checkout_tag(version, tmp_folder)
                 print("tag: " + str(result))
 
             Toolbox.archive(profile_name, region_name, bucket_name, 'lambda')

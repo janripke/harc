@@ -31,14 +31,25 @@ class Git(object):
                 results.append(line.split("\t")[1].replace('refs/heads/', ''))
         return results
 
+    # Instead of checkout_branch and checkout_tag, I am using one method checkout() to avoid confusion since
+    # both tag and branch refer to refs in git and checkout works for both. version refers to both tag and branch
     @staticmethod
-    def checkout_branch(branch, folder):
-        statement = "cd " + folder + ";" + "git checkout " + branch + ";"
+    def checkout(version, folder):
+        statement = "cd " + folder + ";" + "git checkout " + version + ";"
         p = Popen([statement], stdout=PIPE, shell=True)
         output, error = p.communicate()
         if p.returncode != 0:
             raise PluginException(error)
         return output
+
+    # @staticmethod
+    # def checkout_branch(branch, folder):
+    #     statement = "cd " + folder + ";" + "git checkout " + branch + ";"
+    #     p = Popen([statement], stdout=PIPE, shell=True)
+    #     output, error = p.communicate()
+    #     if p.returncode != 0:
+    #         raise PluginException(error)
+    #     return output
 
         # execSync("git checkout -b " + settings.branch + " origin/" + settings.branch,
         #         {cwd: tmpDirName + "/quad-rest-services"});
@@ -53,14 +64,14 @@ class Git(object):
         return output
         # git commit --message='Updated version to " + version +  "'", {cwd: tmpDirName + "/quad-helpdesk"})
 
-    @staticmethod
-    def checkout_tag(folder, version):
-        statement = "cd " + folder + ";" + "git checkout " + version
-        p = Popen([statement], stdout=PIPE, shell=True)
-        output, error = p.communicate()
-        if p.returncode != 0:
-            raise PluginException(error)
-        return output
+    # @staticmethod
+    # def checkout_tag(folder, version):
+    #     statement = "cd " + folder + ";" + "git checkout " + version
+    #     p = Popen([statement], stdout=PIPE, shell=True)
+    #     output, error = p.communicate()
+    #     if p.returncode != 0:
+    #         raise PluginException(error)
+    #     return output
 
     @staticmethod
     def tag(version, folder):
