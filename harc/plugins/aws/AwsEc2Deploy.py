@@ -23,7 +23,6 @@ class AwsEc2Deploy(Plugable):
         username = arguments.u
         password = arguments.p
         version = arguments.v
-        branch = arguments.b
         environment = arguments.e
 
         # if no environment is given sandbox is assumed.
@@ -67,13 +66,13 @@ class AwsEc2Deploy(Plugable):
         Git.clone(repository, os.path.join(tmp_folder, project_name))
 
         # switch to given release, if present, otherwise the master is assumed
-        if not branch:
-            branch = 'master'
-        result = Git.checkout_branch(branch, os.path.join(tmp_folder, project_name))
-        print("branch: " + str(result))
+        # if not branch:
+        #     branch = 'master'
+        # result = Git.checkout_branch(branch, os.path.join(tmp_folder, project_name))
+        # print("branch: " + str(result))
 
         if version:
-            result = Git.checkout_tag(os.path.join(tmp_folder, project_name), version)
+            result = Git.checkout(version, os.path.join(tmp_folder, project_name))
             print('Git tag "{}" is used for version {}...'.format(result, version))
 
         # Copy the
@@ -107,15 +106,15 @@ class AwsEc2Deploy(Plugable):
                 print('Cloning {} from the git repo...'.format(dependency_name))
                 Git.clone(repository, os.path.join(tmp_folder, dependency_name))
 
-                # switch to given release, if present, otherwise the master is assumed
-                if not branch:
-                    branch = 'master'
-                result = Git.checkout_branch(branch, os.path.join(tmp_folder, project_name))
-                print("branch: " + str(result))
+                # # switch to given release, if present, otherwise the master is assumed
+                # if not branch:
+                #     branch = 'master'
+                # result = Git.checkout_branch(branch, os.path.join(tmp_folder, project_name))
+                # print("branch: " + str(result))
 
                 if version:
-                    result = Git.checkout_tag(os.path.join(tmp_folder, project_name), version)
-                    print('Git tag "{}" is used for version {}...'.format(result, version))
+                    result = Git.checkout(version, os.path.join(tmp_folder, project_name))
+                    print('Git tag/branch "{}" is used for version {}...'.format(result, version))
 
                 System.copy(os.path.join(tmp_folder, dependency_name, dependency_name), os.path.join(build_folder, dependency_name))
 
