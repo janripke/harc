@@ -77,14 +77,9 @@ class AwsLambdaDeploy(Plugable):
             result = Git.clone(repository, tmp_folder)
             print("clone: " + str(result))
 
-            # switch to given release, if present, otherwise the master is assumed
-            # if not branch:
-            #     branch = 'master'
-            # result = Git.checkout(branch, tmp_folder)
-            # print("branch: " + str(result))
 
             if version:
-                result = Git.checkout_tag(version, tmp_folder)
+                result = Git.checkout(version, tmp_folder)
                 print("tag: " + str(result))
 
             Toolbox.archive(profile_name, region_name, bucket_name, 'lambda')
