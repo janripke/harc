@@ -42,17 +42,6 @@ class Git(object):
             raise PluginException(error)
         return output
 
-    # @staticmethod
-    # def checkout_branch(branch, folder):
-    #     statement = "cd " + folder + ";" + "git checkout " + branch + ";"
-    #     p = Popen([statement], stdout=PIPE, shell=True)
-    #     output, error = p.communicate()
-    #     if p.returncode != 0:
-    #         raise PluginException(error)
-    #     return output
-
-        # execSync("git checkout -b " + settings.branch + " origin/" + settings.branch,
-        #         {cwd: tmpDirName + "/quad-rest-services"});
 
     @staticmethod
     def commit(version, folder):
@@ -64,14 +53,6 @@ class Git(object):
         return output
         # git commit --message='Updated version to " + version +  "'", {cwd: tmpDirName + "/quad-helpdesk"})
 
-    # @staticmethod
-    # def checkout_tag(folder, version):
-    #     statement = "cd " + folder + ";" + "git checkout " + version
-    #     p = Popen([statement], stdout=PIPE, shell=True)
-    #     output, error = p.communicate()
-    #     if p.returncode != 0:
-    #         raise PluginException(error)
-    #     return output
 
     @staticmethod
     def tag(version, folder):
