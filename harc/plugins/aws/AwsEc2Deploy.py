@@ -90,7 +90,6 @@ class AwsEc2Deploy(Plugable):
                 url = urlparse(dependency['repository'])
                 repository = dependency['repository']
                 dependency_name = dependency['name']
-                dependency_version = dependency['version']
 
                 if url.scheme in ['http', 'https']:
                     if not username:
@@ -99,8 +98,8 @@ class AwsEc2Deploy(Plugable):
                     if not password:
                         raise PluginException("no password")
 
-                    repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + " -b '{2}' " + url.path
-                    repository = repository.format(quote(username), quote(password), quote(dependency_version))
+                    repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
+                    repository = repository.format(quote(username), quote(password))
 
                 print('WARNING: HARC expects requirements.txt in your repo. Use "pip freeze >requirements.txt" command '
                       'to create it in a virtual environment that can run the project')
@@ -112,10 +111,10 @@ class AwsEc2Deploy(Plugable):
                 #     branch = 'master'
                 # result = Git.checkout_branch(branch, os.path.join(tmp_folder, project_name))
                 # print("branch: " + str(result))
-                #
-                # if version:
-                #     result = Git.checkout(version, os.path.join(tmp_folder, project_name))
-                #     print('Git tag/branch "{}" is used for version {}...'.format(result, version))
+
+                if version:
+                    result = Git.checkout(version, os.path.join(tmp_folder, dependency_name))
+                    print('Git tag/branch "{}" is used for version {}...'.format(result, version))
 
                 System.copy(os.path.join(tmp_folder, dependency_name, dependency_name), os.path.join(build_folder, dependency_name))
 
