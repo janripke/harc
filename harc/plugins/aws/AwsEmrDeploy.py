@@ -141,7 +141,9 @@ class AwsEmrDeploy(Plugable):
             if bootstrap_folder:
                 list_files = os.listdir(bootstrap_folder)
                 for fle in list_files:
+
                     if fle.split(".")[-1] == "sh":
+                        print("uploading {}".format(fle))
                         bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/bootstrap/'+fle)
 
 

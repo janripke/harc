@@ -33,6 +33,7 @@ class Git(object):
 
     # Instead of checkout_branch and checkout_tag, I am using one method checkout() to avoid confusion since
     # both tag and branch refer to refs in git and checkout works for both. version refers to both tag and branch
+
     @staticmethod
     def checkout(version, folder):
         statement = "cd " + folder + ";" + "git checkout " + version + ";"
