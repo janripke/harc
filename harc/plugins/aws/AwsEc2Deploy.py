@@ -77,12 +77,15 @@ class AwsEc2Deploy(Plugable):
 
         # Copy the
         System.copy(os.path.join(tmp_folder, project_name, project_name), os.path.join(build_folder, project_name))
-
+        print(
+            'WARNING: HARC expects requirements.txt in your repo to be up to date. Use "pip freeze >requirements.txt" command '
+            'to create and update it in a virtual environment that can run the project')
         try:
             System.copy(os.path.join(os.path.join(tmp_folder, project_name), "requirements.txt"), build_folder)
         except RequirementsException:
             RequirementsException("No requirements.txt is found. Run 'pip freeze >requirements.txt' in the project folder and "
                                   "push the generated requirements.txt file into the git repo.")
+
 
         if project['dependencies']:
             for dependency in project['dependencies']:
@@ -101,18 +104,15 @@ class AwsEc2Deploy(Plugable):
                     repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
                     repository = repository.format(quote(username), quote(password))
 
-                print('WARNING: HARC expects requirements.txt in your repo. Use "pip freeze >requirements.txt" command '
-                      'to create it in a virtual environment that can run the project')
                 print('Cloning {} from the git repo...'.format(dependency_name))
                 Git.clone(repository, os.path.join(tmp_folder, dependency_name))
 
-                # # switch to given release, if present, otherwise the master is assumed
-                # if not branch:
-                #     branch = 'master'
-                # result = Git.checkout_branch(branch, os.path.join(tmp_folder, project_name))
-                # print("branch: " + str(result))
+                dependency_version = dependency.get('version')
 
-                if version:
+                if dependency_version:
+                    result = Git.checkout(dependency_version, os.path.join(tmp_folder, dependency_name))
+                    print('Git tag/branch "{}" is used for version {}...'.format(result, version))
+                elif version:
                     result = Git.checkout(version, os.path.join(tmp_folder, dependency_name))
                     print('Git tag/branch "{}" is used for version {}...'.format(result, version))
 

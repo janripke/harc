@@ -48,10 +48,9 @@ class AwsEmrDeploy(Plugable):
         if not environment:
             environment = 'dev'
 
-
         projects = settings['projects']
-        for project in projects:
 
+        for project in projects:
             project_name = project['name']
 
             # parse the url, when the scheme is http or https a username, password combination is expected.
@@ -77,12 +76,6 @@ class AwsEmrDeploy(Plugable):
             # clone the repository to the tmp_folder
             result = Git.clone(repository, tmp_folder)
             print("clone: " + str(result))
-
-            # switch to given release, if present, otherwise the master is assumed
-            # if not branch:
-            #     branch = 'master'
-            # result = Git.checkout_branch(branch, tmp_folder)
-            # print("branch: " + str(result))
 
             if version:
                 result = Git.checkout(version, tmp_folder)
@@ -146,7 +139,6 @@ class AwsEmrDeploy(Plugable):
                         print("uploading {}".format(fle))
                         bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/bootstrap/'+fle)
 
-
             # upload the created bootstrap file to aws
             bucket.upload(os.path.join(tmp_folder, 'bootstrap.sh'), bucket_name, 'emr/bootstrap/bootstrap.sh')
 
@@ -157,7 +149,6 @@ class AwsEmrDeploy(Plugable):
                 list_files = os.listdir(drivers_folder)
                 for fle in list_files:
                     bucket.upload(os.path.join(drivers_folder, fle), bucket_name, 'emr/drivers/'+fle)
-
 
             steps = project['steps']
             for step in steps:
