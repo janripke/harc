@@ -124,8 +124,10 @@ class AwsLambdaDeploy(Plugable):
                         module_repo = dependency.get('repository')
 
                         # build the pip url
-                        # use common version given by harc command
-                        if module_version:
+                        #TODO: check this later
+                        if not module_repo:
+                            module = PipUrl.build(module_name, None, module_repo, username, password)
+                        elif module_version:
                             module = PipUrl.build(module_name, module_version, module_repo, username, password)
                         else:
                             module = PipUrl.build(module_name, version, module_repo, username, password)
