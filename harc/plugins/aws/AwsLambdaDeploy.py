@@ -124,7 +124,7 @@ class AwsLambdaDeploy(Plugable):
                         module_repo = dependency.get('repository')
 
                         # build the pip url
-                        #TODO: check this later
+                        #TODO: when no module_repo part is not given harc cannot checkout master brach of requests
                         if not module_repo:
                             module = PipUrl.build(module_name, None, module_repo, username, password)
                         elif module_version:
