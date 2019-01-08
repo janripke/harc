@@ -123,7 +123,7 @@ class AwsLambdaDeploy(Plugable):
 
                         # build the pip url
                         if dependency_path:
-                            shutil.copy(os.path.join('.', dependency_path, dependency_name), os.path.join(build_folder, dependency_name))
+                            shutil.copy(os.path.join( dependency_path, dependency_name), os.path.join(build_folder, dependency_name))
                         elif dependency_version:
                             dep = PipUrl.build(dependency_name, dependency_version, dependency_repo, username, password)
                             Pip.install(dep, build_folder)
