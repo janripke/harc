@@ -107,7 +107,7 @@ class AwsLambdaDeploy(Plugable):
                         # copy the module files to the module folders in the build folder.
                         shutil.copy(module, os.path.join(build_folder, module_path, module_filename))
 
-                    # copy the lambda module to build to the build folder.
+                    # copy the lambda module to the build folder.
                     shutil.copyfile(file, os.path.join(build_folder, filename))
 
                     # find the dependencies of the module to build
@@ -115,21 +115,18 @@ class AwsLambdaDeploy(Plugable):
                     for dependency in dependencies:
 
                         # retrieve the dependency details
-                        module_name = dependency['name']
-                        module_version = dependency.get('version')
-                        module_repo = dependency.get('repository')
+                        dependency_name = dependency['name']
+                        dependency_version = dependency.get('version')
+                        dependency_path = dependency.get('path')
+                        dependency_repo = dependency.get('repository')
+
 
                         # build the pip url
-                        #TODO: when no module_repo part is not given harc cannot checkout master brach of requests
-                        if not module_repo:
-                            module = PipUrl.build(module_name, None, module_repo, username, password)
-                        elif module_version:
-                            module = PipUrl.build(module_name, module_version, module_repo, username, password)
-                        else:
-                            module = PipUrl.build(module_name, version, module_repo, username, password)
-
-                        # install the configured module dependency into the build folder
-                        Pip.install(module, build_folder)
+                        if dependency_path:
+                            shutil.copy(os.path.join('.', dependency_path, dependency_name), os.path.join(build_folder, dependency_name))
+                        elif dependency_version:
+                            dep = PipUrl.build(module_name, dependency_version, dependency_repo, username, password)
+                            Pip.install(dep, build_folder)
 
                     # set the filename and path of the zipped file to build
                     zip_filename = basename + ".zip"
