@@ -124,9 +124,10 @@ class AwsLambdaDeploy(Plugable):
                         # build the pip url
                         if dependency_path:
                             System.copy(os.path.join(dependency_path, dependency_name), os.path.join(build_folder, dependency_name))
-                        elif dependency_version:
+                        else:
                             dep = PipUrl.build(dependency_name, dependency_version, dependency_repo, username, password)
                             Pip.install(dep, build_folder)
+
 
                     # set the filename and path of the zipped file to build
                     zip_filename = basename + ".zip"
