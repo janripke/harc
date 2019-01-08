@@ -36,29 +36,25 @@ class AwsLambdaDeploy(Plugable):
         version = arguments.v
         environment = arguments.e
 
-        # if no environment is given build is assumed.
-        if not environment:
-            environment = 'build'
-
         projects = settings['projects']
         print(projects)
         for project in projects:
 
             project_name = project['name']
 
-            # parse the url, when the scheme is http or https a username, password combination is expected.
-            url = urlparse(project['repository'])
-            repository = project['repository']
-
-            if url.scheme in ['http', 'https']:
-                if not username:
-                    raise PluginException("no username")
-
-                if not password:
-                    raise PluginException("no password")
-
-                repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
-                repository = repository.format(quote(username), quote(password))
+            # # parse the url, when the scheme is http or https a username, password combination is expected.
+            # url = urlparse(project['repository'])
+            # repository = project['repository']
+            #
+            # if url.scheme in ['http', 'https']:
+            #     if not username:
+            #         raise PluginException("no username")
+            #
+            #     if not password:
+            #         raise PluginException("no password")
+            #
+            #     repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
+            #     repository = repository.format(quote(username), quote(password))
 
             # retrieve aws profile_name to use, depending on the environment
             profile_name = Settings.find_aws_profile_name(settings, environment)
@@ -70,16 +66,16 @@ class AwsLambdaDeploy(Plugable):
             # set identifier, reflecting the checkout folder to build this release.
             name = uuid.uuid4().hex
 
-            # create an empty folder in tmp
-            tmp_folder = System.create_tmp(name)
+            # # create an empty folder in tmp
+            # tmp_folder = System.create_tmp(name)
+            #
+            # # clone the repository to the tmp_folder
+            # result = Git.clone(repository, tmp_folder)
+            # print("clone: " + str(result))
 
-            # clone the repository to the tmp_folder
-            result = Git.clone(repository, tmp_folder)
-            print("clone: " + str(result))
-
-            if version:
-                result = Git.checkout(version, tmp_folder)
-                print("tag: " + str(result))
+            # if version:
+            #     result = Git.checkout(version, tmp_folder)
+            #     print("tag: " + str(result))
 
             Toolbox.archive(profile_name, region_name, bucket_name, 'lambda')
 
@@ -89,7 +85,7 @@ class AwsLambdaDeploy(Plugable):
             for find_lambda in find_lambdas:
 
                 excludes = ['__init__.py']
-                files = Files.list(os.path.join(tmp_folder, project_name, find_lambda), excludes)
+                files = Files.list(os.path.join('.', project_name, find_lambda), excludes)
                 for file in files:
                     path, filename = os.path.split(file)
                     basename, extension = os.path.splitext(filename)
@@ -99,10 +95,10 @@ class AwsLambdaDeploy(Plugable):
                     print("building ", os.path.join(build_folder, basename + ".zip"))
 
                     # copy the project packages to the build folder.
-                    modules = Files.list(os.path.join(tmp_folder, project_name), find_lambdas)
+                    modules = Files.list(os.path.join('.', project_name), find_lambdas)
                     for module in modules:
                         module_path, module_filename = os.path.split(module)
-                        module_path = module_path.replace(tmp_folder + os.sep, '')
+                        module_path = module_path.replace('.' + os.sep, '')
 
                         # create the module folders in the build folder, if not present
                         if not os.path.exists(os.path.join(build_folder, module_path)):
