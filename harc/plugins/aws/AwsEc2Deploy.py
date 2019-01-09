@@ -87,30 +87,37 @@ class AwsEc2Deploy(Plugable):
                 url = urlparse(dependency['repository'])
                 repository = dependency['repository']
                 dependency_name = dependency['name']
+                repository_path = dependency['path']
 
-                if url.scheme in ['http', 'https']:
-                    if not username:
-                        raise PluginException("no username")
+                if repository_path:
+                    System.copy(os.path.join(repository_path, dependency_name), os.path.join(build_folder, dependency_name))
 
-                    if not password:
-                        raise PluginException("no password")
+                elif repository:
+                    if url.scheme in ['http', 'https']:
+                        if not username:
+                            raise PluginException("no username")
 
-                    repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
-                    repository = repository.format(quote(username), quote(password))
+                        if not password:
+                            raise PluginException("no password")
 
-                print('Cloning {} from the git repo...'.format(dependency_name))
-                Git.clone(repository, os.path.join(tmp_folder, dependency_name))
+                        repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
+                        repository = repository.format(quote(username), quote(password))
 
-                dependency_version = dependency.get('version')
+                    print('Cloning {} from the git repo...'.format(dependency_name))
+                    Git.clone(repository, os.path.join(tmp_folder, dependency_name))
 
-                if dependency_version:
-                    result = Git.checkout(dependency_version, os.path.join(tmp_folder, dependency_name))
-                    print('Git tag/branch "{}" is used for version {}...'.format(result, version))
-                elif version:
-                    result = Git.checkout(version, os.path.join(tmp_folder, dependency_name))
-                    print('Git tag/branch "{}" is used for version {}...'.format(result, version))
+                    dependency_version = dependency.get('version')
 
-                System.copy(os.path.join(tmp_folder, dependency_name, dependency_name), os.path.join(build_folder, dependency_name))
+                    if dependency_version:
+                        result = Git.checkout(dependency_version, os.path.join(tmp_folder, dependency_name))
+                        print('Git tag/branch "{}" is used for version {}...'.format(result, version))
+                    elif version:
+                        result = Git.checkout(version, os.path.join(tmp_folder, dependency_name))
+                        print('Git tag/branch "{}" is used for version {}...'.format(result, version))
+
+                    System.copy(os.path.join(tmp_folder, dependency_name, dependency_name), os.path.join(build_folder, dependency_name))
+                else:
+                    print("Either path or repository link should be provided.")
 
         # set the filename and path of the zipped file to build for archive
         now = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
