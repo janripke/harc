@@ -12,11 +12,8 @@ class PipUrl:
 
         module = module_name
 
-        # if module_version:
-        #     if subdirectory:
-        #         module = module_name + "@" + module_version + "\&" + subdirectory
-        #     else:
-        #         module = module_name + "@" + module_version
+        if module_version:
+            module = module_name + "=" + module_version
 
         if module_repo:
             module_url = urlparse(module_repo)
