@@ -35,9 +35,9 @@ class PipUrl:
 
                 if module_version:
                     if subdirectory:
-                        module = "git+" + module_url.scheme + "://{0}:{1}@" + module_url.netloc + module_url.path + '@' + module_version + "\&" + subdirectory + " --upgrade"
+                        module = "git+" + module_url.scheme + "://{0}:{1}@" + module_url.netloc + module_url.path + '@' + module_version + '#egg=' + module_name + "\&subdirectory=" + subdirectory + " --upgrade"
                     else:
-                        module = "git+" + module_url.scheme + "://{0}:{1}@" + module_url.netloc + module_url.path + '@' + module_version + " --upgrade"
+                        module = "git+" + module_url.scheme + "://{0}:{1}@" + module_url.netloc + module_url.path + + '@' + module_version + '#egg=' + module_name + " --upgrade"
                     if no_dependencies:
                         module = module + " --no-dependencies"
                     if no_quote:
