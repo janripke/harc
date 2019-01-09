@@ -112,7 +112,7 @@ class AwsEmrDeploy(Plugable):
                 module_type = bootstrap.get('type')
 
                 if module_type == 'pip':
-                    statement = PipUrl.build(module_name, module_version, module_repo, git_username, git_password, False, True)
+                    statement = PipUrl.build(module_name, version, module_repo, git_username, git_password, False, True)
                     statement = "sudo python3.4 -m pip install " + statement + '\n' #TODO: Python version this should be configurable
                 if module_type == 'yum':
                     statement = "which git || sudo yum install " + module_name + ' -y' + '\n'
@@ -150,6 +150,6 @@ class AwsEmrDeploy(Plugable):
 
             steps_folder = project['steps_folder']
             list_files = os.listdir(steps_folder)
-            print(list_files)
+
             for fle in list_files:
                 bucket.upload(os.path.join(steps_folder, fle), bucket_name, 'emr/steps/' + fle)
