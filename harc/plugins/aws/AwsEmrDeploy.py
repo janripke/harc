@@ -150,7 +150,7 @@ class AwsEmrDeploy(Plugable):
 
             steps_folder = project['steps_folder']
             excludes = ['__init__.py']
-            files = Files.list(os.path.join(steps_folder, step), excludes)
+            files = Files.list(steps_folder, excludes)
             for fle in files:
                 #path, filename = os.path.split(file)
                 bucket.upload(os.path.join(drivers_folder, fle), bucket_name, 'emr/steps/' + fle)
