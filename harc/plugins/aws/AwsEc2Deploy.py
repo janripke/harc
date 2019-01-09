@@ -84,15 +84,15 @@ class AwsEc2Deploy(Plugable):
         if project['dependencies']:
             for dependency in project['dependencies']:
                 # parse the url, when the scheme is http or https a username, password combination is expected.
-                url = urlparse(dependency['repository'])
-                repository = dependency['repository']
                 dependency_name = dependency['name']
-                repository_path = dependency['path']
+                repository = dependency.get('repository')
+                repository_path = dependency.get('path')
 
                 if repository_path:
                     System.copy(os.path.join(repository_path, dependency_name), os.path.join(build_folder, dependency_name))
 
                 elif repository:
+                    url = urlparse(dependency['repository'])
                     if url.scheme in ['http', 'https']:
                         if not username:
                             raise PluginException("no username")
