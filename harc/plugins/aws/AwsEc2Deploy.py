@@ -39,7 +39,7 @@ class AwsEc2Deploy(Plugable):
 
         # set identifier, reflecting the checkout folder to build this release.
         name = uuid.uuid4().hex
-        # tmp_folder = System.create_tmp(name)
+        tmp_folder = System.create_tmp(name)
         # # required files are copied into build_folder that is zipped and uploaded to s3
         build_folder = System.create_tmp(name, "build_folder")
 
