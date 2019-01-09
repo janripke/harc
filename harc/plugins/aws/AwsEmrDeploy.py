@@ -124,7 +124,9 @@ class AwsEmrDeploy(Plugable):
                 f.write(statement.encode('utf-8'))
 
             # add the current project to bootstrap.sh
-            statement = PipUrl.build(project_name, version, project['repository'], git_username, git_password, False, True)
+            subdirectory = project.get('subdirectory')
+            repository = project['repository']
+            statement = PipUrl.build(project_name, version, repository, git_username, git_password, False, True, subdirectory=subdirectory)
             statement = "sudo python3.4 -m pip install " + statement + '\n'
             f.write(statement.encode('utf-8'))
             f.close()
