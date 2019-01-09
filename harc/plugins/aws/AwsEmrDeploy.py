@@ -54,18 +54,18 @@ class AwsEmrDeploy(Plugable):
             project_name = project['name']
 
             # parse the url, when the scheme is http or https a username, password combination is expected.
-            url = urlparse(project['repository'])
-            repository = project['repository']
-
-            if url.scheme in ['http', 'https']:
-                if not username:
-                    raise PluginException("no username")
-
-                if not password:
-                    raise PluginException("no password")
-
-                repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
-                repository = repository.format(quote(username), quote(password))
+            # url = urlparse(project['repository'])
+            # repository = project['repository']
+            #
+            # if url.scheme in ['http', 'https']:
+            #     if not username:
+            #         raise PluginException("no username")
+            #
+            #     if not password:
+            #         raise PluginException("no password")
+            #
+            #     repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
+            #     repository = repository.format(quote(username), quote(password))
 
             # set identifier, reflecting the checkout folder to build this release.
             name = uuid.uuid4().hex
@@ -74,12 +74,12 @@ class AwsEmrDeploy(Plugable):
             tmp_folder = System.create_tmp(name)
 
             # clone the repository to the tmp_folder
-            result = Git.clone(repository, tmp_folder)
-            print("clone: " + str(result))
+            # result = Git.clone(repository, tmp_folder)
+            # print("clone: " + str(result))
 
-            if version:
-                result = Git.checkout(version, tmp_folder)
-                print("version: " + str(result))
+            # if version:
+            #     result = Git.checkout(version, tmp_folder)
+            #     print("version: " + str(result))
 
             bucket_name = Settings.find_deploy_bucket_name(settings, environment)
             print("deploy bucket:", bucket_name)
@@ -101,7 +101,7 @@ class AwsEmrDeploy(Plugable):
                 git_username = '$1'
                 git_password = '$2'
 
-            # find the bootstrap commands (dependencies) to included into bootstrap.sh
+            # find the bootstrap commands (dependencies) to be included into bootstrap.sh
             bootstraps = Settings.list_bootstrap(settings, project_name)
             for bootstrap in bootstraps:
 
@@ -134,7 +134,6 @@ class AwsEmrDeploy(Plugable):
             if bootstrap_folder:
                 list_files = os.listdir(bootstrap_folder)
                 for fle in list_files:
-
                     if fle.split(".")[-1] == "sh":
                         print("uploading {}".format(fle))
                         bucket.upload(os.path.join(bootstrap_folder, fle), bucket_name, 'emr/bootstrap/'+fle)
@@ -150,11 +149,10 @@ class AwsEmrDeploy(Plugable):
                 for fle in list_files:
                     bucket.upload(os.path.join(drivers_folder, fle), bucket_name, 'emr/drivers/'+fle)
 
-            steps = project['steps']
+            steps_folder = project['steps_folder']
             for step in steps:
-
                 excludes = ['__init__.py']
-                files = Files.list(os.path.join(tmp_folder, project_name, step), excludes)
-                for file in files:
-                    path, filename = os.path.split(file)
-                    bucket.upload(file, bucket_name, 'emr/steps/' + filename)
+                files = Files.list(os.path.join(steps_folder, step), excludes)
+                for fle in files:
+                    #path, filename = os.path.split(file)
+                    bucket.upload(os.path.join(drivers_folder, fle), bucket_name, 'emr/steps/' + fle)
