@@ -143,16 +143,14 @@ class AwsEmrDeploy(Plugable):
 
             # upload the driver files to aws
             drivers_folder = project["drivers_folder"]
-
             if drivers_folder:
                 list_files = os.listdir(drivers_folder)
                 for fle in list_files:
                     bucket.upload(os.path.join(drivers_folder, fle), bucket_name, 'emr/drivers/'+fle)
 
             steps_folder = project['steps_folder']
-            for step in steps:
-                excludes = ['__init__.py']
-                files = Files.list(os.path.join(steps_folder, step), excludes)
-                for fle in files:
-                    #path, filename = os.path.split(file)
-                    bucket.upload(os.path.join(drivers_folder, fle), bucket_name, 'emr/steps/' + fle)
+            excludes = ['__init__.py']
+            files = Files.list(os.path.join(steps_folder, step), excludes)
+            for fle in files:
+                #path, filename = os.path.split(file)
+                bucket.upload(os.path.join(drivers_folder, fle), bucket_name, 'emr/steps/' + fle)
