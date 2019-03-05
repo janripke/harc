@@ -10,6 +10,9 @@ class PluginFactory:
         if command == 'git:release':
             from harc.plugins.git.GitRelease import GitRelease
             return GitRelease
+        if command == 'pypi:deploy':
+            from harc.plugins.pypi.PyPiDeploy import PyPiDeploy
+            return PyPiDeploy
         if command == 'aws:eb:deploy':
             from harc.plugins.aws.AwsEbDeploy import AwsEbDeploy
             return AwsEbDeploy

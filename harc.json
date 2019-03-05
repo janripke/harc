@@ -3,42 +3,7 @@
     {
       "name": "harc",
       "repository": "https://github.com/janripke/harc.git",
-
       "technology": "python"
-    }
-  ],
-  "dev": [
-    {
-      "name": "harc",
-      "virtualenv": "/home/user/dev/harc/env",
-      "server": "http://localhost:5000",
-      "services": [
-        {
-          "name": "harc-message.service"
-        },
-        {
-          "name": "harc-rest-server.service"
-        }
-      ]
-    }
-  ],
-  "test": [
-    {
-      "name": "paprika",
-      "virtualenv": "/home/oxymafuse/workspace/test/paprika/env",
-      "server": "http://lnx3193vm.asp4all.nl",
-      "username": "harc@oxyma.nl",
-      "password": "******"
-    }
-  ],
-  "uat": [
-    {
-      "name": "paprika",
-      "virtualenv": "/home/oxymafuse/workspace/uat/paprika/env",
-      "server": "http://lnx3193vm.asp4all.nl",
-      "username": "harc@oxyma.nl",
-      "password": "******"
     }
   ]
 }
-

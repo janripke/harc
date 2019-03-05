@@ -53,13 +53,14 @@ class Generate(Plugable):
         current_dir = properties.get('current.dir')
         project_dir = os.path.join(current_dir, project)
 
+        # fail when the project already exists
         Generate.fail_on_project_exists(project_dir)
 
         # create the project folder
         os.mkdir(project_dir)
 
         # create the module, reflecting the base of the project.
-        # todo: if the project contains a - in the replace it with a _
+        # todo: if the project contains a - in the project name, replace it with a _
         module = project
         module_dir = os.path.join(project_dir, module)
         os.mkdir(module_dir)
