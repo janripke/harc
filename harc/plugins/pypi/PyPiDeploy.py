@@ -2,8 +2,6 @@ from harc.plugins.Plugable import Plugable
 from harc.plugins.PluginException import PluginException
 from harc.system.Git import Git
 from harc.system.System import System
-from harc.system.release.ReleaseNumber import ReleaseNumber
-from harc.system.release.ReleaseFile import ReleaseFile
 
 from urllib.parse import urlparse, quote
 import uuid
@@ -54,53 +52,55 @@ class PyPiDeploy(Plugable):
             # clone the repository to the tmp_folder
             result = Git.clone(repository, tmp_folder)
             print("clone: " + str(result))
+            print("version: ", v)
+            Git.checkout(v, tmp_folder)
 
-            # list the branches
-            branches = Git.branches(tmp_folder)
-            if branch not in branches:
-                raise PluginException("the given branch " + branch + " is not found.")
-
-            # checkout the branche and switch to it.
-            if branch != 'master':
-                result = Git.checkout_branch(branch, tmp_folder)
-                print(result)
-
-            # update the version file(s) to the release version.
-            # if a version is given, this version is used.
-            # if no version is given, the current version is used and snapshot is removed.
-            if v:
-                ReleaseFile.set_version(tmp_folder, project['name'], project['technology'], v)
-                release = v
-
-            if not v:
-                release = ReleaseFile.get_version(tmp_folder, project['name'], project['technology'])
-                release = release.replace('-SNAPSHOT', '')
-                ReleaseFile.set_version(tmp_folder, project['name'], project['technology'], release)
-
-            # commit the changes
-            result = Git.commit(release, tmp_folder)
-            print(result)
-
-            # create the tag
-            result = Git.tag(release, tmp_folder)
-            print(result)
-
-            # push the changes.
-            result = Git.push(repository, branch, tmp_folder)
-            print(result)
-
-            # update the version file(s) to the new snapshot release
-            release = ReleaseNumber.increment_build(release)
-            release = release + '-SNAPSHOT'
-            ReleaseFile.set_version(tmp_folder, project['name'], project['technology'], release)
-
-            # commit the changes
-            result = Git.commit(release, tmp_folder)
-            print(result)
-
-            # push the changes.
-            result = Git.push(repository, branch, tmp_folder)
-            print(result)
+            # # list the branches
+            # branches = Git.branches(tmp_folder)
+            # if branch not in branches:
+            #     raise PluginException("the given branch " + branch + " is not found.")
+            #
+            # # checkout the branche and switch to it.
+            # if branch != 'master':
+            #     result = Git.checkout_branch(branch, tmp_folder)
+            #     print(result)
+            #
+            # # update the version file(s) to the release version.
+            # # if a version is given, this version is used.
+            # # if no version is given, the current version is used and snapshot is removed.
+            # if v:
+            #     ReleaseFile.set_version(tmp_folder, project['name'], project['technology'], v)
+            #     release = v
+            #
+            # if not v:
+            #     release = ReleaseFile.get_version(tmp_folder, project['name'], project['technology'])
+            #     release = release.replace('-SNAPSHOT', '')
+            #     ReleaseFile.set_version(tmp_folder, project['name'], project['technology'], release)
+            #
+            # # commit the changes
+            # result = Git.commit(release, tmp_folder)
+            # print(result)
+            #
+            # # create the tag
+            # result = Git.tag(release, tmp_folder)
+            # print(result)
+            #
+            # # push the changes.
+            # result = Git.push(repository, branch, tmp_folder)
+            # print(result)
+            #
+            # # update the version file(s) to the new snapshot release
+            # release = ReleaseNumber.increment_build(release)
+            # release = release + '-SNAPSHOT'
+            # ReleaseFile.set_version(tmp_folder, project['name'], project['technology'], release)
+            #
+            # # commit the changes
+            # result = Git.commit(release, tmp_folder)
+            # print(result)
+            #
+            # # push the changes.
+            # result = Git.push(repository, branch, tmp_folder)
+            # print(result)
 
 
 # todo; create a branch
