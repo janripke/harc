@@ -5,6 +5,7 @@ import re
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 META_PATH = os.path.join('harc', '__init__.py')
+REQUIREMENTS_FILE = os.path.join(HERE, 'requirements.txt')
 
 
 def read(*parts):
@@ -17,7 +18,7 @@ def read(*parts):
 
 
 META_FILE = read(META_PATH)
-
+REQUIREMENTS = read(REQUIREMENTS_FILE).splitlines()
 
 def find_meta(meta):
     """
@@ -69,9 +70,9 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     keywords='sample setuptools development',
-    packages=find_packages(exclude=['env', 'snippets', 'tests', 'venv']),
+    packages=find_packages(exclude=['snippets', 'tests', 'venv']),
     include_package_data=True,
-    install_requires=['requests', 'boto3'],
+    install_requires=REQUIREMENTS,
     entry_points={
         'console_scripts': [
             'harc=harc.harc_cli:main'
