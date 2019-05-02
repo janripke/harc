@@ -28,4 +28,7 @@ class PluginFactory:
         if command == 'aws:ec2:deploy':
             from harc.plugins.aws.AwsEc2Deploy import AwsEc2Deploy
             return AwsEc2Deploy
+        if command == 'docker:build':
+            from harc.plugins.docker.DockerBuild import DockerBuild
+            return DockerBuild
 

@@ -4,6 +4,7 @@ import json
 import os
 from harc.plugins.PluginFactory import PluginFactory
 from harc.system.HarcCliArguments import HarcCliArguments
+from os.path import expanduser
 import harc
 
 
@@ -24,6 +25,7 @@ def main(args=None):
     properties = dict()
     properties['current.dir'] = os.path.abspath('.')
     properties['harc.dir'] = os.path.dirname(harc.__file__)
+    properties['home.dir'] = expanduser('~')
     properties['plugin.dir'] = os.path.join(properties.get('harc.dir'), 'plugins')
 
     plugin = PluginFactory.create_plugin(args.command)

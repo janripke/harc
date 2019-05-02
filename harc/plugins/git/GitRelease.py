@@ -4,9 +4,8 @@ from harc.system.Git import Git
 from harc.system.System import System
 from harc.system.release.ReleaseNumber import ReleaseNumber
 from harc.system.release.ReleaseFile import ReleaseFile
-
+from harc.system.Profile import Profile
 from urllib.parse import urlparse, quote
-import urllib
 import uuid
 
 
@@ -37,6 +36,13 @@ class GitRelease(Plugable):
             repository = project['repository']
 
             if url.scheme in ['http', 'https']:
+
+                if not username:
+                    credentials = Profile.credentials(project['name'], properties)
+                    if credentials:
+                        username = credentials.get('username')
+                        password = credentials.get('password')
+
                 if not username:
                     raise PluginException("no username")
 
