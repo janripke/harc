@@ -73,6 +73,7 @@ setup(
     packages=find_packages(exclude=['snippets', 'tests', 'venv']),
     include_package_data=True,
     install_requires=REQUIREMENTS,
+    package_data={'harc': ['*.json']},
     entry_points={
         'console_scripts': [
             'harc=harc.harc_cli:main'

@@ -35,7 +35,7 @@ for fle in files:
 name = uuid.uuid4().hex
 
 # create an empty folder in tmp
-tmp_folder = System.create_tmp(name)
+tmp_folder = System.recreate_tmp(name)
 
 # create the bootstrap.sh script.
 f = open(os.path.join(tmp_folder, 'bootstrap.sh'), 'wb')

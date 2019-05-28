@@ -1,4 +1,4 @@
-from harc.plugins.Plugable import Plugable
+from harc.plugins.Plugin import Plugin
 from harc.plugins.PluginException import PluginException
 from harc.system.Git import Git
 from harc.system.System import System
@@ -7,13 +7,12 @@ from urllib.parse import urlparse, quote
 import uuid
 
 
-class PyPiDeploy(Plugable):
+class PyPiDeploy(Plugin):
     def __init__(self):
-        Plugable.__init__(self)
-        pass
+        Plugin.__init__(self)
+        self.set_command('pypi:deploy')
 
-    @staticmethod
-    def execute(arguments, settings, properties):
+    def execute(self, arguments, settings, properties):
 
         username = arguments.u
         password = arguments.p
@@ -47,7 +46,7 @@ class PyPiDeploy(Plugable):
             name = uuid.uuid4().hex
 
             # create an empty folder in tmp
-            tmp_folder = System.create_tmp(name)
+            tmp_folder = System.recreate_tmp(name)
 
             # clone the repository to the tmp_folder
             result = Git.clone(repository, tmp_folder)

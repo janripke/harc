@@ -20,7 +20,7 @@ class Generate(Plugable):
 
     @staticmethod
     def parse_file(src, dst, attributes):
-        # create setup.py
+        # create load.py
         f = open(src)
         stream = f.read()
         f.close()

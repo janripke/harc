@@ -2,11 +2,8 @@
 from harc.plugins.PluginException import PluginException
 
 
-class Plugable(object):
+class Plugable:
 
-    def __init__(self):
-        object.__init__(self)
-
-    @staticmethod
-    def execute(arguments, settings):
+    def execute(self, arguments, settings, properties):
         raise PluginException("method not implemented")
+

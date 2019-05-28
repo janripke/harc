@@ -44,7 +44,7 @@ for fle in files:
 name = uuid.uuid4().hex
 
 # create an empty folder in tmp
-tmp_folder = System.create_tmp(name)
+tmp_folder = System.recreate_tmp(name)
 
 # Copy the required projects into the temporary folder
 for path in source_paths:

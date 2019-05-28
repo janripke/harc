@@ -72,7 +72,7 @@ password = "Oxyma123"
 
 
 build_name = uuid.uuid4().hex
-build_folder = System.create_tmp(build_name)
+build_folder = System.recreate_tmp(build_name)
 print(build_folder)
 
 dependencies = Settings.list_dependencies(settings, project_name, filename)

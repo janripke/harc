@@ -1,0 +1,17 @@
+{
+  "name": "poc_flask_docker",
+  "repository": "https://cbsp-abnamro.visualstudio.com/ClientAnalytics/_git/poc-flask-docker",
+  "technology": "python",
+  "default_environment": "local",
+  "environments": [
+    {
+      "name": "local"
+    },
+    {
+      "name": "sandbox",
+      "resource_group": "sandbox-nl42949-002-rg"
+    }
+  ]
+}
+
+

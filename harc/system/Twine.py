@@ -17,7 +17,7 @@ class Twine(object):
 
     @staticmethod
     def setup():
-        statement = "python3 setup.py bdist_wheel"
+        statement = "python3 load.py bdist_wheel"
         p = Popen([statement], stdout=PIPE, shell=True)
         output, error = p.communicate()
         if p.returncode != 0:

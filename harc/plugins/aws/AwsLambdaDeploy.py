@@ -1,4 +1,4 @@
-from harc.plugins.Plugable import Plugable
+from harc.plugins.Plugin import Plugin
 from harc.plugins.PluginException import PluginException
 from harc.system.Git import Git
 from harc.system.System import System
@@ -6,9 +6,6 @@ from harc.system.io.Files import Files
 from harc.system.Toolbox import Toolbox
 from harc.system.VariableFilter import VariableFilter
 from harc.system.ExpressionParser import ExpressionParser
-from harc.system.Package import Package
-from harc.system.logger.Logger import Logger
-from harc.system.Traceback import Traceback
 from harc.system.Settings import Settings
 from harc.system.Pip import Pip
 from harc.system.Zip import Zip
@@ -16,20 +13,17 @@ from harc.amazon.AwsBucket import AwsBucket
 from harc.amazon.AwsLambda import AwsLambda
 from urllib.parse import urlparse, quote
 from harc.system.PipUrl import PipUrl
-import urllib
 import uuid
 import os
 import shutil
-import boto3
 
 
-class AwsLambdaDeploy(Plugable):
+class AwsLambdaDeploy(Plugin):
     def __init__(self):
-        Plugable.__init__(self)
-        pass
+        Plugin.__init__(self)
+        self.set_command('aws:lambda:deploy')
 
-    @staticmethod
-    def execute(arguments, settings, properties):
+    def execute(self, arguments, settings, properties):
 
         username = arguments.u
         password = arguments.p
@@ -60,7 +54,7 @@ class AwsLambdaDeploy(Plugable):
                 repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
                 repository = repository.format(quote(username), quote(password))
 
-            # retrieve aws profile_name to use, depending on the environment
+            # retrieve aws profile_name to get, depending on the environment
             profile_name = Settings.find_aws_profile_name(settings, environment)
             region_name = Settings.find_aws_region_name(settings, environment)
 
@@ -71,7 +65,7 @@ class AwsLambdaDeploy(Plugable):
             name = uuid.uuid4().hex
 
             # create an empty folder in tmp
-            tmp_folder = System.create_tmp(name)
+            tmp_folder = System.recreate_tmp(name)
 
             # clone the repository to the tmp_folder
             result = Git.clone(repository, tmp_folder)
@@ -96,7 +90,7 @@ class AwsLambdaDeploy(Plugable):
                     basename, extension = os.path.splitext(filename)
 
                     build_name = uuid.uuid4().hex
-                    build_folder = System.create_tmp(build_name)
+                    build_folder = System.recreate_tmp(build_name)
                     print("building ", os.path.join(build_folder, basename + ".zip"))
 
                     # copy the project packages to the build folder.
@@ -148,7 +142,7 @@ class AwsLambdaDeploy(Plugable):
                     code['S3Bucket'] = bucket_name
                     code['S3Key'] = 'lambda/' + zip_filename
 
-                    # retrieve name_pattern to use, depending on the environment
+                    # retrieve name_pattern to get, depending on the environment
                     # the name_pattern can be empty, indicating that it is not used.
                     name_pattern = Settings.find_name_pattern(settings, environment)
 

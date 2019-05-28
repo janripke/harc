@@ -31,4 +31,7 @@ class PluginFactory:
         if command == 'docker:build':
             from harc.plugins.docker.DockerBuild import DockerBuild
             return DockerBuild
+        if command == 'az:container:push':
+            from harc.plugins.az.AzContainerPush import AzContainerPush
+            return AzContainerPush
 

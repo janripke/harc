@@ -1,6 +1,6 @@
 from subprocess import Popen, PIPE
 from harc.plugins.PluginException import PluginException
-
+from harc.shell.Command import Command
 
 class Git(object):
     def __init(self):
@@ -8,12 +8,10 @@ class Git(object):
 
     @staticmethod
     def clone(repository, folder):
-        statement = "git clone " + repository + " " + folder
-        p = Popen([statement], stdout=PIPE, shell=True)
-        output, error = p.communicate()
-        if p.returncode != 0:
-            raise PluginException(error)
-        return output
+
+        statement = "git clone {} {}".format(repository, folder)
+        output = Command.execute(statement)
+        return Command.stringify(output)
 
     @staticmethod
     def branches(folder):
@@ -36,12 +34,9 @@ class Git(object):
 
     @staticmethod
     def checkout(version, folder):
-        statement = "cd " + folder + ";" + "git checkout " + version + ";"
-        p = Popen([statement], stdout=PIPE, shell=True)
-        output, error = p.communicate()
-        if p.returncode != 0:
-            raise PluginException(error)
-        return output
+        statement = "cd {};git checkout {};".format(folder, version)
+        output = Command.execute(statement)
+        return Command.stringify(output)
 
 
     @staticmethod
@@ -73,12 +68,16 @@ class Git(object):
         if p.returncode != 0:
             raise PluginException(error)
 
-        results = []
+        output = output.decode('utf-8')
         lines = output.split("\n")
+        results = []
         for line in lines:
             if line:
                 results.append(line)
         return results
+
+
+
 
     @staticmethod
     def push(repository, branch, folder):

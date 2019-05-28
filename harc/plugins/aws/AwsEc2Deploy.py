@@ -1,4 +1,4 @@
-from harc.plugins.Plugable import Plugable
+from harc.plugins.Plugin import Plugin
 from harc.plugins.PluginException import PluginException
 from harc.plugins.RequirementsException import RequirementsException
 from harc.system.Git import Git
@@ -13,13 +13,12 @@ import os
 import boto3
 
 
-class AwsEc2Deploy(Plugable):
+class AwsEc2Deploy(Plugin):
     def __init__(self):
-        Plugable.__init__(self)
-        pass
+        Plugin.__init__(self)
+        self.set_command('aws:ec2:deploy')
 
-    @staticmethod
-    def execute(arguments, settings, properties):
+    def execute(self, arguments, settings, properties):
         username = arguments.u
         password = arguments.p
         version = arguments.v
@@ -32,7 +31,7 @@ class AwsEc2Deploy(Plugable):
         project = settings['project']
         project_name = project['name']
 
-        # retrieve aws profile_name to use, depending on the environment
+        # retrieve aws profile_name to get, depending on the environment
         profile_name = Settings.find_aws_profile_name(settings, environment)
         region_name = Settings.find_aws_region_name(settings, environment)
 
@@ -43,9 +42,9 @@ class AwsEc2Deploy(Plugable):
 
         # set identifier, reflecting the checkout folder to build this release.
         name = uuid.uuid4().hex
-        tmp_folder = System.create_tmp(name)
+        tmp_folder = System.recreate_tmp(name)
         # required files are copied into build_folder that is zipped and uploaded to s3
-        build_folder = System.create_tmp(name, "build_folder")
+        build_folder = System.recreate_tmp(name, "build_folder")
 
         # Clone the repo into the temp folder
         # parse the url, when the scheme is http or https a username, password combination is expected.

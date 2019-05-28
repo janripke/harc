@@ -5,7 +5,7 @@ from harc.system.System import System
 from harc.system.io.Files import Files
 from harc.system.Toolbox import Toolbox
 from harc.system.Package import Package
-from harc.system.logger.Logger import Logger
+from harc.system.logger_ext.Logger import Logger
 from harc.system.Traceback import Traceback
 from harc.system.Settings import Settings
 from harc.system.Pip import Pip
@@ -63,7 +63,7 @@ class AwsEbDeploy(Plugable):
             # repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
             # repository = repository.format(quote(username), quote(password))
 
-        # retrieve aws profile_name to use, depending on the environment
+        # retrieve aws profile_name to get, depending on the environment
         profile_name = Settings.find_aws_profile_name(settings, environment)
         region_name = Settings.find_aws_region_name(settings, environment)
 
@@ -74,7 +74,7 @@ class AwsEbDeploy(Plugable):
         name = uuid.uuid4().hex
 
         # create an empty folder in tmp
-        build_folder = System.create_tmp(name)
+        build_folder = System.recreate_tmp(name)
 
 
 

@@ -8,7 +8,7 @@ class Package(object):
 
     @staticmethod
     def install(folder, virtualenv):
-        statement = "cd " + folder + ";" + "source " + virtualenv + "/bin/activate ;" + " python setup.py install"
+        statement = "cd " + folder + ";" + "source " + virtualenv + "/bin/activate ;" + " python load.py install"
         p = Popen([statement], stdout=PIPE, stderr=PIPE, shell=True)
         output, error = p.communicate()
         if p.returncode != 0:

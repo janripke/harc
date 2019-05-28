@@ -28,7 +28,7 @@ class TestRelease(unittest.TestCase):
 
         # Instantiate the parser
         parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-        args = parser.parse_args(['pypi:deploy', '-u', 'janripke', '-p', '#Deurdicht#', '-v', '1.0.15'])
+        args = parser.parse_args(['pypi:deploy', '-u', 'janripke', '-p', '*****', '-v', '1.0.15'])
 
         plugin = PyPiDeploy()
         plugin.execute(args, settings, properties)

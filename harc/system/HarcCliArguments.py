@@ -13,6 +13,7 @@ class HarcCliArguments(Arguments):
     SERVICE = {"argument": "-s", "type": "str", "help": "service"}
     PROJECT = {"argument": "-n", "type": "str", "help": "project"}
     JOB_NAME = {"argument": "-j", "type": "str", "help": "job_name"}
+    RESOURCE_GROUP = {"argument": "-r", "type": "str", "help": "resource group"}
 
     def __init__(self, description):
         Arguments.__init__(self, description)
@@ -26,3 +27,4 @@ class HarcCliArguments(Arguments):
         self.add_argument(HarcCliArguments.SERVICE)
         self.add_argument(HarcCliArguments.PROJECT)
         self.add_argument(HarcCliArguments.JOB_NAME)
+        self.add_argument(HarcCliArguments.RESOURCE_GROUP)

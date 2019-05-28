@@ -15,6 +15,16 @@ class System(object):
         if sub_folder_name:
             folder = os.path.join(folder, sub_folder_name)
 
+        if not os.path.isdir(folder):
+            os.mkdir(folder)
+        return folder
+
+    @staticmethod
+    def recreate_tmp(folder_name, sub_folder_name=None):
+        folder = os.path.join(tempfile.gettempdir(), folder_name)
+        if sub_folder_name:
+            folder = os.path.join(folder, sub_folder_name)
+
         if os.path.isdir(folder):
             shutil.rmtree(folder)
         os.mkdir(folder)

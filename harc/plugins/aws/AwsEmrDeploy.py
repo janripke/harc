@@ -1,4 +1,4 @@
-from harc.plugins.Plugable import Plugable
+from harc.plugins.Plugin import Plugin
 from harc.plugins.PluginException import PluginException
 from harc.system.Git import Git
 from harc.system.System import System
@@ -6,7 +6,7 @@ from harc.system.PipUrl import PipUrl
 from harc.system.io.Files import Files
 from harc.system.Toolbox import Toolbox
 from harc.system.Package import Package
-from harc.system.logger.Logger import Logger
+from harc.system.logger_ext.Logger import Logger
 from harc.system.Traceback import Traceback
 from harc.system.Settings import Settings
 from harc.system.Pip import Pip
@@ -22,13 +22,12 @@ import shutil
 import boto3
 
 
-class AwsEmrDeploy(Plugable):
+class AwsEmrDeploy(Plugin):
     def __init__(self):
-        Plugable.__init__(self)
-        pass
+        Plugin.__init__(self)
+        self.set_command('aws:emr:deploy')
 
-    @staticmethod
-    def execute(arguments, settings, properties):
+    def execute(self, arguments, settings, properties):
 
         # checkout the given version in a tmp_folder
         # create the bootstrap script containing the python dependencies.
@@ -72,7 +71,7 @@ class AwsEmrDeploy(Plugable):
             name = uuid.uuid4().hex
 
             # create an empty folder in tmp
-            tmp_folder = System.create_tmp(name)
+            tmp_folder = System.recreate_tmp(name)
 
             # clone the repository to the tmp_folder
             result = Git.clone(repository, tmp_folder)
@@ -104,7 +103,7 @@ class AwsEmrDeploy(Plugable):
             git_password = None
             credentials_method = project['credentials']
             if credentials_method == 'ldap':
-                # use parameters add bootstrap, to avoid they are part of the release.
+                # get parameters add bootstrap, to avoid they are part of the release.
                 git_username = '$1'
                 git_password = '$2'
 

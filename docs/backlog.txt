@@ -1,0 +1,26 @@
+# add harc/harc/log.json to setup, otherwise pip does not install it in your pathon path.
+
+
+
+click (snippet test_harc_cli.py)
+- properties laden en doorgeven, kan via ctx.obj
+- username end password op basis van project in properties
+- python click default value using context
+
+classloading (snippet test importlib.py)
+- module, package als methode om modules en packages te instantieren
+- module, package patroon implementeren, apart
+- goeie naam verzinnen voor de scanner, is nu hoofdcode zonder naam.
+- load_module, en de module bestaat niet levert een warning op dit gaat niet fout
+- kan worden gebruikt in verschillende projecten, apart project (lithium)
+- ondersteunen underscore module naar camelcase class guesser
+
+
+logging
+- job_name support
+- class names in logging, methode is niet voldoende
+- job_name support, now through extra, maybe a wrapper would be nicer.
+- get in spect to solve where and what you are (main, module method, or class method)
+
+
+! %(asctime)s [%(levelname)s] %(name)s: %(message)s

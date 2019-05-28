@@ -1,40 +1,43 @@
-from harc.plugins.Plugable import Plugable
 from harc.system.System import System
 from harc.system.Git import Git
-from harc.plugins.PluginException import PluginException
-import urllib
+import click
+import logging
+from harc.plugins.UsernameOption import UsernameOption
+from harc.plugins.PasswordOption import PasswordOption
+from urllib.parse import urlparse, quote
 
 
-class GitBranches(Plugable):
-    def __init__(self):
-        Plugable.__init__(self)
-        pass
+class GitBranches:
 
-    @staticmethod
-    def execute(arguments, settings, properties):
-        projects = settings['projects']
-        username = arguments.u
-        password = arguments.p
+    @click.command()
+    @click.option('-u', '--username', cls=UsernameOption, required=True)
+    @click.option('-p', '--password', cls=PasswordOption, required=True)
+    @click.pass_context
+    def execute(ctx, username, password):
+        logger = logging.getLogger()
+        logger.debug("username : {}".format(username))
 
-        if not username:
-            raise PluginException("no username")
+        # retrieve the properties, set by the cli
+        properties = ctx.obj
 
-        if not password:
-            raise PluginException("no password")
+        url = urlparse(properties['repository'])
+        repository = properties['repository']
 
-        project = projects[0]
-        repository = project['repository'].format(urllib.quote(username), urllib.quote(password))
+        if url.scheme in ['http', 'https']:
+
+            repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
+            repository = repository.format(quote(username), quote(password))
 
         # create an empty folder in tmp
-        tmp_folder = System.create_tmp(project['name'])
+        tmp_folder = System.recreate_tmp(properties['name'])
 
         # clone the repository to the tmp_folder
+        print("Clone:")
         result = Git.clone(repository, tmp_folder)
-        print("clone: " + str(result))
+        print(str(result))
 
         # retieve the branches
+        print("Branches:")
         branches = Git.branches(tmp_folder)
         for branch in branches:
-            print('branch: ' + branch)
-
-
+            print(branch)
