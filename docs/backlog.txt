@@ -1,5 +1,13 @@
-# add harc/harc/log.json to setup, otherwise pip does not install it in your pathon path.
+- Command does not show exceptions, None is returned.
+- docker:build, work around for depency projects, pre-parse requirements.txt and add access token of the project
+- Combine PipUrl and PipUrlParse into PipUrlParse, PipUrl is now static, make it OO.
 
+
+# testen van plugins met click tester
+# application environment, name en versie als environment variabelen in het docker image, via harc deze variabelen zetten.
+
+# schema's worden nog niet echt goed ondersteund in postgreSQL, een beperkte set aan ddl elementen worden ondersteund. noora gaat hiermee volgens het mysql principe werken.
+# folders reflecteren de database. Een database project kan meerdere databases bevatten.
 
 
 click (snippet test_harc_cli.py)

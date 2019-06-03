@@ -1,12 +1,11 @@
-from harc.plugins.Plugin import Plugin
-from harc.plugins.PluginException import PluginException
 from harc.system.Git import Git
 from harc.system.System import System
-from harc.system.Profile import Profile
 from harc.system.Docker import Docker
 from harc.plugins.UsernameOption import UsernameOption
 from harc.plugins.PasswordOption import PasswordOption
 from harc.plugins.EnvironmentOption import EnvironmentOption
+from harc.system.io.File import File
+from harc.system.Requirements import Requirements
 from urllib.parse import urlparse, quote
 from harc.shell.Key import Key
 import uuid
@@ -63,10 +62,20 @@ class DockerBuild:
             result = Git.checkout(version, tmp_folder)
             print(result)
 
+        # add a username/password combination when dependency projects are used.
+        # when certificates are used, meaning ssh, tokenize is bypassed based on the netloc which will be ssh
+        requirements = os.path.join(tmp_folder, 'requirements.txt')
+        logger.debug(requirements)
+        if os.path.exists(requirements):
+            rf = File(requirements)
+            lines = rf.read_lines()
+            lines = Requirements.tokenize(lines, properties)
+            rf.write_lines(lines)
+
         # retrieve the proxy settings of your system, and get it at https_proxy
         proxy = os.environ.get('https_proxy')
         proxy = Key.format('https_proxy', proxy)
 
         # build the docker image
-        result = Docker.build(project_name, tmp_folder, version, proxy)
+        result = Docker.build(project_name, tmp_folder, version, environment, proxy)
         print(result)

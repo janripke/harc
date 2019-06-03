@@ -4,6 +4,7 @@ from harc.plugins.git.GitBranches import GitBranches
 from harc.plugins.az.AzContainerPush import AzContainerPush
 from harc.plugins.git.GitTags import GitTags
 from harc.plugins.docker.DockerBuild import DockerBuild
+from harc.plugins.az.AzContainerDeploy import AzContainerDeploy
 
 
 class PluginCommand(click.MultiCommand):
@@ -15,7 +16,8 @@ class PluginCommand(click.MultiCommand):
         commands.append('git:tags')
         commands.append('git:release')
         commands.append('docker:build')
-        # commands.append('az:container:push')
+        commands.append('az:container:push')
+        commands.append('az:container:deploy')
         return commands
 
     def get_command(self, ctx, cmd_name):
@@ -28,5 +30,7 @@ class PluginCommand(click.MultiCommand):
             return GitRelease.execute
         if cmd_name == "docker:build":
             return DockerBuild.execute
-        # if cmd_name == "az:container:push":
-        #     return AzContainerPush.execute
+        if cmd_name == "az:container:push":
+            return AzContainerPush.execute
+        if cmd_name == "az:container:deploy":
+            return AzContainerDeploy.execute

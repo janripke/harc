@@ -1,6 +1,6 @@
 {
-  "name": "poc_flask_docker",
-  "repository": "https://cbsp-abnamro.visualstudio.com/ClientAnalytics/_git/poc-flask-docker",
+  "name": "cbca_api",
+  "repository": "https://cbsp-abnamro.visualstudio.com/ClientAnalytics/_git/cbca-api",
   "technology": "python",
   "default_environment": "local",
   "environments": [
@@ -9,7 +9,12 @@
     },
     {
       "name": "sandbox",
-      "resource_group": "sandbox-nl42949-002-rg"
+      "resource_group": "sandbox-nl42949-002-rg",
+      "container": {
+        "cpu" : "1",
+        "memory" : "1",
+        "ports" : "80"
+      }
     }
   ]
 }

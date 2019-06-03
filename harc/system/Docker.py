@@ -1,38 +1,40 @@
 from harc.shell.Parameter import Parameter
 from harc.shell.Key import Key
 from harc.shell.Command import Command
+import logging
 
 
 class Docker:
     @staticmethod
-    def build(name, folder, version, proxy=None):
-        statement = "docker build {} {} {}".format(
+    def build(name, folder, version, environment, proxy=None):
+        logger = logging.getLogger()
+        statement = "docker build {} {} {} {}".format(
             Parameter.format('--build-arg', proxy),
-            Parameter.format('-t', name + ":" + version),
+            Parameter.format('--build-arg', "build_environment={}".format(environment)),
+            Parameter.format('-t', name + "_" + environment + ":" + version),
             Parameter.format('', folder)
         )
+        logger.debug(statement)
+        logger.debug(folder)
         output = Command.execute(statement)
         return Command.stringify(output)
-        # docker build --build-arg https_proxy=http://nl-userproxy-access.net.abnamro.com:8080 -t poc_flask_docker .
 
     @staticmethod
-    def tag(name, login_server, version):
-        statement = "docker tag {} {}/{}:{}".format(
+    def tag(name, login_server):
+        statement = "docker tag {} {}/{}".format(
             name,
             login_server,
-            name,
-            version
+            name
         )
         output = Command.execute(statement)
         return Command.stringify(output)
         # docker tag aci-tutorial-app <acrLoginServer>/aci-tutorial-app:v1
 
     @staticmethod
-    def push(name, login_server, version):
-        statement = "docker push {}/{}:{}".format(
+    def push(name, login_server):
+        statement = "docker push {}/{}".format(
             login_server,
-            name,
-            version
+            name
         )
         output = Command.execute(statement)
         return Command.stringify(output)
