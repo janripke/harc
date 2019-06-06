@@ -10,10 +10,12 @@
     {
       "name": "sandbox",
       "resource_group": "sandbox-nl42949-002-rg",
+      "key_vault": "cbca-s-01-kv",
       "container": {
         "cpu" : "1",
         "memory" : "1",
-        "ports" : "80"
+        "ports" : "80",
+        "assign_identity": true
       }
     }
   ]

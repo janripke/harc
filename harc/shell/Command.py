@@ -6,7 +6,7 @@ import json
 class Command(object):
     @staticmethod
     def execute(statement):
-        p = Popen([statement], stdout=PIPE, shell=True)
+        p = Popen([statement], stdout=PIPE, stderr=PIPE, shell=True)
         output, error = p.communicate()
         if p.returncode != 0:
             raise CommandException(error)
