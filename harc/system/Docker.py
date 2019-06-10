@@ -6,11 +6,13 @@ import logging
 
 class Docker:
     @staticmethod
-    def build(name, folder, version, environment, proxy=None):
+    def build(name, folder, version, environment, platform, key_vault, proxy=None):
         logger = logging.getLogger()
-        statement = "docker build {} {} {} {}".format(
+        statement = "docker build {} {} {} {} {} {}".format(
             Parameter.format('--build-arg', proxy),
             Parameter.format('--build-arg', "build_environment={}".format(environment)),
+            Parameter.format('--build-arg', "build_platform={}".format(platform)),
+            Parameter.format('--build-arg', Key.format("build_key_vault", key_vault)),
             Parameter.format('-t', name + "_" + environment + ":" + version),
             Parameter.format('', folder)
         )

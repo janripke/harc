@@ -11,6 +11,7 @@
       "name": "sandbox",
       "resource_group": "sandbox-nl42949-002-rg",
       "key_vault": "cbca-s-01-kv",
+      "platform": "azure",
       "container": {
         "cpu" : "1",
         "memory" : "1",

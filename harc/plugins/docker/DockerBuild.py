@@ -6,6 +6,7 @@ from harc.plugins.PasswordOption import PasswordOption
 from harc.plugins.EnvironmentOption import EnvironmentOption
 from harc.system.io.File import File
 from harc.system.Requirements import Requirements
+from harc.system.PropertyHelper import PropertyHelper
 from urllib.parse import urlparse, quote
 from harc.shell.Key import Key
 import uuid
@@ -35,6 +36,10 @@ class DockerBuild:
         # parse the url, when the scheme is http or https a username, password combination is expected.
         url = urlparse(properties['repository'])
         repository = properties['repository']
+
+        platform = PropertyHelper.find_platform(properties, environment, 'local')
+        key_vault = PropertyHelper.find_key_vault(properties, environment)
+        print("key_vault :", key_vault, type(key_vault))
 
         if url.scheme in ['http', 'https']:
 
@@ -77,5 +82,5 @@ class DockerBuild:
         proxy = Key.format('https_proxy', proxy)
 
         # build the docker image
-        result = Docker.build(project_name, tmp_folder, version, environment, proxy)
+        result = Docker.build(project_name, tmp_folder, version, environment, platform, key_vault, proxy)
         print(result)
