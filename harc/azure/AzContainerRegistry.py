@@ -55,3 +55,11 @@ class AzContainerRegistry(object):
             Parameter.format('--resource-group', resource_group))
         output = Command.execute(statement)
         return Command.jsonify(output)
+
+    @staticmethod
+    def login(name):
+        statement = "az acr login {}".format(
+            Parameter.format('--name', name)
+            )
+        output = Command.execute(statement)
+        return Command.stringify(output)

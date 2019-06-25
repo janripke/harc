@@ -1,16 +1,8 @@
-from harc.plugins.Plugin import Plugin
 from harc.plugins.PluginException import PluginException
 from harc.azure.AzContainerRegistry import AzContainerRegistry
-from harc.system.Git import Git
-from harc.system.System import System
-from harc.system.Profile import Profile
 from harc.system.Docker import Docker
 from harc.system.PropertyHelper import PropertyHelper
 from harc.plugins.EnvironmentOption import EnvironmentOption
-from urllib.parse import urlparse, quote
-from harc.shell.Key import Key
-import uuid
-import os
 import click
 import logging
 
@@ -36,6 +28,10 @@ class AzContainerPush:
 
         if not registration:
             raise PluginException("registration not found")
+
+        registry_name = registration.get('name')
+        logger.debug("registry name : {}".format(registry_name))
+        AzContainerRegistry.login(registry_name)
 
         # tag your image in azure format
         login_server = registration.get('loginServer')
