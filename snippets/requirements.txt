@@ -9,5 +9,5 @@ flask_restful
 flask
 click
 pg8000
-git+https://'janripke':'%23Deurknop1%23'@github.com/oxymabv/paprika-connector.git@1.0.3#egg=paprika_connector
-git+https://'cbsp-abnamro':'zauno5kfrkvnvlgvitdeuczwgezruqjzqur2twbxql77deesgobq'@cbsp-abnamro.visualstudio.com/ClientAnalytics/_git/bean#egg=bean
+git+https://github.com/oxymabv/paprika-connector.git@1.0.3#egg=paprika_connector
+git+https://cbsp-abnamro.visualstudio.com/ClientAnalytics/_git/bean#egg=bean
