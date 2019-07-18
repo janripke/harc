@@ -4,6 +4,9 @@ from os.path import expanduser, exists
 
 from harc.system.Requirements import Requirements
 from harc.system.io.File import File
+
+from harc.system.Git import Git
+
 # print(exists("requirements.txt"))
 #
 # f = open("requirements.txt", 'rb')
@@ -38,5 +41,8 @@ properties['home.dir'] = expanduser('~')
 
 f = File('requirements.txt')
 lines = f.read_lines()
-lines = Requirements.tokenize(lines, properties)
-f.write_lines(lines)
+credentials = Git.get_credentials()
+print(credentials)
+lines = Requirements.tokenize(lines, credentials)
+#f.write_lines(lines)
+print(lines)

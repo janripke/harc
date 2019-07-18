@@ -1,11 +1,12 @@
+import os
 from subprocess import Popen, PIPE
-from harc.plugins.PluginException import PluginException
+from urllib.parse import urlparse
+
 from harc.shell.Command import Command
+from harc.plugins.PluginException import PluginException
+
 
 class Git(object):
-    def __init(self):
-        object.__init__(self)
-
     @staticmethod
     def clone(repository, folder):
 
@@ -76,9 +77,6 @@ class Git(object):
                 results.append(line)
         return results
 
-
-
-
     @staticmethod
     def push(repository, branch, folder):
         statement = "cd " + folder + ";" + "git push --tags " + repository + " " + branch
@@ -88,3 +86,25 @@ class Git(object):
             raise PluginException(error)
         return output
         # execSync("git push --tags " + gitUrlWithCredentials(repos.helpdesk) + " " + settings.branch, {cwd: tmpDirName + "/quad-helpdesk"});
+
+    @staticmethod
+    def get_credentials():
+        """
+        Look in the current user's homedir for a .git-credentials file and parse the paths for use
+        by for example docker's requirements file generation functionality.
+
+        :return: A dict like so: {'example.com': {'user': 'bar', 'password': 'baz'}}
+        """
+        credentials_file = os.path.expanduser('~/.git-credentials')
+        results = {}
+        if os.path.isfile(credentials_file):
+            with open(credentials_file) as f:
+                for line in f:
+                    if line.strip():
+                        url = urlparse(line)
+                        if url.hostname and url.username and url.password:
+                            results[url.hostname.strip()] = {
+                                'user': url.username, 'password': url.password
+                            }
+
+        return results

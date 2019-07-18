@@ -4,23 +4,24 @@ from harc.system.PipUrlParse import PipUrlParse
 
 class Requirements:
     @staticmethod
-    def tokenize(lines, properties):
+    def tokenize(lines, credentials):
+        """
+        Tokenize a set of pip requirements and insert username/password for
+        urls that match any found in the provided credentials.
 
-        # resolve the egg_name, so the egg_name is required for this work around.
-        results = list()
+        :param lines: List of pip requirements
+        :param credentials: A dict containing hostname / username+password keys and values
+        :return: A list of tokenized pip requirements
+        """
+        results = []
         for line in lines:
-            # ignore comments
-            if not line.startswith("#"):
-
+            # ignore comments and empty lines
+            if not line.startswith("#") and line.strip():
                 pip_url = PipUrlParse(line)
-                egg_name = pip_url.egg_name()
-                if egg_name:
-
-                    credentials = Profile.credentials(egg_name, properties)
-                    username = credentials['username']
-                    password = credentials['password']
-
-                    line = pip_url.tokenize(username, password)
+                hostname = pip_url.get_hostname()
+                if hostname in credentials:
+                    line = pip_url.tokenize(
+                        credentials[hostname]['user'], credentials[hostname]['password'])
 
             results.append(line)
         return results
