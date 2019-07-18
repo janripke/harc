@@ -1,4 +1,4 @@
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, STDOUT
 from harc.exceptions.CommandException import CommandException
 import json
 
@@ -6,11 +6,32 @@ import json
 class Command(object):
     @staticmethod
     def execute(statement):
-        p = Popen([statement], stdout=PIPE, stderr=PIPE, shell=True)
-        output, error = p.communicate()
+        p = Popen([statement], stdout=PIPE, stderr=STDOUT, shell=True)
+
+        output = bytes()
+        while True:
+            o = p.stdout.readline()
+            if o:
+                output += o
+                # FIXME: this should be optional and configurable to write to another io object
+                print(o.rstrip())
+            if p.poll() is not None:
+                break
+        p.wait()
+
         if p.returncode != 0:
-            raise CommandException(error)
+            raise CommandException("Command '{}' failed with return code {}".format(
+                statement, p.returncode), p.returncode, output)
         return output
+
+    # OLD METHOD
+    # @staticmethod
+    # def execute(statement):
+    #     p = Popen([statement], stdout=PIPE, stderr=PIPE, shell=True)
+    #     output, error = p.communicate()
+    #     if p.returncode != 0:
+    #         raise CommandException(error)
+    #     return output
 
     @staticmethod
     def jsonify(output):
