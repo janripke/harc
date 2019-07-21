@@ -1,6 +1,7 @@
 from harc.shell.Parameter import Parameter
 from harc.shell.Key import Key
 from harc.shell.Command import Command
+from harc.exceptions.CommandException import CommandException
 import logging
 
 
@@ -18,8 +19,13 @@ class Docker:
         )
         logger.debug(statement)
         logger.debug(folder)
-        output = Command.execute(statement)
-        return Command.stringify(output)
+        try:
+            output = Command.execute(statement, print_output=True)
+        except CommandException as e:
+            logger.exception('Failed to build container')
+            return None
+        else:
+            return Command.stringify(output)
 
     @staticmethod
     def tag(name, login_server):
