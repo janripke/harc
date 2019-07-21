@@ -5,7 +5,7 @@ import json
 
 class Command(object):
     @staticmethod
-    def execute(statement):
+    def execute(statement, print_output=False):
         p = Popen([statement], stdout=PIPE, stderr=STDOUT, shell=True)
 
         output = bytes()
@@ -13,8 +13,9 @@ class Command(object):
             o = p.stdout.readline()
             if o:
                 output += o
-                # FIXME: this should be optional and configurable to write to another io object
-                print(o.rstrip())
+                # FIXME: should also be possible to redirect output to another IO writer
+                if print_output:
+                    print(Command.stringify(o).rstrip())
             if p.poll() is not None:
                 break
         p.wait()
