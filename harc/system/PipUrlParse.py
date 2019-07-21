@@ -12,13 +12,6 @@ class PipUrlParse:
     def get_parsed_url(self):
         return self.__parsed_url
 
-    def egg_name(self):
-        url = self.get_url()
-        index = url.find("#egg=")
-        if index != -1:
-            egg_name = url[index + 5::]
-            return egg_name
-
     def get_hostname(self):
         parsed_url = self.get_parsed_url()
         if parsed_url.hostname:
