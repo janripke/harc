@@ -55,5 +55,6 @@ class TestDockerBuild(unittest.TestCase):
         # DockerBuild.execute(username, password, version, environment)
         print(result)
 
+
 if __name__ == '__main__':
     unittest.main()
