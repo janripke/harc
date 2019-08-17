@@ -5,6 +5,7 @@ import os
 from os.path import expanduser
 from harc.system.logger.LogConfig import LogConfig
 from harc.plugins.PluginCommand import PluginCommand
+from harc.system.config import Config
 
 import harc
 import click
@@ -40,6 +41,10 @@ def main(ctx, revision):
     properties['module.dir'] = os.path.dirname(harc.__file__)
     properties['home.dir'] = expanduser('~')
     properties['plugin.dir'] = os.path.join(properties.get('module.dir'), 'plugins')
+
+    config = Config.load(properties)
+    if config:
+        properties.update(config)
 
     ctx.obj = properties
 

@@ -86,9 +86,14 @@ class DockerBuild:
             lines = Requirements.tokenize(lines, credentials)
             rf_new.write_lines(lines)
 
-        # retrieve the proxy settings of your system, and get it at https_proxy
+        # retrieve the https proxy settings of your system
         proxy = os.environ.get('https_proxy')
         proxy = Key.format('https_proxy', proxy)
+
+        # retrieve the proxy settings from your config.json in .harc
+        if not proxy:
+            proxy = properties.get('proxy')
+            proxy = Key.format('https_proxy', proxy)
 
         # build the docker image
         result = Docker.build(
