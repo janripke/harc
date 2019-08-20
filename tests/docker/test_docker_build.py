@@ -4,6 +4,7 @@ from os.path import expanduser
 import unittest
 import os
 import harc
+import json
 from click.testing import CliRunner
 
 
@@ -32,15 +33,15 @@ class TestDockerBuild(unittest.TestCase):
         properties['technology'] = "python"
         properties['default_environment'] = 'local'
 
-        environments = list()
-        environment = dict()
-        environment['name'] = "local"
-        environments.append(environment)
-
-        environment = dict()
-        environment['name'] = "sandbox"
-        environment['resource_group'] = "sandbox-nl42949-002-rg"
-        environments.append(environment)
+        # environments = list()
+        # environment = dict()
+        # environment['name'] = "local"
+        # environments.append(environment)
+        #
+        # environment = dict()
+        # environment['name'] = "sandbox"
+        # environment['resource_group'] = "sandbox-nl42949-002-rg"
+        # environments.append(environment)
 
         credentials = Profile.credentials('poc_flask_docker', properties)
         print(credentials)
@@ -50,8 +51,12 @@ class TestDockerBuild(unittest.TestCase):
         version = "1.0.0"
         environment = 'local'
 
+        f = open('harc.json')
+        properties = json.load(f)
+        f.close()
+
         runner = CliRunner()
-        result = runner.invoke(DockerBuild.execute, ['--username', username, '--password', password, '--version', '1.0.0'])
+        result = runner.invoke(DockerBuild.execute, ['--username', username, '--password', password, '--version', '1.0.0'], obj=properties)
         # DockerBuild.execute(username, password, version, environment)
         print(result)
 

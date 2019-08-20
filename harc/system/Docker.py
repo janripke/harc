@@ -18,14 +18,18 @@ class Docker:
             Parameter.format('', folder)
         )
         logger.debug(statement)
-        logger.debug(folder)
-        try:
-            output = Command.execute(statement, print_output=True)
-        except CommandException as e:
-            logger.exception('Failed to build container')
-            return None
-        else:
-            return Command.stringify(output)
+        output = Command.execute(statement, print_output=True)
+        return Command.stringify(output)
+
+
+        # logger.debug(folder)
+        # try:
+        #     output = Command.execute(statement, print_output=True)
+        # except CommandException as e:
+        #     logger.exception('Failed to build container')
+        #     return None
+        # else:
+        #     return Command.stringify(output)
 
     @staticmethod
     def tag(name, login_server):

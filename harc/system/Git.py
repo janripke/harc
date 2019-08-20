@@ -88,7 +88,7 @@ class Git(object):
         # execSync("git push --tags " + gitUrlWithCredentials(repos.helpdesk) + " " + settings.branch, {cwd: tmpDirName + "/quad-helpdesk"});
 
     @staticmethod
-    def get_credentials():
+    def credentials():
         """
         Look in the current user's homedir for a .git-credentials file and parse the paths for use
         by for example docker's requirements file generation functionality.

@@ -1,6 +1,6 @@
 from harc.shell.Parameter import Parameter
 from harc.shell.Command import Command
-
+import logging
 
 class AzContainerRegistry(object):
     def __init__(self):
@@ -11,6 +11,7 @@ class AzContainerRegistry(object):
         statement = "az acr list {} {}".format(
             Parameter.format('--subscription', subscription),
             Parameter.format('--resource-group', resource_group))
+        logging.debug(statement)
         output = Command.execute(statement)
         return Command.jsonify(output)
 
