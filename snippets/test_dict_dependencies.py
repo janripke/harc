@@ -68,7 +68,7 @@ settings['dev'] = environment
 project_name = "mdp_lambda"
 filename = "register.py"
 username = "ripkej"
-password = "Oxyma123"
+password = "*"
 
 
 build_name = uuid.uuid4().hex

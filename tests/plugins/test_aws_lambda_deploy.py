@@ -64,7 +64,7 @@ class TestAwsLambdaDeploy(unittest.TestCase):
 
         # Instantiate the parser
         parser = HarcCliArguments("harc = Hit And Release Code, probably python.")
-        args = parser.parse_args(['aws:lambda:deploy', '-u', 'ripkej', '-p', 'Oxyma1234'])
+        args = parser.parse_args(['aws:lambda:deploy', '-u', 'ripkej', '-p', '*'])
 
         plugin = AwsLambdaDeploy()
         plugin.execute(args, settings, properties)
