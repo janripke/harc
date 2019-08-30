@@ -19,7 +19,7 @@ url = urlparse(repository_url)
 repository = repository_url
 
 username = 'orucs'
-password = 'Oxyma1234'
+password = '*'
 
 project_name ="mdp_api"
 
