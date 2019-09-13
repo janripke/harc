@@ -1,7 +1,6 @@
-from harc.shell.Parameter import Parameter
-from harc.shell.Key import Key
-from harc.shell.Command import Command
-from harc.exceptions.CommandException import CommandException
+from harc.shell.parameter import Parameter
+from harc.shell.key import Key
+from harc.shell.command import Command
 import logging
 
 

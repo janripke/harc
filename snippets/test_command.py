@@ -1,7 +1,7 @@
 # Test command stdout and stderr redirection and polling
 
-from harc.shell.Command import Command
-from harc.exceptions.CommandException import CommandException
+from harc.shell.command import Command
+from harc.exceptions.command_exception import CommandException
 
 print("> RUN SCRIPT test_command.sh\n")
 

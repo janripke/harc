@@ -16,7 +16,7 @@ from harc.plugins.UsernameOption import UsernameOption
 from harc.plugins.PasswordOption import PasswordOption
 from harc.plugins.EnvironmentOption import EnvironmentOption
 
-from harc.shell.Key import Key
+from harc.shell.key import Key
 
 
 class DockerBuild:

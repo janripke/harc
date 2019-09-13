@@ -20,18 +20,25 @@ class AzContainerPush:
         # retrieve the properties, set by the cli
         properties = ctx.obj
 
+        logger.debug("properties: {}".format(properties))
+
         project_name = properties['name']
         resource_group = PropertyHelper.find_resource_group(properties, environment)
 
+        # retrieve the proxy settings, configured in ~/.harc/config.json
+        proxy = properties.get('proxy')
+        if proxy:
+            proxy = dict(https_proxy=proxy, http_proxy=proxy)
+
         # retrieve container registry of this resource_group, reflecting the environment.
-        registration = AzContainerRegistry.find_by_resource_group(resource_group=resource_group)
+        registration = AzContainerRegistry.find_by_resource_group(resource_group=resource_group, env=proxy)
 
         if not registration:
             raise PluginException("registration not found")
 
         registry_name = registration.get('name')
         logger.debug("registry name : {}".format(registry_name))
-        AzContainerRegistry.login(registry_name)
+        AzContainerRegistry.login(registry_name, env=proxy)
 
         # tag your image in azure format
         login_server = registration.get('loginServer')

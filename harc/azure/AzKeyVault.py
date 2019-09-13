@@ -1,5 +1,5 @@
-from harc.shell.Command import Command
-from harc.shell.Parameter import Parameter
+from harc.shell.command import Command
+from harc.shell.parameter import Parameter
 
 
 class AzKeyVault(object):
@@ -26,12 +26,12 @@ class AzKeyVault(object):
         return False
 
     @staticmethod
-    def set_policy(name, resource_group, object_id, secret_permissions=None):
+    def set_policy(name, resource_group, object_id, secret_permissions=None, env=None):
         statement = "az keyvault set-policy {} {} {} {}".format(
             Parameter.format('--name', name),
             Parameter.format('--resource-group', resource_group),
             Parameter.format('--object-id', object_id),
             Parameter.format('--secret-permissions', secret_permissions)
         )
-        output = Command.execute(statement)
+        output = Command.execute(statement, env=env)
         return Command.jsonify(output)

@@ -38,8 +38,13 @@ class AzContainerDeploy:
         container = PropertyHelper.find_container(properties, environment)
         key_vault_name = PropertyHelper.find_key_vault(properties, environment)
 
+        # retrieve the proxy settings, configured in ~/.harc/config.json
+        proxy = properties.get('proxy')
+        if proxy:
+            proxy = dict(https_proxy=proxy, http_proxy=proxy)
+
         # retrieve container registry of this resource_group, reflecting the environment.
-        registration = AzContainerRegistry.find_by_resource_group(resource_group=resource_group)
+        registration = AzContainerRegistry.find_by_resource_group(resource_group=resource_group, env=proxy)
         login_server = registration.get('loginServer')
         registry_name = registration['name']
         logger.debug(registration)
@@ -53,16 +58,17 @@ class AzContainerDeploy:
         memory = container.get('memory')
         ports = container.get('ports')
 
-        # retrieve the credentials, this could be seen as a work around for the service principal, keystore method
-        credentials = AzContainerRegistryCredential.show(registry_name, resource_group)
+        # retrieve the credentials, this could be seen as a work around
+        # for the service principal, keystore method
+        credentials = AzContainerRegistryCredential.show(registry_name, resource_group, env=proxy)
 
         registry_username = credentials['username']
         registry_password = credentials['passwords'][0]['value']
 
-        container_group = AzContainer.create(container_name, resource_group, image_name, True, cpu, memory, registry_username, registry_password, ports, container_name)
+        container_group = AzContainer.create(container_name, resource_group, image_name, True, cpu, memory, registry_username, registry_password, ports, container_name, env=proxy)
         identity = container_group.get('identity')
         identity_pricipal_id = identity.get('principalId')
 
         # give the container access to the secrets in the key_vault
-        AzKeyVault.set_policy(key_vault_name, resource_group, identity_pricipal_id, 'get')
+        AzKeyVault.set_policy(key_vault_name, resource_group, identity_pricipal_id, 'get', env=proxy)
 

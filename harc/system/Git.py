@@ -2,7 +2,7 @@ import os
 from subprocess import Popen, PIPE
 from urllib.parse import urlparse
 
-from harc.shell.Command import Command
+from harc.shell.command import Command
 from harc.plugins.PluginException import PluginException
 
 

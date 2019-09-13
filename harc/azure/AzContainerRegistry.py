@@ -1,18 +1,19 @@
-from harc.shell.Parameter import Parameter
-from harc.shell.Command import Command
+from harc.shell.parameter import Parameter
+from harc.shell.command import Command
 import logging
+
 
 class AzContainerRegistry(object):
     def __init__(self):
         object.__init__(self)
 
     @staticmethod
-    def list(subscription=None, resource_group=None):
+    def list(subscription=None, resource_group=None, env=None):
         statement = "az acr list {} {}".format(
             Parameter.format('--subscription', subscription),
             Parameter.format('--resource-group', resource_group))
         logging.debug(statement)
-        output = Command.execute(statement)
+        output = Command.execute(statement, env=env)
         return Command.jsonify(output)
 
     @staticmethod
@@ -23,8 +24,8 @@ class AzContainerRegistry(object):
                 return registration
 
     @staticmethod
-    def find_by_resource_group(resource_group):
-        registrations = AzContainerRegistry.list(resource_group=resource_group)
+    def find_by_resource_group(resource_group, env=None):
+        registrations = AzContainerRegistry.list(resource_group=resource_group, env=env)
         if registrations:
             # retrieve the first containter registration.
             # it is assumed that in a resource_group there is only one container registry
@@ -58,9 +59,9 @@ class AzContainerRegistry(object):
         return Command.jsonify(output)
 
     @staticmethod
-    def login(name):
+    def login(name, env=None):
         statement = "az acr login {}".format(
             Parameter.format('--name', name)
             )
-        output = Command.execute(statement)
+        output = Command.execute(statement, env=env)
         return Command.stringify(output)

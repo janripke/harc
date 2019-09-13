@@ -1,6 +1,6 @@
-from harc.shell.Parameter import Parameter
-from harc.shell.Flag import Flag
-from harc.shell.Command import Command
+from harc.shell.parameter import Parameter
+from harc.shell.flag import Flag
+from harc.shell.command import Command
 import logging
 
 
@@ -42,7 +42,7 @@ class AzContainer:
         return Command.jsonify(output)
 
     @staticmethod
-    def create(name, resource_group, image=None, assign_identity=False, cpu=None, memory=None, registry_username=None, registry_password=None, ports=None, dns_name_label=None, command_line=None):
+    def create(name, resource_group, image=None, assign_identity=False, cpu=None, memory=None, registry_username=None, registry_password=None, ports=None, dns_name_label=None, command_line=None, env=None):
         logger = logging.getLogger()
         statement = "az container create {} {} {} {} {} {} {} {} {} {} {}".format(
             Parameter.format('--name', name),
@@ -58,5 +58,5 @@ class AzContainer:
             Parameter.format('--command-line', command_line)
         )
         logger.debug(statement)
-        output = Command.execute(statement)
+        output = Command.execute(statement, env=env)
         return Command.jsonify(output)
