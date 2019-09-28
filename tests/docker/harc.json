@@ -9,14 +9,14 @@
     },
     {
       "name": "sandbox",
-      "resource_group": "sandbox-nl02329-001-rg",
+      "resource_group": "sandbox-nl02330-015-rg",
       "key_vault": "cbca-s-kv",
       "platform": "azure",
       "container": {
         "cpu" : "1",
         "memory" : "1",
         "ports" : "80",
-        "assign_identity": true
+        "identity": "cbca-umi"
       }
     }
   ]

@@ -3,6 +3,7 @@ from harc.azure.AzContainerRegistry import AzContainerRegistry
 from harc.azure.AzContainerRegistryCredential import AzContainerRegistryCredential
 from harc.azure.AzContainer import AzContainer
 from harc.azure.AzKeyVault import AzKeyVault
+from harc.azure.az_identity import AzIdentity
 from harc.plugins.EnvironmentOption import EnvironmentOption
 from harc.system.PropertyHelper import PropertyHelper
 import click
@@ -57,6 +58,14 @@ class AzContainerDeploy:
         cpu = container.get('cpu')
         memory = container.get('memory')
         ports = container.get('ports')
+        identity_name = container.get('identity')
+
+        # resolve the id of the given identity
+        assign_identity = None
+        if identity_name:
+            identity = AzIdentity.find(identity_name, env=proxy)
+            if identity:
+                assign_identity = identity.get('id')
 
         # retrieve the credentials, this could be seen as a work around
         # for the service principal, keystore method
@@ -65,8 +74,9 @@ class AzContainerDeploy:
         registry_username = credentials['username']
         registry_password = credentials['passwords'][0]['value']
 
-        container_group = AzContainer.create(container_name, resource_group, image_name, True, cpu, memory, registry_username, registry_password, ports, container_name, env=proxy)
-        identity = container_group.get('identity')
+        container_group = AzContainer.create(container_name, resource_group, image_name, assign_identity, cpu, memory, registry_username, registry_password, ports, container_name, env=proxy)
+
+        # identity = container_group.get('identity')
         identity_pricipal_id = identity.get('principalId')
 
         # give the container access to the secrets in the key_vault
