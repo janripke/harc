@@ -11,7 +11,7 @@
 
 
 click (snippet test_harc_cli.py)
-- properties laden en doorgeven, kan via ctx.obj
+- properties laden en doorgeven, kan via self.obj
 - username end password op basis van project in properties
 - python click default value using context
 
