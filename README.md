@@ -49,7 +49,7 @@ These settings can be overruled in a project specific setup.
 }
 ```
 
-## Check that the installation worked
+## Check the status of your installation
 
 Simply run `harc --help`.
 
