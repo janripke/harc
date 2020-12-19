@@ -26,12 +26,16 @@ def branches(folder):
 
 
 def commit(version, folder):
-    statement = "cd " + folder + ";" + "git commit -a --message='updated to version " + version + "'"
-    p = Popen([statement], stdout=PIPE, shell=True)
-    output, error = p.communicate()
-    if p.returncode != 0:
-        raise PluginException(error)
-    return output
+    # statement = "cd " + folder + ";" + "git commit -a --message='updated to version " + version + "'"
+    statement = "cd {};git commit -a --message='updated to version {}'".format(folder, version)
+    output = command.execute(statement)
+    return command.stringify(output)
+
+    # p = Popen([statement], stdout=PIPE, shell=True)
+    # output, error = p.communicate()
+    # if p.returncode != 0:
+    #     raise PluginException(error)
+    # return output
 
 
 def tag(version, folder):

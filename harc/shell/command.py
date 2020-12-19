@@ -29,7 +29,7 @@ def execute(statement, print_output=False, env=None):
 
         if p.returncode != 0:
             raise exceptions.CommandError("Command '{}' failed with return code {}".format(
-                statement, p.returncode), p.returncode, error)
+                statement, p.returncode), p.returncode, output, error)
         return output
 
 
