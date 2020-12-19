@@ -86,7 +86,7 @@ class GitRelease:
         git.tag(release, tmp_folder)
 
         # push the changes.
-        logging.info("pushing {}:{}".format(repository, branch))
+        logging.info("pushing {}".format(branch))
         git.push(repository, branch, tmp_folder)
 
         # update the version file(s) to the new snapshot release
@@ -99,6 +99,6 @@ class GitRelease:
         logging.info(result)
 
         # push the changes.
-        logging.info("pushing {}:{}".format(repository, branch))
+        logging.info("pushing {}".format(branch))
         git.push(repository, branch, tmp_folder)
 
