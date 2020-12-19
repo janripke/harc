@@ -52,8 +52,7 @@ class GitRelease:
 
         # clone the repository to the tmp_folder
         logging.info("clone into {}".format(tmp_folder))
-        result = git.clone(repository, tmp_folder)
-        logging.info(result)
+        git.clone(repository, tmp_folder)
 
         # list the branches
         branches = git.branches(tmp_folder)
@@ -83,12 +82,12 @@ class GitRelease:
         logging.info(result)
 
         # create the tag
-        result = git.tag(release, tmp_folder)
-        logging.info(result)
+        logging.info("creating tag {}".format(release))
+        git.tag(release, tmp_folder)
 
         # push the changes.
-        result = git.push(repository, branch, tmp_folder)
-        logging.info(result)
+        logging.info("pushing {}:{}".format(repository, branch))
+        git.push(repository, branch, tmp_folder)
 
         # update the version file(s) to the new snapshot release
         release = release_number.increment_build(release)
@@ -100,5 +99,6 @@ class GitRelease:
         logging.info(result)
 
         # push the changes.
-        result = git.push(repository, branch, tmp_folder)
-        logging.info(result)
+        logging.info("pushing {}:{}".format(repository, branch))
+        git.push(repository, branch, tmp_folder)
+
