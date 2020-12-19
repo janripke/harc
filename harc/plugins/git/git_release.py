@@ -76,7 +76,6 @@ class GitRelease:
         if not version:
             release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
             release = release.split('-')[0]
-            print("release : ", release)
             release_file.set_version(tmp_folder, properties['name'], properties['technology'], release)
 
         # commit the changes
