@@ -1,4 +1,4 @@
-__version__ = '1.0.27-SNAPSHOT'
+__version__ = '1.0.29-dev0'
 
 __title__ = 'harc'
 __description__ = 'Harc equals Hit And Release Code using cloud providers'
@@ -9,4 +9,4 @@ __author__ = 'Jan Ripke'
 __email__ = 'janripke@gmail.com'
 
 __license__ = 'GNU General Public License v3 or later (GPLv3+)'
-__copyright__ = 'Copyleft (l) 2017-2019 Jan Ripke'
+__copyright__ = 'Copyleft (l) 2017-2020 Jan Ripke'

@@ -20,6 +20,7 @@ def read(*parts):
 META_FILE = read(META_PATH)
 REQUIREMENTS = read(REQUIREMENTS_FILE).splitlines()
 
+
 def find_meta(meta):
     """
     Extract __*meta*__ from META_FILE.
@@ -70,7 +71,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     keywords='sample setuptools development',
-    packages=find_packages(exclude=['snippets', 'tests', 'venv']),
+    packages=find_packages(exclude=['docs', 'snippets', 'tests', 'venv']),
     include_package_data=True,
     install_requires=REQUIREMENTS,
     package_data={'harc': ['*.json']},

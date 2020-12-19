@@ -19,7 +19,7 @@
             "level": "DEBUG",
             "propagate": true
         },
-        "my.packg": {
+        "my.package": {
             "handlers": ["default"],
             "level": "DEBUG",
             "propagate": false
