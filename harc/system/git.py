@@ -20,7 +20,6 @@ def branches(folder):
     # if p.returncode != 0:
     #     raise PluginException(error)
 
-    output = output.decode('utf-8')
     lines = output.split("\n")
     results = []
     for line in lines:
