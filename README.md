@@ -10,7 +10,7 @@ harc currently supports Python 3
 
 ## install a release (latest)
 ```
-$ pip3 install --upgrade git+https://github.com/janripke/harc.git@1.0.29#egg=harc
+$ pip3 install --upgrade git+https://github.com/janripke/harc.git@1.0.32#egg=harc
 ```
 
 ## install from the main branch
