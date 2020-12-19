@@ -55,10 +55,6 @@ setup(
         # Indicate who your project is intended for
         'Intended Audience :: Other Audience',
         'Topic :: Other/Nonlisted Topic',
-        'Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware',
-        'Topic :: Office/Business :: Scheduling',
-        'Topic :: Scientific/Engineering :: Artificial Intelligence',
-        'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
         
@@ -67,8 +63,7 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3 :: Only',
     ],
     keywords='sample setuptools development',
     packages=find_packages(exclude=['docs', 'snippets', 'tests', 'venv']),
