@@ -1,7 +1,7 @@
 harc
 =
 
-harc is a commandline tool for releasing code into cloud.
+harc is a commandline tool for releasing code (into cloud).
 
 # Installation
 harc currently supports Python 3
