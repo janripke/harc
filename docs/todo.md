@@ -15,6 +15,9 @@ Contains a list a thing we definitely have to improve, but do not cause errors.
 
 * packaging
   * setup.py structure of included methods like find_meta.
+  * create a plugin to upload your code to pypi
+    https://packaging.python.org/guides/distributing-packages-using-setuptools/#create-an-account
+    https://packaging.python.org/tutorials/packaging-projects/
 
 ## Larger undertakings
 

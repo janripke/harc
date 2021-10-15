@@ -18,7 +18,6 @@ def read(*parts):
 
 
 META_FILE = read(META_PATH)
-REQUIREMENTS = read(REQUIREMENTS_FILE).splitlines()
 
 
 def find_meta(meta):
@@ -68,7 +67,11 @@ setup(
     keywords='sample setuptools development',
     packages=find_packages(exclude=['docs', 'snippets', 'tests', 'venv']),
     include_package_data=True,
-    install_requires=REQUIREMENTS,
+    install_requires=[
+        'requests',
+        'boto3',
+        'click',
+    ],
     package_data={'harc': ['*.json']},
     entry_points={
         'console_scripts': [
