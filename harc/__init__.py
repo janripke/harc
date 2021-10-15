@@ -1,4 +1,4 @@
-__version__ = '1.0.38'
+__version__ = '1.0.39-dev0'
 
 __title__ = 'harc'
 __description__ = 'Harc equals Hit And Release Code using cloud providers'
