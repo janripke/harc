@@ -18,3 +18,6 @@ class PluginCommand(click.MultiCommand):
         if cmd_name == "git:release":
             from harc.plugins.git.git_release import GitRelease
             return GitRelease.execute
+        if cmd_name == "pypi:deploy":
+            from harc.plugins.pypi.pypi_deploy import PyPiDeploy
+            return PyPiDeploy.execute
