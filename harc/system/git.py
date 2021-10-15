@@ -11,6 +11,25 @@ def checkout(version, folder):
     return command.stringify(output)
 
 
+def branches(folder):
+    # statement = "cd " + folder + ";" + "git ls-remote --heads origin"
+    statement = f"cd {folder};git ls-remote --heads origin"
+    output = command.execute(statement)
+    output = command.stringify(output)
+
+    # p = Popen([statement], stdout=PIPE, shell=True)
+    # output, error = p.communicate()
+    # if p.returncode != 0:
+    #     raise PluginException(error)
+
+    lines = output.split("\n")
+    results = []
+    for line in lines:
+        if line:
+            results.append(line.split("\t")[1].replace('refs/heads/', ''))
+    return results
+
+
 def commit(version, folder):
     output = command.execute(f"cd {folder};git commit -a --message='updated to version {version}")
     return command.stringify(output)
