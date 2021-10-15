@@ -31,7 +31,7 @@ def branches(folder):
 
 
 def commit(version, folder):
-    output = command.execute(f"cd {folder};git commit -a --message='updated to version {version}")
+    output = command.execute(f"cd {folder};git commit -a --message='updated to version {version}'")
     return command.stringify(output)
 
 
