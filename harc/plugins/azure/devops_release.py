@@ -16,14 +16,13 @@ from harc.system import azure
 
 class DevopsRelease:
     @click.command()
-    @click.option('--organization-name', required=True)
-    @click.option('--project-name', required=True)
+    @click.option('--resource-id', required=True)
     @click.option('--branch', required=False)
     @click.option('--version', required=False)
     @click.pass_context
-    def execute(ctx, organization_name, project_name, branch, version):
-        logging.info(f"organization: {organization_name}, "
-                     f"project: {project_name}, branch :{branch}, version: {version}")
+    def execute(ctx, resource_id, branch, version):
+        logging.info(f"resource: {resource_id}, "
+                     f"branch :{branch}, version: {version}")
 
         # retrieve the properties, set by the cli
         properties = ctx.obj
@@ -33,4 +32,4 @@ class DevopsRelease:
             branch = "main"
             logging.info("using branch : {}".format(branch))
 
-        azure.devops_project_show(organization_name, project_name)
+        azure.account_get_access_token(resource_id)
