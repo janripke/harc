@@ -1,4 +1,5 @@
 import logging
+import base64
 import uuid
 
 from urllib.parse import urlparse, quote
@@ -35,3 +36,24 @@ class DevopsRelease:
 
         result = azure.account_get_access_token(subscription_name)
         logging.info(f"{result}")
+
+        token = result['accessToken'].encode('ascii')
+        encoded = base64.b64encode(token)
+        logging.info(encoded)
+
+        # parse the url, when the scheme is http or https a username, password combination is expected.
+        url = urlparse(properties['repository'])
+        repository = properties['repository']
+        logging.info(f"{repository}")
+
+        git.config(repository, encoded)
+
+        # set identifier, reflecting the checkout folder to build this release.
+        name = uuid.uuid4().hex
+
+        # create an empty folder in tmp
+        tmp_folder = utils.recreate_tmp(name)
+
+        # clone the repository to the tmp_folder
+        logging.info("clone into {}".format(tmp_folder))
+        git.clone(repository, tmp_folder)
