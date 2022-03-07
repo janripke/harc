@@ -33,4 +33,5 @@ class DevopsRelease:
             branch = "main"
             logging.info("using branch : {}".format(branch))
 
-        azure.account_get_access_token(subscription_name)
+        result = azure.account_get_access_token(subscription_name)
+        logging.info(f"{result=}")
