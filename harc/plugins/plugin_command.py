@@ -21,3 +21,6 @@ class PluginCommand(click.MultiCommand):
         if cmd_name == "pypi:deploy":
             from harc.plugins.pypi.pypi_deploy import PyPiDeploy
             return PyPiDeploy.execute
+        if cmd_name == "devops:release":
+            from harc.plugins.azure.devops_release import DevopsRelease
+            return DevopsRelease.execute

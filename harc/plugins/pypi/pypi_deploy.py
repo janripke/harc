@@ -14,6 +14,7 @@ from harc.plugins.git_password_option import GitPasswordOption
 from harc.plugins.pypi_username_option import PyPiUsernameOption
 from harc.plugins.pypi_password_option import PyPiPasswordOption
 
+
 class PyPiDeploy:
     @click.command()
     @click.option('-u', '--username', cls=GitUsernameOption, required=True)
