@@ -45,6 +45,10 @@ def push(repository, branch, folder):
     return command.stringify(output)
 
 
+def config(repository: str, token):
+    output = command.execute(f"git -c http.{repository}.extraheader='AUTHORIZATION: basic {token}' "
+                             f"submodule update --init --recursive")
+    return command.stringify(output)
 
 
 
