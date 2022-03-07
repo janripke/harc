@@ -13,6 +13,7 @@ from harc.plugins.git_username_option import GitUsernameOption
 from harc.plugins.git_password_option import GitPasswordOption
 from harc.system import azure
 
+
 class DevopsRelease:
     @click.command()
     @click.option('--organization-name', required=True)
