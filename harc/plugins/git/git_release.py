@@ -15,8 +15,8 @@ from harc.plugins.git_password_option import GitPasswordOption
 
 class GitRelease:
     @click.command()
-    @click.option('-u', '--username', cls=GitUsernameOption, required=True)
-    @click.option('-p', '--password', cls=GitPasswordOption, required=True)
+    @click.option('-u', '--username', cls=GitUsernameOption, required=False)
+    @click.option('-p', '--password', cls=GitPasswordOption, required=False)
     @click.option('-b', '--branch', required=False)
     @click.option('-v', '--version', required=False)
     @click.pass_context
@@ -40,9 +40,14 @@ class GitRelease:
         url = urlparse(properties['repository'])
         repository = properties['repository']
 
-        if url.scheme in ['http', 'https']:
-            repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
-            repository = repository.format(quote(username), quote(password))
+        if username:
+            if url.scheme in ['http', 'https']:
+                repository = url.scheme + "://'{0}':'{1}'@" + url.netloc + url.path
+                repository = repository.format(quote(username), quote(password))
+        if not username:
+            if url.scheme in ['http', 'https']:
+                repository = f"{url.scheme}://{url.netloc}{url.path}"
+
 
         # set identifier, reflecting the checkout folder to build this release.
         name = uuid.uuid4().hex
