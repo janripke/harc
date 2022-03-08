@@ -8,6 +8,6 @@ def devops_project_show(organization_name : str,project_name: str):
     return command.dictify(output)
 
 
-def account_get_access_token(subscription_name: str):
-    output = command.execute(f"az account get-access-token --subscription {subscription_name}")
+def account_get_access_token(resource_name: str):
+    output = command.execute(f"az account get-access-token --resource {resource_name}")
     return command.dictify(output)

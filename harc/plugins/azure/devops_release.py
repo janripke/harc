@@ -17,13 +17,13 @@ from harc.system import azure
 
 class DevopsRelease:
     @click.command()
-    @click.option('--resource-id', required=False)
+    @click.option('--resource-name', required=False)
     @click.option('--subscription-name', required=False)
     @click.option('--branch', required=False)
     @click.option('--version', required=False)
     @click.pass_context
-    def execute(ctx, resource_id, subscription_name, branch, version):
-        logging.info(f"resource: {resource_id}, subscription: {subscription_name}"
+    def execute(ctx, resource_name, subscription_name, branch, version):
+        logging.info(f"resource: {resource_name}, subscription: {subscription_name}"
                      f"branch :{branch}, version: {version}")
 
         # retrieve the properties, set by the cli
@@ -34,7 +34,7 @@ class DevopsRelease:
             branch = "main"
             logging.info("using branch : {}".format(branch))
 
-        result = azure.account_get_access_token(subscription_name)
+        result = azure.account_get_access_token(resource_name)
         logging.info(f"{result}")
 
         token = result['accessToken'].encode('ascii')
@@ -46,7 +46,8 @@ class DevopsRelease:
         repository = properties['repository']
         logging.info(f"{repository}")
 
-        git.config(repository, encoded)
+        if url.scheme in ['http', 'https']:
+            repository = f"{url.scheme}://devops:{encoded}@{url.netloc}{url.path}"
 
         # set identifier, reflecting the checkout folder to build this release.
         name = uuid.uuid4().hex
