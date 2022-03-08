@@ -68,3 +68,16 @@ class DevopsRelease:
         # push the changes.
         logging.info(f"pushing {branch}")
         git.push_tags(branch, tmp_folder)
+
+        # update the version file(s) to the new snapshot release
+        release = release_number.increment_build(release)
+        release = release + '-dev0'
+        release_file.set_version(tmp_folder, properties['name'], properties['technology'], release)
+
+        # commit the changes
+        result = git.commit(release, tmp_folder)
+        logging.info(result)
+
+        # push the changes.
+        logging.info("pushing {}".format(branch))
+        git.push_tags(branch, tmp_folder)
