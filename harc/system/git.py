@@ -11,6 +11,14 @@ def checkout(version, folder):
     return command.stringify(output)
 
 
+def checkout_branch(branch: str, folder=None):
+    if folder:
+        output = command.execute(f"cd {folder};git checkout -b {branch}")
+    else:
+        output = command.execute(f"git checkout -b {branch}")
+    return command.stringify(output)
+
+
 def branches(folder):
     # statement = "cd " + folder + ";" + "git ls-remote --heads origin"
     statement = f"cd {folder};git ls-remote --heads origin"

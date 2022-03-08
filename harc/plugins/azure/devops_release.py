@@ -54,6 +54,9 @@ class DevopsRelease:
         git.config_global("user.name", username)
         git.config_global("user.email", email)
 
+        # checkout the branch
+        git.checkout_branch(branch, tmp_folder)
+
         # commit the changes
         result = git.commit(release, tmp_folder)
         logging.info(result)
