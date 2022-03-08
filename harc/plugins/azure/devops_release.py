@@ -1,32 +1,19 @@
 import logging
-import base64
-import uuid
-
-from urllib.parse import urlparse, quote
 import click
-
-from harc.system.exceptions import PluginException
-from harc.system import git
-from harc.system import utils
+from harc.system import git, pypi
 from harc.system.release import release_number
 from harc.system.release import release_file
-from harc.plugins.git_username_option import GitUsernameOption
-from harc.plugins.git_password_option import GitPasswordOption
-from harc.system import azure
 
 
 class DevopsRelease:
     @click.command()
-    @click.option('--resource-name', required=False)
-    @click.option('--subscription-name', required=False)
-    @click.option('--username', required=False)
-    @click.option('--email', required=False)
+    @click.option('--username', required=True)
+    @click.option('--email', required=True)
     @click.option('--branch', required=False)
     @click.option('--version', required=False)
     @click.pass_context
-    def execute(ctx, resource_name, subscription_name, username, email, branch, version):
-        logging.info(f"resource: {resource_name}, subscription: {subscription_name}, "
-                     f"username: {username}, email: {email}, "
+    def execute(ctx, username, email, branch, version):
+        logging.info(f"username: {username}, email: {email}, "
                      f"branch :{branch}, version: {version}")
 
         # retrieve the properties, set by the cli
@@ -70,14 +57,21 @@ class DevopsRelease:
         git.push_tags(branch, tmp_folder)
 
         # update the version file(s) to the new snapshot release
-        release = release_number.increment_build(release)
-        release = release + '-dev0'
-        release_file.set_version(tmp_folder, properties['name'], properties['technology'], release)
+        dev_release = release_number.increment_build(release)
+        dev_release = dev_release + '-dev0'
+        release_file.set_version(tmp_folder, properties['name'], properties['technology'], dev_release)
 
         # commit the changes
-        result = git.commit(release, tmp_folder)
+        result = git.commit(dev_release, tmp_folder)
         logging.info(result)
 
         # push the changes.
         logging.info("pushing {}".format(branch))
         git.push_tags(branch, tmp_folder)
+
+        # publish the release
+        # checkout the given version
+        git.checkout(release, tmp_folder)
+
+        # build the distribution archives
+        pypi.build(tmp_folder)
