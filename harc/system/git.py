@@ -6,8 +6,11 @@ def clone(repository, folder):
     return command.stringify(output)
 
 
-def checkout(version, folder):
-    output = command.execute(f"cd {folder};git checkout {version}")
+def checkout(version, folder=None):
+    if folder:
+        output = command.execute(f"cd {folder};git checkout {version}")
+    else:
+        output = command.execute(f"git checkout {version}")
     return command.stringify(output)
 
 
