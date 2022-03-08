@@ -19,11 +19,14 @@ class DevopsRelease:
     @click.command()
     @click.option('--resource-name', required=False)
     @click.option('--subscription-name', required=False)
+    @click.option('--username', required=False)
+    @click.option('--email', required=False)
     @click.option('--branch', required=False)
     @click.option('--version', required=False)
     @click.pass_context
-    def execute(ctx, resource_name, subscription_name, branch, version):
-        logging.info(f"resource: {resource_name}, subscription: {subscription_name}"
+    def execute(ctx, resource_name, subscription_name, username, email, branch, version):
+        logging.info(f"resource: {resource_name}, subscription: {subscription_name}, "
+                     f"username: {username}, email: {email}, "
                      f"branch :{branch}, version: {version}")
 
         # retrieve the properties, set by the cli
@@ -40,6 +43,9 @@ class DevopsRelease:
             release = release.split('-')[0]
             release_file.set_version(tmp_folder, properties['name'], properties['technology'], release)
 
-            # commit the changes
+        git.config_global("user.name", username)
+        git.config_global("user.email", email)
+
+        # commit the changes
         result = git.commit(release, tmp_folder)
         logging.info(result)
