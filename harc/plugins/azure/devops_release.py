@@ -32,8 +32,16 @@ class DevopsRelease:
         # retrieve the properties, set by the cli
         properties = ctx.obj
 
-        tmp_folder = ""
+        # if no branch is given, main is assumed.
+        if not branch:
+            branch = "main"
+            logging.info(f"using branch : {branch}")
 
+        tmp_folder = None
+        # update the version file(s) to the release version.
+        # if a version is given, this version is used.
+        # if no version is given, the current version is used and the dev part is removed.
+        # the version format 1.0.2-dev0 is expected
         if version:
             release_file.set_version(tmp_folder, properties['name'], properties['technology'], version)
             release = version
@@ -49,3 +57,11 @@ class DevopsRelease:
         # commit the changes
         result = git.commit(release, tmp_folder)
         logging.info(result)
+
+        # create the tag
+        logging.info("creating tag {}".format(release))
+        git.tag(release, tmp_folder)
+
+        # push the changes.
+        logging.info(f"pushing {branch}")
+        git.push_tags(branch, tmp_folder)

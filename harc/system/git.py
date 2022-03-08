@@ -38,13 +38,24 @@ def commit(version, folder=None):
     return command.stringify(output)
 
 
-def tag(version, folder):
-    output = command.execute(f"cd {folder}; git tag -a {version} -m '{version}'")
+def tag(version, folder=None):
+    if folder:
+        output = command.execute(f"cd {folder}; git tag -a {version} -m '{version}'")
+    else:
+        output = command.execute(f"git tag -a {version} -m '{version}'")
     return command.stringify(output)
 
 
 def push(repository, branch, folder):
     output = command.execute(f"cd {folder};git push --tags {repository} {branch}")
+    return command.stringify(output)
+
+
+def push_tags(branch: str, folder=None):
+    if folder:
+        output = command.execute(f"cd {folder};git push --tags origin {branch}")
+    else:
+        output = command.execute(f"git push --tags origin {branch}")
     return command.stringify(output)
 
 
