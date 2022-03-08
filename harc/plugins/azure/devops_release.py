@@ -47,7 +47,7 @@ class DevopsRelease:
         logging.info(f"{repository}")
 
         if url.scheme in ['http', 'https']:
-            repository = f"{url.scheme}://devops:{encoded}@{url.netloc}{url.path}"
+            repository = f"{url.scheme}://devops:{token}@{url.netloc}{url.path}"
 
         # set identifier, reflecting the checkout folder to build this release.
         name = uuid.uuid4().hex
