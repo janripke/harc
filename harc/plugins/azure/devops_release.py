@@ -29,32 +29,17 @@ class DevopsRelease:
         # retrieve the properties, set by the cli
         properties = ctx.obj
 
-        # if no branch is given, master is assumed.
-        if not branch:
-            branch = "main"
-            logging.info("using branch : {}".format(branch))
+        tmp_folder = ""
 
-        result = azure.account_get_access_token(resource_name)
-        logging.info(f"{result}")
+        if version:
+            release_file.set_version(tmp_folder, properties['name'], properties['technology'], version)
+            release = version
 
-        token = result['accessToken'].encode('ascii')
-        encoded = base64.b64encode(token)
-        logging.info(encoded)
+        if not version:
+            release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
+            release = release.split('-')[0]
+            release_file.set_version(tmp_folder, properties['name'], properties['technology'], release)
 
-        # parse the url, when the scheme is http or https a username, password combination is expected.
-        url = urlparse(properties['repository'])
-        repository = properties['repository']
-        logging.info(f"{repository}")
-
-        if url.scheme in ['http', 'https']:
-            repository = f"{url.scheme}://devops:{token}@{url.netloc}{url.path}"
-
-        # set identifier, reflecting the checkout folder to build this release.
-        name = uuid.uuid4().hex
-
-        # create an empty folder in tmp
-        tmp_folder = utils.recreate_tmp(name)
-
-        # clone the repository to the tmp_folder
-        logging.info("clone into {}".format(tmp_folder))
-        git.clone(repository, tmp_folder)
+            # commit the changes
+        result = git.commit(release, tmp_folder)
+        logging.info(result)
