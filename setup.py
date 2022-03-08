@@ -68,7 +68,6 @@ setup(
     include_package_data=True,
     install_requires=[
         'requests',
-        'boto3',
         'click',
     ],
     package_data={'harc': ['*.json']},

@@ -37,7 +37,7 @@ class DevopsRelease:
             branch = "main"
             logging.info(f"using branch : {branch}")
 
-        tmp_folder = None
+        tmp_folder = ""
         # update the version file(s) to the release version.
         # if a version is given, this version is used.
         # if no version is given, the current version is used and the dev part is removed.
