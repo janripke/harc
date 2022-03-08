@@ -74,4 +74,4 @@ class DevopsRelease:
         git.checkout(release, tmp_folder)
 
         # build the distribution archives
-        pypi.build(tmp_folder)
+        pypi.build_wheel(tmp_folder)
