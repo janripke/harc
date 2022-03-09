@@ -75,10 +75,13 @@ class DevopsRelease:
 
         # publish the release
         # checkout the given version
+        logging.info(f"checkout {release}")
         git.checkout(release, tmp_folder)
 
         # build the distribution archives
+        logging.info(f"build wheel for release {release}")
         pypi.build_wheel(tmp_folder)
 
         # publish the distribution as an azure artifact
+        logging.info(f"publish artifact for release {release}")
         pypi.upload_artifact(feed_name, organization_name, project_name)
