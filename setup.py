@@ -68,6 +68,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'requests',
+        'twine',
         'click',
     ],
     package_data={'harc': ['*.json']},
