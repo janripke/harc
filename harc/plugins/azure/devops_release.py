@@ -69,10 +69,10 @@ class DevopsRelease:
         logging.info("pushing {}".format(branch))
         git.push_tags(branch, tmp_folder)
 
-        # # publish the release
-        # # checkout the given version
-        # logging.info(f"checkout {release}")
-        # git.checkout(release, tmp_folder)
+        # publish the release
+        # checkout the given version
+        logging.info(f"checkout {release}")
+        git.checkout(release, tmp_folder)
         #
         # # build the distribution archives
         # logging.info(f"build wheel for release {release}")
