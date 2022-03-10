@@ -9,15 +9,11 @@ class DevopsRelease:
     @click.command()
     @click.option('--username', required=True)
     @click.option('--email', required=True)
-    @click.option('--feed-name', required=True)
-    @click.option('--organization-name', required=True)
-    @click.option('--project-name', required=True)
     @click.option('--branch', required=False)
     @click.option('--version', required=False)
     @click.pass_context
-    def execute(ctx, username, email, feed_name, organization_name, project_name, branch, version):
+    def execute(ctx, username, email, branch, version):
         logging.info(f"username: {username}, email: {email}, "
-                     f"feed-name: {feed_name}, organization-name: {organization_name}, project-name: {project_name}"
                      f"branch :{branch}, version: {version}")
 
         # retrieve the properties, set by the cli
