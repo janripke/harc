@@ -8,10 +8,13 @@ from harc.system.release import release_file
 class DevopsPublish:
     @click.command()
     @click.option('--feed-name', required=True)
+    @click.option('--organization-name', required=True)
+    @click.option('--project-name', required=True)
     @click.option('--config-file', required=True)
     @click.pass_context
-    def execute(ctx, feed_name, config_file):
-        logging.info(f"feed-name: {feed_name}, config-file: {config_file}")
+    def execute(ctx, feed_name, organization_name, project_name, config_file):
+        logging.info(f"feed-name: {feed_name}, organization-name: {organization_name}, "
+                     f"project-name: {project_name}, config-file: {config_file}")
 
         # retrieve the properties, set by the cli
         properties = ctx.obj
@@ -23,4 +26,4 @@ class DevopsPublish:
 
         # publish the distribution as an azure artifact
         logging.info(f"publish artifact")
-        pypi.upload_artifact(feed_name, config_file)
+        pypi.upload_artifact(feed_name, organization_name, project_name, config_file)
