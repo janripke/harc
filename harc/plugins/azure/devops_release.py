@@ -35,6 +35,7 @@ class DevopsRelease:
 
         if not version:
             release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
+            logging.info(f"release={release}")
             release = release.split('-')[0]
             release_file.set_version(tmp_folder, properties['name'], properties['technology'], release)
 
@@ -44,40 +45,35 @@ class DevopsRelease:
         # checkout the branch
         git.checkout_branch(branch, tmp_folder)
 
-        # commit the changes
-        result = git.commit(release, tmp_folder)
-        logging.info(result)
 
-        # create the tag
-        logging.info("creating tag {}".format(release))
-        git.tag(release, tmp_folder)
 
-        # push the changes.
-        logging.info(f"pushing {branch}")
-        git.push_tags(branch, tmp_folder)
 
-        # update the version file(s) to the new snapshot release
-        dev_release = release_number.increment_build(release)
-        dev_release = dev_release + '-dev0'
-        release_file.set_version(tmp_folder, properties['name'], properties['technology'], dev_release)
-
-        # commit the changes
-        result = git.commit(dev_release, tmp_folder)
-        logging.info(result)
-
-        # push the changes.
-        logging.info("pushing {}".format(branch))
-        git.push_tags(branch, tmp_folder)
-
-        # publish the release
-        # checkout the given version
-        logging.info(f"checkout {release}")
-        git.checkout(release, tmp_folder)
+        # # commit the changes
+        # result = git.commit(release, tmp_folder)
+        # logging.info(result)
         #
-        # # build the distribution archives
-        # logging.info(f"build wheel for release {release}")
-        # pypi.build_wheel(tmp_folder)
+        # # create the tag
+        # logging.info("creating tag {}".format(release))
+        # git.tag(release, tmp_folder)
         #
-        # # publish the distribution as an azure artifact
-        # logging.info(f"publish artifact for release {release}")
-        # pypi.upload_artifact(feed_name, organization_name, project_name)
+        # # push the changes.
+        # logging.info(f"pushing {branch}")
+        # git.push_tags(branch, tmp_folder)
+        #
+        # # update the version file(s) to the new snapshot release
+        # dev_release = release_number.increment_build(release)
+        # dev_release = dev_release + '-dev0'
+        # release_file.set_version(tmp_folder, properties['name'], properties['technology'], dev_release)
+        #
+        # # commit the changes
+        # result = git.commit(dev_release, tmp_folder)
+        # logging.info(result)
+        #
+        # # push the changes.
+        # logging.info("pushing {}".format(branch))
+        # git.push_tags(branch, tmp_folder)
+        #
+        # # publish the release
+        # # checkout the given version
+        # logging.info(f"checkout {release}")
+        # git.checkout(release, tmp_folder)
