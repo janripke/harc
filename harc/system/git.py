@@ -1,3 +1,4 @@
+import logging
 from harc.shell import command
 
 
@@ -45,7 +46,8 @@ def commit(version, folder=None):
     if folder:
         output = command.execute(f"cd {folder};git commit -a --message='updated to version {version}'")
     else:
-        output = command.execute(f"git commit -a --message='updated to version {version}'")
+        logging.info(f"git commit -a --message='updated to version {version}'")
+        # output = command.execute(f"git commit -a --message='updated to version {version}'")
     return command.stringify(output)
 
 

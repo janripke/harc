@@ -38,6 +38,7 @@ class DevopsRelease:
             logging.info(f"release={release}")
             release = release.split('-')[0]
             release_file.set_version(tmp_folder, properties['name'], properties['technology'], release)
+            logging.info(f"release={release}")
 
         git.config_global("user.name", username)
         git.config_global("user.email", email)
@@ -48,9 +49,9 @@ class DevopsRelease:
 
 
 
-        # # commit the changes
-        # result = git.commit(release, tmp_folder)
-        # logging.info(result)
+        # commit the changes
+        result = git.commit(release, tmp_folder)
+        logging.info(result)
         #
         # # create the tag
         # logging.info("creating tag {}".format(release))
