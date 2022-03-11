@@ -53,7 +53,7 @@ def tag(version, folder=None):
     if folder:
         output = command.execute(f"cd {folder}; git tag -a {version} -m '{version}'")
     else:
-        output = command.execute(f"git tag -a {version} -m '{version}'")
+        output = command.execute(f"git tag -a '{version}' -m '{version}'")
     return command.stringify(output)
 
 
