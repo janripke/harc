@@ -19,8 +19,7 @@ def checkout_branch(branch: str, folder=None):
     if folder:
         output = command.execute(f"cd {folder};git checkout -b {branch}")
     else:
-        # output = command.execute(f"git checkout -b {branch}")
-        output = command.execute(f"git merge origin/{branch}")
+        output = command.execute(f"git checkout -b {branch}")
     return command.stringify(output)
 
 
