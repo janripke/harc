@@ -47,31 +47,31 @@ class DevopsRelease:
         git.checkout_branch(branch, tmp_folder)
 
         # commit the changes
-        # result = git.commit(release, tmp_folder)
-        # logging.info(result)
-        #
-        # # create the tag
-        # logging.info("creating tag {}".format(release))
-        # git.tag(release, tmp_folder)
-        #
-        # # push the changes.
-        # logging.info(f"pushing {branch}")
-        # git.push_tags(branch, tmp_folder)
-        #
-        # # update the version file(s) to the new snapshot release
-        # dev_release = release_number.increment_build(release)
-        # dev_release = dev_release + '-dev0'
-        # release_file.set_version(tmp_folder, properties['name'], properties['technology'], dev_release)
-        #
-        # # commit the changes
-        # result = git.commit(dev_release, tmp_folder)
-        # logging.info(result)
-        #
-        # # push the changes.
-        # logging.info("pushing {}".format(branch))
-        # git.push_tags(branch, tmp_folder)
-        #
-        # # publish the release
-        # # checkout the given version
-        # logging.info(f"checkout {release}")
-        # git.checkout(release, tmp_folder)
+        result = git.commit(release, tmp_folder)
+        logging.info(result)
+
+        # create the tag
+        logging.info("creating tag {}".format(release))
+        git.tag(release, tmp_folder)
+
+        # push the changes.
+        logging.info(f"pushing {branch}")
+        git.push_tags(branch, tmp_folder)
+
+        # update the version file(s) to the new snapshot release
+        dev_release = release_number.increment_build(release)
+        dev_release = dev_release + '-dev0'
+        release_file.set_version(tmp_folder, properties['name'], properties['technology'], dev_release)
+
+        # commit the changes
+        result = git.commit(dev_release, tmp_folder)
+        logging.info(result)
+
+        # push the changes.
+        logging.info("pushing {}".format(branch))
+        git.push_tags(branch, tmp_folder)
+
+        # publish the release
+        # checkout the given version
+        logging.info(f"checkout {release}")
+        git.checkout(release, tmp_folder)
