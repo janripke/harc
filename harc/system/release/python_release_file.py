@@ -41,6 +41,7 @@ class PythonReleaseFile:
                 key, value = line.split('=')
                 quote_char = self.guess_quote_char(line)
                 value = value.replace(quote_char, "")
+                value = value.replace(" ", "")
         self.close()
         return value
 

@@ -14,6 +14,10 @@ import harc
 FILE_NOT_FOUND = "File '{}' not found."
 
 
+def get_root() -> Path:
+    return Path(__file__).parent.parent.parent
+
+
 def load_logger(filename, name=None):
     path = lookup(filename)
 
