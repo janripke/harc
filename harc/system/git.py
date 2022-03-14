@@ -69,7 +69,8 @@ def push_tags(branch: str, folder=None):
     if folder:
         output = command.execute(f"cd {folder};git push --tags origin {branch}")
     else:
-        output = command.execute(f"git push -u origin {branch} --tags")
+        # output = command.execute(f"git push -u origin {branch} --tags")
+        output = command.execute(f"git push --tags -u origin {branch}")
     return command.stringify(output)
 
 
