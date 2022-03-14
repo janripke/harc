@@ -28,8 +28,8 @@ class DevopsPublish:
 
         tmp_folder = ""
 
-        # checkout the branch
-        git.checkout_branch(branch, tmp_folder)
+        # # checkout the branch
+        # git.checkout_branch(branch, tmp_folder)
 
         # build the distribution archives
         logging.info(f"build wheel")
