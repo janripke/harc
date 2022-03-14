@@ -44,16 +44,19 @@ class DevopsRelease:
         git.config_global("user.email", email)
 
         # checkout the branch
-        git.checkout_branch(branch, tmp_folder)
+        result = git.checkout_branch(branch, tmp_folder)
+        logging.info(f"git.checkout_branch={result}")
 
         # commit the changes
         result = git.commit(release, tmp_folder)
-        logging.info(result)
+        logging.info(f"git.commit={result}")
 
         # create the tag
         logging.info("creating tag {}".format(release))
-        git.tag(release, tmp_folder)
+        result = git.tag(release, tmp_folder)
+        logging.info(f"git.tag={result}")
 
         # push the changes.
         logging.info(f"pushing {branch}")
-        git.push_tags(branch, tmp_folder)
+        result = git.push_tags(branch, tmp_folder)
+        logging.info(f"git.push_tags={result}")
