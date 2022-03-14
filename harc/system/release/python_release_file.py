@@ -40,7 +40,6 @@ class PythonReleaseFile:
             if '__version__' in line:
                 key, value = line.split('=')
                 quote_char = self.guess_quote_char(line)
-                self.set_quote_char(quote_char)
                 value = value.replace(quote_char, "")
         self.close()
         return value
@@ -53,7 +52,7 @@ class PythonReleaseFile:
         results = []
         for line in lines:
             if '__version__' in line:
-                quote_char = self.get_quote_char()
+                quote_char = self.guess_quote_char(line)
                 results.append("__version__ = " + quote_char + version + quote_char)
             else:
                 results.append(line)
@@ -62,13 +61,8 @@ class PythonReleaseFile:
         self.write(chr(10).join(results))
         self.close()
 
-    def set_quote_char(self, quote_char):
-        self.__quote_char = quote_char
-
-    def get_quote_char(self):
-        return self.__quote_char
-
-    def guess_quote_char(self, line):
+    @staticmethod
+    def guess_quote_char(line):
         single_count = line.count("'")
         double_count = line.count('"')
         if single_count > 0 and single_count > double_count:

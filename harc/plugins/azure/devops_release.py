@@ -47,8 +47,8 @@ class DevopsRelease:
         git.checkout_branch(branch, tmp_folder)
 
         # commit the changes
-        result = git.commit(release, tmp_folder)
-        logging.info(result)
+        # result = git.commit(release, tmp_folder)
+        # logging.info(result)
         #
         # # create the tag
         # logging.info("creating tag {}".format(release))
