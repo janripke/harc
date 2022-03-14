@@ -7,6 +7,7 @@ class PythonReleaseFile:
         self.__location = location
         self.__name = name
         self.__file = None
+        self.__quote_char = None
 
     def get_location(self):
         return self.__location
@@ -32,14 +33,17 @@ class PythonReleaseFile:
         self.__file.close()
 
     def get_version(self):
-        result = None
+        value = None
         self.open()
         lines = self.read()
         for line in lines:
             if '__version__' in line:
-                result = line.strip("__version__ ='")
+                key, value = line.split('=')
+                quote_char = self.guess_quote_char(line)
+                self.set_quote_char(quote_char)
+                value - value.replace(quote_char, "")
         self.close()
-        return result
+        return value
 
     def set_version(self, version):
         self.open()
@@ -49,10 +53,26 @@ class PythonReleaseFile:
         results = []
         for line in lines:
             if '__version__' in line:
-                results.append("__version__ = '" + version + "'")
+                quote_char = self.get_quote_char()
+                results.append("__version__ = " + quote_char + version + quote_char)
             else:
                 results.append(line)
 
         self.open('w')
         self.write(chr(10).join(results))
         self.close()
+
+    def set_quote_char(self, quote_char):
+        self.__quote_char = quote_char
+
+    def get_quote_char(self):
+        return self.__quote_char
+
+    def guess_quote_char(self, line):
+        single_count = line.count("'")
+        double_count = line.count('"')
+        if single_count > 0 and single_count > double_count:
+            return "'"
+        if double_count > 0 and double_count > single_count:
+            return '"'
+        return '"'

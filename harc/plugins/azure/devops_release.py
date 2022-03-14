@@ -46,9 +46,6 @@ class DevopsRelease:
         # checkout the branch
         git.checkout_branch(branch, tmp_folder)
 
-
-
-
         # commit the changes
         result = git.commit(release, tmp_folder)
         logging.info(result)
