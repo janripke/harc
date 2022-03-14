@@ -25,6 +25,14 @@ class DevopsRelease:
             logging.info(f"using branch : {branch}")
 
         tmp_folder = ""
+
+        git.config_global("user.name", username)
+        git.config_global("user.email", email)
+
+        # checkout the branch
+        result = git.checkout_branch(branch, tmp_folder)
+        logging.info(f"git.checkout_branch={result}")
+
         # update the version file(s) to the release version.
         # if a version is given, this version is used.
         # if no version is given, the current version is used and the dev part is removed.
@@ -39,13 +47,6 @@ class DevopsRelease:
             release = release.split('-')[0]
             release_file.set_version(tmp_folder, properties['name'], properties['technology'], release)
             logging.info(f"release={release}")
-
-        git.config_global("user.name", username)
-        git.config_global("user.email", email)
-
-        # checkout the branch
-        result = git.checkout_branch(branch, tmp_folder)
-        logging.info(f"git.checkout_branch={result}")
 
         # commit the changes
         result = git.commit(release, tmp_folder)
