@@ -11,7 +11,7 @@ class DevopsPublish:
     @click.option('--organization-name', required=True)
     @click.option('--project-name', required=True)
     @click.option('--config-file', required=True)
-    @click.option('--branch', required=True)
+    @click.option('--branch', required=False)
     @click.pass_context
     def execute(ctx, feed_name, organization_name, project_name, config_file, branch):
         logging.info(f"feed-name: {feed_name}, organization-name: {organization_name}, "
