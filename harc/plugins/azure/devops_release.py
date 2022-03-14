@@ -51,16 +51,16 @@ class DevopsRelease:
         release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
         logging.info(f"release_file.get_version={release}")
 
-        # # commit the changes
-        # result = git.commit(release, tmp_folder)
-        # logging.info(f"git.commit={result}")
-        #
-        # # create the tag
-        # logging.info("creating tag {}".format(release))
-        # result = git.tag(release, tmp_folder)
-        # logging.info(f"git.tag={result}")
-        #
-        # # push the changes.
-        # logging.info(f"pushing {branch}")
-        # result = git.push_tags(branch, tmp_folder)
-        # logging.info(f"git.push_tags={result}")
+        # commit the changes
+        result = git.commit(release, tmp_folder)
+        logging.info(f"git.commit={result}")
+
+        # create the tag
+        logging.info("creating tag {}".format(release))
+        result = git.tag(release, tmp_folder)
+        logging.info(f"git.tag={result}")
+
+        # push the changes.
+        logging.info(f"pushing {branch}")
+        result = git.push_tags(branch, tmp_folder)
+        logging.info(f"git.push_tags={result}")
