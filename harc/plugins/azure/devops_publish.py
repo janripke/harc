@@ -28,27 +28,31 @@ class DevopsPublish:
 
         tmp_folder = ""
 
-        # # checkout the branch
-        # git.checkout_branch(branch, tmp_folder)
-
-        # build the distribution archives
-        logging.info(f"build wheel")
-        pypi.build_wheel(tmp_folder)
-
-        # publish the distribution as an azure artifact
-        logging.info(f"publish artifact")
-        pypi.upload_artifact(feed_name, organization_name, project_name, config_file)
-
-        # update the version file(s) to the new snapshot release
         release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
-        dev_release = release_number.increment_build(release)
-        dev_release = dev_release + '-dev0'
-        release_file.set_version(tmp_folder, properties['name'], properties['technology'], dev_release)
+        release, snapshot = release.split('-')
+        logging.info(f"release={release}, snapshot={str(snapshot)}")
+        if not snapshot:
 
-        # commit the changes
-        result = git.commit(dev_release, tmp_folder)
-        logging.info(result)
+            # checkout the branch
+            git.checkout_branch(branch, tmp_folder)
 
-        # push the changes.
-        logging.info("pushing {}".format(branch))
-        git.push_tags(branch, tmp_folder)
+            # build the distribution archives
+            logging.info(f"build wheel")
+            pypi.build_wheel(tmp_folder)
+
+            # publish the distribution as an azure artifact
+            logging.info(f"publish artifact")
+            pypi.upload_artifact(feed_name, organization_name, project_name, config_file)
+
+            # update the version file(s) to the new snapshot release
+            dev_release = release_number.increment_build(release)
+            dev_release = dev_release + '-dev0'
+            release_file.set_version(tmp_folder, properties['name'], properties['technology'], dev_release)
+
+            # commit the changes
+            result = git.commit(dev_release, tmp_folder)
+            logging.info(result)
+
+            # push the changes.
+            logging.info("pushing {}".format(branch))
+            git.push_tags(branch, tmp_folder)
