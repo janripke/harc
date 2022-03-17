@@ -29,7 +29,7 @@ class DevopsPublish:
         tmp_folder = ""
 
         release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
-        release, snapshot = release.split('-')
+        release, snapshot = release_number.split(release)
         logging.info(f"release={release}, snapshot={str(snapshot)}")
         if not snapshot:
 
