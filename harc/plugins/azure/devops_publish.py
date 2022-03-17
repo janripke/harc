@@ -7,14 +7,17 @@ from harc.system.release import release_file
 
 class DevopsPublish:
     @click.command()
+    @click.option('--username', required=True)
+    @click.option('--email', required=True)
     @click.option('--feed-name', required=True)
     @click.option('--organization-name', required=True)
     @click.option('--project-name', required=True)
     @click.option('--config-file', required=True)
     @click.option('--branch', required=False)
     @click.pass_context
-    def execute(ctx, feed_name, organization_name, project_name, config_file, branch):
-        logging.info(f"feed-name: {feed_name}, organization-name: {organization_name}, "
+    def execute(ctx, username, email, feed_name, organization_name, project_name, config_file, branch):
+        logging.info(f"username: {username}, email: {email}, "
+                     f"feed-name: {feed_name}, organization-name: {organization_name}, "
                      f"branch : {branch}, "
                      f"project-name: {project_name}, config-file: {config_file}")
 
@@ -32,6 +35,8 @@ class DevopsPublish:
         release, snapshot = release_number.split(release)
         logging.info(f"release={release}, snapshot={str(snapshot)}")
         if not snapshot:
+            git.config_global("user.name", username)
+            git.config_global("user.email", email)
 
             # checkout the branch
             git.checkout_branch(branch, tmp_folder)
