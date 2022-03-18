@@ -1,7 +1,6 @@
 import logging
 import click
-from harc.system import git, pypi
-from harc.system.release import release_number
+from harc.system import git
 from harc.system.release import release_file
 
 
@@ -18,6 +17,10 @@ class DevopsRelease:
 
         # retrieve the properties, set by the cli
         properties = ctx.obj
+
+        # this value is given by the release pipeline, when no version is given.
+        if version and version == "automatically":
+            version = None
 
         # if no branch is given, main is assumed.
         if not branch:
