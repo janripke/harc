@@ -6,6 +6,10 @@ class PluginCommand(click.MultiCommand):
     def list_commands(self, ctx):
         commands = list()
         commands.append('git:release')
+        commands.append('pypi:deploy')
+        commands.append('devops:release')
+        commands.append('devops:publish')
+        commands.append('devops:deploy')
         commands.append('docker:build')
         commands.append('container:push')
         commands.append('container:deploy')
@@ -27,3 +31,6 @@ class PluginCommand(click.MultiCommand):
         if cmd_name == "devops:publish":
             from harc.plugins.azure.devops_publish import DevopsPublish
             return DevopsPublish.execute
+        if cmd_name == "devops:deploy":
+            from harc.plugins.azure.devops_deploy import DevopsDeploy
+            return DevopsDeploy.execute

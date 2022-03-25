@@ -1,3 +1,4 @@
+import glob
 import logging
 import logging.config
 import tempfile
@@ -95,3 +96,11 @@ def copy(src, dest):
             shutil.copy(src, dest)
         else:
             print('Directory not copied. Error: %s' % e)
+
+
+def listing(path: Path, recursive=False):
+    return [Path(_) for _ in glob.glob(str(path), recursive=recursive)]
+
+
+def files(path: Path, recursive=False):
+    return [_ for _ in listing(path, recursive=recursive) if _.is_file()]

@@ -10,3 +10,7 @@ class DatabricksTokenNotFoundError(Exception):
 
 class PluginException(Exception):
     pass
+
+
+class DatabricksError(Exception):
+    pass
