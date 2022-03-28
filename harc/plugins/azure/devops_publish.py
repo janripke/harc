@@ -31,6 +31,10 @@ class DevopsPublish:
 
         tmp_folder = ""
 
+        # build the distribution archives
+        logging.info(f"build wheel")
+        pypi.build_wheel(tmp_folder)
+
         # publish the distribution as an azure artifact
         logging.info(f"publish artifact")
         pypi.upload_artifact(feed_name, organization_name, project_name, config_file)
@@ -45,10 +49,10 @@ class DevopsPublish:
             # checkout the branch
             git.checkout_branch(branch, tmp_folder)
 
-            # build the distribution archives
-            logging.info(f"build wheel")
-            pypi.build_wheel(tmp_folder)
-
+            # # build the distribution archives
+            # logging.info(f"build wheel")
+            # pypi.build_wheel(tmp_folder)
+            #
             # # publish the distribution as an azure artifact
             # logging.info(f"publish artifact")
             # pypi.upload_artifact(feed_name, organization_name, project_name, config_file)
