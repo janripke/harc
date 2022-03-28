@@ -31,6 +31,10 @@ class DevopsPublish:
 
         tmp_folder = ""
 
+        # publish the distribution as an azure artifact
+        logging.info(f"publish artifact")
+        pypi.upload_artifact(feed_name, organization_name, project_name, config_file)
+
         release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
         release, snapshot = release_number.split(release)
         logging.info(f"release={release}, snapshot={str(snapshot)}")
@@ -45,9 +49,9 @@ class DevopsPublish:
             logging.info(f"build wheel")
             pypi.build_wheel(tmp_folder)
 
-            # publish the distribution as an azure artifact
-            logging.info(f"publish artifact")
-            pypi.upload_artifact(feed_name, organization_name, project_name, config_file)
+            # # publish the distribution as an azure artifact
+            # logging.info(f"publish artifact")
+            # pypi.upload_artifact(feed_name, organization_name, project_name, config_file)
 
             # update the version file(s) to the new snapshot release
             dev_release = release_number.increment_build(release)
