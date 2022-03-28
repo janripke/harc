@@ -1,3 +1,4 @@
+import logging
 from harc.shell import command
 
 
@@ -32,5 +33,7 @@ def upload_artifact(feed_name: str, organization_name: str, project_name: str, c
 
 def download(feed_name: str, organization_name: str, project_name: str, package_name: str, release: str) -> str:
     index_url = f"https://pkgs.dev.azure.com/{organization_name}/{project_name}/_packaging/{feed_name}/pypi/simple/"
-    output = command.execute(f"pip download -i '{index_url}' {package_name}=={release} --no-deps")
+    statement = f"pip download -i '{index_url}' {package_name}=={release} --no-deps"
+    logging.info(statement)
+    output = command.execute(statement,print_output=True)
     return command.stringify(output)
