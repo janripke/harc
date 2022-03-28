@@ -1,3 +1,4 @@
+import os
 import logging
 import click
 from harc.system import pypi, databricks, utils
@@ -21,6 +22,9 @@ class DevopsDeploy:
 
         # this value is given by the release pipeline, when no version is given.
         tmp_folder = ""
+
+        logging.info(f"DATABRICKS_HOST={os.getenv('DATABRICKS_HOST')}")
+        logging.info(f"DATABRICKS_TOKEN={os.getenv('DATABRICKS_TOKEN')}")
 
         release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
         logging.info(f"release: {release}")
