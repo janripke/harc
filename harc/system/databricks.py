@@ -55,6 +55,20 @@ def fs_copy(path: str, remote_path: str):
     return command.stringify(output)
 
 
+def databricks_libraries_list(cluster_id: str):
+    output = command.execute(f"databricks libraries list")
+    output = command.dictify(output)
+    statuses = output.get("statuses")
+    for status in statuses:
+        if status["cluster_id"] == cluster_id:
+            return status
+
+
 def libraries_install(cluster_id: str, remote_path: str):
     output = command.execute(f"databricks libraries install --cluster-id {cluster_id} --whl {remote_path}")
+    return command.stringify(output)
+
+
+def libraries_uninstall(cluster_id: str, remote_path: str):
+    output = command.execute(f"databricks libraries uninstall --cluster-id {cluster_id} --whl {remote_path}")
     return command.stringify(output)
