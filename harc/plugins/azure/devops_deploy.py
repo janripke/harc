@@ -51,9 +51,11 @@ class DevopsDeploy:
         libraries = databricks.databricks_libraries_list(cluster_id)
         logging.info(f"{libraries}")
         library_statuses = libraries.get("library_statuses")
+        logging.info(f"{library_statuses}")
         for library_status in library_statuses:
             library = library_status.get("library")
             remote_package_path = library.get("whl")
+            logging.info(f"library={library}, remote_package_path={remote_package_path}")
             if package_name in remote_package_path and wheel not in remote_package_path:
                 logging.info(f"uninstalling library {remote_package_path}")
                 databricks.libraries_uninstall(cluster_id, remote_package_path)
