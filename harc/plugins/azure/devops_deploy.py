@@ -30,8 +30,7 @@ class DevopsDeploy:
         logging.info(f"release: {release}")
 
         # download the package from azure artifacts
-        result = pypi.download(feed_name, organization_name, project_name, package_name, release)
-        logging.info(f"result={result}")
+        pypi.download(feed_name, organization_name, project_name, package_name, release)
 
         logging.info(f"creating remote package folder {dbfs_package_path}")
         databricks.fs_mkdirs(dbfs_package_path)
@@ -50,6 +49,16 @@ class DevopsDeploy:
             databricks.cluster_start(cluster_id)
 
             databricks.cluster_wait_for_start(cluster_id)
+
+        # uninstall older packages
+        libraries = databricks.databricks_libraries_list(cluster_id)
+        library_statuses = libraries.get("library_statuses")
+        for library_status in library_statuses:
+            library = library_status.get("library")
+            remote_package_path = library.get("whl")
+            if package_name in remote_package_path and wheel not in remote_package_path:
+                logging.info(f"uninstalling library {remote_package_path}")
+                databricks.libraries_uninstall(cluster_id, remote_package_path)
 
         remote_package_path = f"{dbfs_package_path}/{wheel}"
         logging.info(f"installing library {remote_package_path}")
