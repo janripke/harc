@@ -49,6 +49,7 @@ class DevopsDeploy:
 
         # uninstall older packages
         libraries = databricks.databricks_libraries_list(cluster_id)
+        logging.info(f"{libraries}")
         library_statuses = libraries.get("library_statuses")
         for library_status in library_statuses:
             library = library_status.get("library")
