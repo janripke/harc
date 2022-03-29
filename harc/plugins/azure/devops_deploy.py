@@ -7,15 +7,12 @@ from harc.system.release import release_file
 
 class DevopsDeploy:
     @click.command()
-    @click.option('--feed-name', required=True)
-    @click.option('--organization-name', required=True)
-    @click.option('--project-name', required=True)
     @click.option('--package-name', required=True)
     @click.option('--cluster-name', required=True)
     @click.option('--dbfs-package-path', required=True)
     @click.pass_context
-    def execute(ctx, feed_name, organization_name, project_name, package_name: str, cluster_name: str, dbfs_package_path: str):
-        logging.info(f"feed-name: {feed_name}, organization-name: {organization_name}, project-name: {project_name}, package-name: {package_name}")
+    def execute(ctx, package_name: str, cluster_name: str, dbfs_package_path: str):
+        logging.info(f"package-name: {package_name}, cluster-name: {cluster_name}, dbfs-package-path: {dbfs_package_path}")
 
         # retrieve the properties, set by the cli
         properties = ctx.obj
@@ -30,7 +27,7 @@ class DevopsDeploy:
         logging.info(f"release: {release}")
 
         # download the package from azure artifacts
-        pypi.download(feed_name, organization_name, project_name, package_name, release)
+        pypi.download(package_name, release)
 
         logging.info(f"creating remote package folder {dbfs_package_path}")
         databricks.fs_mkdirs(dbfs_package_path)
