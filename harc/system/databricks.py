@@ -72,3 +72,8 @@ def libraries_install(cluster_id: str, remote_path: str):
 def libraries_uninstall(cluster_id: str, remote_path: str):
     output = command.execute(f"databricks libraries uninstall --cluster-id {cluster_id} --whl {remote_path}")
     return command.stringify(output)
+
+
+def workspace_import(path: str, remote_path: str):
+    output = command.execute(f"databricks workspace import --overwrite {path} {remote_path} --language PYTHON")
+    return command.stringify(output)

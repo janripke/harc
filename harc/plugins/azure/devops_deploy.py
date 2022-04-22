@@ -26,6 +26,12 @@ class DevopsDeploy:
         release = release_file.get_version(tmp_folder, properties['name'], properties['technology'])
         logging.info(f"release: {release}")
 
+        notebooks = utils.files("notebooks/*.py")
+        for notebook in notebooks:
+            remote_notebook_path = f"/Shared/{notebook.stem}"
+            logging.info(f"uploading {notebook} to {remote_notebook_path}")
+            databricks.workspace_import(notebook, remote_notebook_path)
+
         # download the package from azure artifacts
         pypi.download(package_name, release)
 
